@@ -1,0 +1,13 @@
+Audio rate: 44100;
+
+String string(200 Hz, 20 secs);
+
+Init:
+    string.lockEnds();
+    ...
+
+Score 5 secs:
+    At 0 secs for 1 msecs:
+        string(0.1).applyForce(linear(1,0));
+	...
+    ...

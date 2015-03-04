@@ -1,0 +1,36 @@
+// accesspoint2.tao
+//
+// Shows how to create two AccessPoint objects, assign them positions on two
+// strings and then use them to implement a connection between the two strings. 
+
+Audio rate: 44100;
+
+String string1(200 Hz, 20 secs);
+String string2(200 Hz, 20 secs);
+
+AccessPoint point1, point2;
+
+Connector connector;
+
+Output out(2);
+
+Init:
+    string1.lockEnds();
+    string2.lockEnds();
+    ...
+
+Score 5.0 secs:
+    At 0 secs for 0.1 msecs:
+        string1(0.05).applyForce(1.0);
+	...
+
+    ControlRate 100:
+        point1=string1(linear(0,1));
+	point2=string2(linear(1,0));
+	...
+
+    point1 -- connector -- point2;
+    out.ch1: point1;
+    out.ch2: point2;
+    ...
+

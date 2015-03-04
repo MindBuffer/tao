@@ -1,0 +1,78 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<!-- HTML file produced from file: UserManual.tex --
+ -- using Hyperlatex v 2.3.1 (c) Otfried Cheong--
+ -- on Emacs 21.1 (patch 4) "Arches" XEmacs Lucid, Sun Apr 30 20:49:52 2000 -->
+<HEAD>
+<TITLE>Tao User Manual -- If you are still stuck with configuration problems</TITLE>
+
+    <link rel=stylesheet href="../../taomanual.css" type="text/css">
+    
+</HEAD><BODY BACKGROUND="bg.gif">
+
+    <table width="500" border="0" align="left" cellspacing="2" cellpadding="2"><tr><td class="nav" valign="top"><!-- top panel --><A HREF="UserManual_9.html"><IMG ALT="Up" ALIGN=BOTTOM BORDER=0 SRC="up.gif"></A>
+    <BR><A HREF="UserManual_9.html">Configuring, making and installing <B>Tao</B></A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" valign="top"><A HREF="UserManual_10.html"><IMG ALT="Back" ALIGN=BOTTOM BORDER=0 SRC="back.gif"></A>
+    <BR><A HREF="UserManual_10.html">Troubleshooting the configuration process</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" valign="top"><A HREF="UserManual_12.html"><IMG ALT="Forward" ALIGN=BOTTOM BORDER=0 SRC="forward.gif"></A>
+    <BR><A HREF="UserManual_12.html">Continuing with the build process</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td></tr><!-- end top panel --><tr><td colspan="3" class="main"><!-- main text --><br><br>
+<H3>If you are still stuck with configuration problems</H3>
+
+After receiving a emails from some <B>Tao</B> users who had run into
+problems with the configure script I decided to write a shell script
+as and aid to testing for installed libraries, their locations,
+and whether or not the executables dependent on those libraries
+would be able to find them. This shell script is located in the top
+level directory of the distribution and is called <CODE>diagnose-lib</CODE>.
+<P>Typing <CODE>diagnose-lib</CODE> without any arguments prints out the following
+usage message:
+<P><PRE>
+    Usage: diagnose-lib &lt;libname&gt;
+    Diagnose problems in finding shared libraries during
+    configuration of Tao
+
+    &lt;libname&gt; can be one of the following:
+    'gl', 'GL', 'glu', 'GLU', 'glut' or 'audiofile'. 
+</PRE>
+<P>So, for example, if the configure script claims that you don't have any
+OpenGL libraries installed but you are convinced that you do, type:
+<P><PRE>
+    ./diagnose-lib gl
+</PRE>
+to check for the GL library or
+<PRE>
+    ./diagnose-lib glu
+</PRE>
+for the GLU library.
+<P>The <CODE>diagnose-lib</CODE> script will respond with information about whether
+it can find a library of the right name, where that library is installed
+and whether the executables which depend on that library will be able
+to find it. It does so by searching obvious locations such as
+<CODE>/usr/lib</CODE>, <CODE>/usr/local/lib</CODE> first and then searches the
+directory tree rooted at your home directory. If it fails to find
+the library it will abort and let you know.
+<P>If on the other hand it does find a suitable candidate it then checks
+ to see whether either the file <CODE>/etc/ld.so.conf</CODE> or the environment
+variable <CODE>LD_LIBRARY_PATH</CODE> contain the appropriate path to
+find this file. These are the two principal mechanisms by which your
+system locates <EM>shared objects</EM> or <EM>dynamic link libraries</EM>
+at run time.
+<P>If neither contain the path to this file a suitable message is printed out
+and suggestions for solving the problem are given.
+<P>If you find that you are still having problems after following any advice
+given by the <CODE>diagnose-lib</CODE> script then please feel free to email
+me at <A HREF="mailto:m.pearson@ukonline.co.uk">m.pearson@ukonline.co.uk</A>.
+I will try to help out where I can.
+<P>
+    <BR></td></tr><!-- end main text --><tr><td class="nav" align="left" valign="top"><!-- bottom matter --><A HREF="UserManual_9.html"><IMG ALT="Up" ALIGN=BOTTOM BORDER=0 SRC="up.gif"></A>
+    <BR><A HREF="UserManual_9.html">Configuring, making and installing <B>Tao</B></A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" align="left" valign="top"><A HREF="UserManual_10.html"><IMG ALT="Back" ALIGN=BOTTOM BORDER=0 SRC="back.gif"></A>
+    <BR><A HREF="UserManual_10.html">Troubleshooting the configuration process</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" align="left" valign="top"><!-- bottom matter --><A HREF="UserManual_12.html"><IMG ALT="Forward" ALIGN=BOTTOM BORDER=0 SRC="forward.gif"></A>
+    <BR><A HREF="UserManual_12.html">Continuing with the build process</A>
+    <IMG width="167" height="1" SRC="trans1x1.gif">
+    </td></tr><!-- end bottom matter -->
+
+    <tr><td colspan="3" class="addr"><!-- bottom panel --><ADDRESS><FONT SIZE=-1>&#169;1999,2000 Mark Pearson
+<A HREF="mailto:m.pearson@ukonline.co.uk">m.pearson@ukonline.co.uk</A> April 30, 2000</ADDRESS><BR></td></tr><!-- end bottom panel --></table></BODY></HTML>

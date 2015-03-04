@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<!-- HTML file produced from file: UserManual.tex --
+ -- using Hyperlatex v 2.3.1 (c) Otfried Cheong--
+ -- on Emacs 21.1 (patch 4) "Arches" XEmacs Lucid, Sun Apr 30 20:50:11 2000 -->
+<HEAD>
+<TITLE>Tao User Manual -- Background to <B>Tao</B>'s design and implementation</TITLE>
+
+    <link rel=stylesheet href="../../taomanual.css" type="text/css">
+    
+</HEAD><BODY BACKGROUND="bg.gif">
+
+    <table width="500" border="0" align="left" cellspacing="2" cellpadding="2"><tr><td class="nav" valign="top"><!-- top panel --><A HREF="UserManual_147.html"><IMG ALT="Up" ALIGN=BOTTOM BORDER=0 SRC="up.gif"></A>
+    <BR><A HREF="UserManual_147.html">Closing Comments</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" valign="top"><A HREF="UserManual_147.html"><IMG ALT="Back" ALIGN=BOTTOM BORDER=0 SRC="back.gif"></A>
+    <BR><A HREF="UserManual_147.html">Closing Comments</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" valign="top"><A HREF="UserManual_149.html"><IMG ALT="Forward" ALIGN=BOTTOM BORDER=0 SRC="forward.gif"></A>
+    <BR><A HREF="UserManual_149.html">The computational expense of Tao's synthesis engine</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td></tr><!-- end top panel --><tr><td colspan="3" class="main"><!-- main text --><br><br>
+<H2>Background to <B>Tao</B>'s design and implementation</H2>
+During my Music Technology masters degree at the University of York I was
+impressed by freeware audio and synthesis tools such as <CODE>Csound</CODE>.
+One of the things that impressed me about Csound in particular was that
+it was a synthesis language and allowed a finite set of primitive
+building blocks to be assembled in an infinite number of ways. 
+<P>However, my experience as a musician playing a variety of acoustic
+instruments told me that whilst Csound's unit generator approach was
+quite powerful, it also had several shortcomings. For example, when
+playing an acoustic instrument such as a guitar or even just experimenting
+with `found sounds' there is something very direct and intuitive about
+the mode of experimentation. If you want something to make a louder
+and brighter sound you just hit it harder!
+<P>Whilst Csound's unit
+generator approach does allow you to design instruments with input
+parameters and feed different values into these inputs in a score,
+it doens't allow you to think directly in terms of forces, velocities,
+spatial positioning of excitations etc. So I wanted to set out to
+design a synthesis program which would carry on the tradition of
+programs like Csound, in providing an open-ended synthesis language,
+but would be capable of creating much more tangibly physical
+instruments. Another item which was high on the agenda was to be able
+to visualise the instruments.
+<P><B>Tao</B> arose out of my interests in a number of different areas
+including musical performance, electroacoustic music, computer
+modeling of complex dynamical systems, cellular automata, and
+computer graphics.
+<P>I have thought for a long time that whilst GUIs (graphical
+user interfaces) are invaluable tools in certain situations there are
+still many things which are more elegantly expressed in text/language
+form. Take general computer programming languages for example, or
+the rapidly growing number of `mark-up languages' such as HTML, XML,
+VRML. Text is a very powerful tool for communicating structured
+ideas and has the advantage that it can serve as the basis for
+more user friendly GUI-based tools to sit on top.
+<P>It is for this reason that I concentrated my efforts on designing a
+text based interface to <B>Tao</B> which would be simple to use, clear to read
+and above all accessible to musicians with some degree of technical
+competency (having used tools such as Csound for example). Having
+stated this however it is likely that the format of the language and
+the lack of a GUI will be addressed in the future, along with several
+other aspects of the user interface.
+<P><B>Tao</B> was originally developed as part of my DPhil at the
+University of York, England and then subsequently during a one year
+visiting research fellowship to the Australian Centre for the Arts
+and Technology at the Australian National University in Canberra.
+<P>My DPhil addressed the question of precisely why it is that digitally
+synthesised sounds often lack the <EM>warmth</EM>, <EM>life</EM>, and
+<EM>organic</EM> qualities of acoustically produced sounds, whether
+musical in the traditional sense or not. What came out of this work,
+apart from a thesis of course, was <B>Tao</B>.
+<P>As mentioned earlier on I wanted a system which would be capable of producing
+<EM>organic sounds</EM>. The term <EM>organic</EM>
+is quite difficult to define precisely but my thesis <EM>Synthesis
+of Organic Sounds for Electroacoustic Music: Cellular Models and the
+TAO Computer Music Program</EM> does a better job of
+addressing the issues than I have scope to do here. Very briefly though
+the term <EM>organic</EM> is used to refer to sounds which are:
+<P><UL><LI>complex
+<LI>fluid
+<LI>dynamic
+<LI>coherent
+<LI>lively
+<LI>suggestive of physical and energetic causality
+</UL>
+<P>The term <EM>coherence</EM><A NAME="1"> is</A> used to refer to the fact that in sounds
+produced by physical means, the transient behaviour, the perception
+of the sound having been produced by some physical mechanism and
+the overall character of the sound hang together very well. This cannot
+be said of many digitally synthesised sounds, even those produced by
+some physical modeling techniques. This problem of synthesising
+<EM>complex</EM>, <EM>coherent</EM> and <EM>organic</EM> sounds was the main
+focus of the whole project.
+<P>The original design goals which have been adhered to throughout <B>Tao</B>'s
+development were to produce a system which would have the following
+features:
+<P><UL><LI>capable of synthesising a wide variety of acoustic and
+instrumental-like sounds with organic qualities;
+<LI>relatively straightforward to use, making physical modeling accessible
+to those without a strong maths or physics background without compromising
+the power or flexibility of the tool;
+<LI>based around a flexible and open-ended synthesis language following
+in the tradition of other synthesis languages such as Csound (this objective
+is ongoing, the current synthesis language used by <B>Tao</B> is only one possible
+language for controlling it).
+</UL>
+<P>
+    <BR></td></tr><!-- end main text --><tr><td class="nav" align="left" valign="top"><!-- bottom matter --><A HREF="UserManual_147.html"><IMG ALT="Up" ALIGN=BOTTOM BORDER=0 SRC="up.gif"></A>
+    <BR><A HREF="UserManual_147.html">Closing Comments</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" align="left" valign="top"><A HREF="UserManual_147.html"><IMG ALT="Back" ALIGN=BOTTOM BORDER=0 SRC="back.gif"></A>
+    <BR><A HREF="UserManual_147.html">Closing Comments</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" align="left" valign="top"><!-- bottom matter --><A HREF="UserManual_149.html"><IMG ALT="Forward" ALIGN=BOTTOM BORDER=0 SRC="forward.gif"></A>
+    <BR><A HREF="UserManual_149.html">The computational expense of Tao's synthesis engine</A>
+    <IMG width="167" height="1" SRC="trans1x1.gif">
+    </td></tr><!-- end bottom matter -->
+
+    <tr><td colspan="3" class="addr"><!-- bottom panel --><ADDRESS><FONT SIZE=-1>&#169;1999,2000 Mark Pearson
+<A HREF="mailto:m.pearson@ukonline.co.uk">m.pearson@ukonline.co.uk</A> April 30, 2000</ADDRESS><BR></td></tr><!-- end bottom panel --></table></BODY></HTML>

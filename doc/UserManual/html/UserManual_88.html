@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<!-- HTML file produced from file: UserManual.tex --
+ -- using Hyperlatex v 2.3.1 (c) Otfried Cheong--
+ -- on Emacs 21.1 (patch 4) "Arches" XEmacs Lucid, Sun Apr 30 20:50:03 2000 -->
+<HEAD>
+<TITLE>Tao User Manual -- Graphically Placing Instruments</TITLE>
+
+    <link rel=stylesheet href="../../taomanual.css" type="text/css">
+    
+</HEAD><BODY BACKGROUND="bg.gif">
+
+    <table width="500" border="0" align="left" cellspacing="2" cellpadding="2"><tr><td class="nav" valign="top"><!-- top panel --><A HREF="UserManual_85.html"><IMG ALT="Up" ALIGN=BOTTOM BORDER=0 SRC="up.gif"></A>
+    <BR><A HREF="UserManual_85.html">Instrument Methods grouped by Function</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" valign="top"><A HREF="UserManual_87.html"><IMG ALT="Back" ALIGN=BOTTOM BORDER=0 SRC="back.gif"></A>
+    <BR><A HREF="UserManual_87.html">Damping Parts of an Instrument</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" valign="top"><A HREF="UserManual_89.html"><IMG ALT="Forward" ALIGN=BOTTOM BORDER=0 SRC="forward.gif"></A>
+    <BR><A HREF="UserManual_89.html">Accessing the Internal Attributes of an Instrument</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td></tr><!-- end top panel --><tr><td colspan="3" class="main"><!-- main text --><br><br>
+<H3>Graphically Placing Instruments</H3>
+
+
+
+These methods allow the user to override <B>Tao</B>'s default graphical placement
+scheme. The default scheme is not very intelligent in the current version
+and simply places each new instrument above the previous one (`above'
+meaning in the +ve <I>y</I> direction). The <CODE>placeAt</CODE><A NAME="1"> method</A>
+allows the position of the bottom left hand corner of the bounding
+box surrounding the instrument to be set explicitly. The 
+<CODE>placeAbove</CODE><A NAME="2">,</A> <CODE>placeBelow</CODE><A NAME="3">,</A> <CODE>placeRightOf</CODE><A NAME="4">
+and</A> <CODE>placeLeftOf</CODE><A NAME="5"> methods</A> allow an instrument to be 
+placed relative to another instrument.
+<P>In the case of the methods which expect an additional argument
+<CODE>&lt;offset&gt;</CODE>, this argument specifies an additional offset
+measured in world coordinates from the reference instrument (the default
+is to seperate each instrument by 5 units in world coordinates).
+This is somtimes necessary to prevent the instrument visualisation
+window from becoming too cluttered.
+<P><PRE>
+    placeAt(&lt;x, y&gt;)
+    placeAbove(&lt;instrument&gt;)
+    placeBelow(&lt;instrument&gt;)
+    placeRightOf(&lt;instrument&gt;)
+    placeLeftOf(&lt;instrument&gt;)
+    placeAbove(&lt;instrument&gt;, &lt;offset&gt;)
+    placeBelow(&lt;instrument&gt;, &lt;offset&gt;)
+    placeRightOf(&lt;instrument&gt;, &lt;offset&gt;)
+    placeLeftOf(&lt;instrument&gt;, &lt;offset&gt;)
+</PRE>
+<P>
+    <BR></td></tr><!-- end main text --><tr><td class="nav" align="left" valign="top"><!-- bottom matter --><A HREF="UserManual_85.html"><IMG ALT="Up" ALIGN=BOTTOM BORDER=0 SRC="up.gif"></A>
+    <BR><A HREF="UserManual_85.html">Instrument Methods grouped by Function</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" align="left" valign="top"><A HREF="UserManual_87.html"><IMG ALT="Back" ALIGN=BOTTOM BORDER=0 SRC="back.gif"></A>
+    <BR><A HREF="UserManual_87.html">Damping Parts of an Instrument</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" align="left" valign="top"><!-- bottom matter --><A HREF="UserManual_89.html"><IMG ALT="Forward" ALIGN=BOTTOM BORDER=0 SRC="forward.gif"></A>
+    <BR><A HREF="UserManual_89.html">Accessing the Internal Attributes of an Instrument</A>
+    <IMG width="167" height="1" SRC="trans1x1.gif">
+    </td></tr><!-- end bottom matter -->
+
+    <tr><td colspan="3" class="addr"><!-- bottom panel --><ADDRESS><FONT SIZE=-1>&#169;1999,2000 Mark Pearson
+<A HREF="mailto:m.pearson@ukonline.co.uk">m.pearson@ukonline.co.uk</A> April 30, 2000</ADDRESS><BR></td></tr><!-- end bottom panel --></table></BODY></HTML>

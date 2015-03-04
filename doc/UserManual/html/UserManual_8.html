@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<!-- HTML file produced from file: UserManual.tex --
+ -- using Hyperlatex v 2.3.1 (c) Otfried Cheong--
+ -- on Emacs 21.1 (patch 4) "Arches" XEmacs Lucid, Sun Apr 30 20:49:51 2000 -->
+<HEAD>
+<TITLE>Tao User Manual -- What else do you need to have installed?</TITLE>
+
+    <link rel=stylesheet href="../../taomanual.css" type="text/css">
+    
+</HEAD><BODY BACKGROUND="bg.gif">
+
+    <table width="500" border="0" align="left" cellspacing="2" cellpadding="2"><tr><td class="nav" valign="top"><!-- top panel --><A HREF="UserManual_7.html"><IMG ALT="Up" ALIGN=BOTTOM BORDER=0 SRC="up.gif"></A>
+    <BR><A HREF="UserManual_7.html">Building and Installing <B>Tao</B></A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" valign="top"><A HREF="UserManual_7.html"><IMG ALT="Back" ALIGN=BOTTOM BORDER=0 SRC="back.gif"></A>
+    <BR><A HREF="UserManual_7.html">Building and Installing <B>Tao</B></A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" valign="top"><A HREF="UserManual_9.html"><IMG ALT="Forward" ALIGN=BOTTOM BORDER=0 SRC="forward.gif"></A>
+    <BR><A HREF="UserManual_9.html">Configuring, making and installing <B>Tao</B></A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td></tr><!-- end top panel --><tr><td colspan="3" class="main"><!-- main text --><br><br>
+<H2>What else do you need to have installed?</H2>
+
+<B>Tao</B> requires a handful of other programs and libraries to be
+installed before it will work properly. The main packages which
+you absolutely need are listed first in this section. Towards
+the end of the section more details are given of tools which
+are only required if you want to build the documentation from
+the sources.
+<P>The essential packages to have installed are
+<P><UL><LI>The GNU C++ compiler;
+<LI><CODE>OpenGL</CODE> (or <CODE>Mesa</CODE>) libraries and header files;
+<LI>GL Utility Toolkit (<CODE>GLUT</CODE>) libraries and headers;
+<LI>The <CODE>lex</CODE> and <CODE>yacc</CODE> compiler tools (or <CODE>flex</CODE>
+and <CODE>bison</CODE> if you are using GNU versions).
+<LI>Michael Pruett's port of the SGI audiofile library.
+</UL>
+<P>The GLUT libraries and headers come packaged with Mesa
+in the most recent versions so you don't have to search for them
+separately if you choose to use Mesa as your OpenGL replacement,
+but otherwise you may have to download and install them separately.
+Similarly the audiofile libraries and headers should be available
+on SGI machines, and Red Hat 6.0 comes as standard with Michael
+Pruetts implementation of this API (although one of the header
+files had a syntax error which I have temporarily fixed by including
+the corrected headers with this distribution). But if you can't
+find any <CODE>libaudiofile.*</CODE> files on your system then you need
+to download this package too.
+<P>Source packages for the above are available at the following URLs:
+<P><UL><LI><A HREF="http://www.mesa3d.org">http://www.mesa3d.org</A>
+<LI><A HREF="http://reality.sgi.com/opengl/glut3">http://reality.sgi.com/opengl/glut3</A>
+<LI><A HREF="http://www.68k.org/&nbsp;michael/audiofile/">http://www.68k.org/&nbsp;michael/audiofile/</A> 
+</UL>
+<P>Follow the installation instructions provided with each package. In practice
+this should be quite a simple process.
+<P>NOTE: One thing to bear in mind is that if you choose instead to
+download and install RPM packages for the above you must install
+the associated development packages also. For example the audiofile RPMs
+installed on my system include the following:
+<P><UL><LI><CODE>audiofile-0.1.6-5</CODE>
+<LI><CODE>audiofile-devel-0.1.6-5</CODE>
+</UL>
+<P>If you don't have the latter <EM>development</EM> package then none of the
+header files for the library will be installed, and in addition some
+essential symbolic links will be missing in the library directory.
+<P>For Mesa and GLUT the RPMs you need are:
+<P><UL><LI><CODE>Mesa-3.0.*</CODE>
+<LI><CODE>Mesa-devel-3.0.*</CODE>
+<LI><CODE>Mesa-glut-3.0.*</CODE>
+<LI><CODE>Mesa-glut-devel-3.0.*</CODE>
+</UL>
+<P>Later versions should work just as well but if you have any problems
+please let me know so that I can try to sort them out.
+<P>
+    <BR></td></tr><!-- end main text --><tr><td class="nav" align="left" valign="top"><!-- bottom matter --><A HREF="UserManual_7.html"><IMG ALT="Up" ALIGN=BOTTOM BORDER=0 SRC="up.gif"></A>
+    <BR><A HREF="UserManual_7.html">Building and Installing <B>Tao</B></A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" align="left" valign="top"><A HREF="UserManual_7.html"><IMG ALT="Back" ALIGN=BOTTOM BORDER=0 SRC="back.gif"></A>
+    <BR><A HREF="UserManual_7.html">Building and Installing <B>Tao</B></A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" align="left" valign="top"><!-- bottom matter --><A HREF="UserManual_9.html"><IMG ALT="Forward" ALIGN=BOTTOM BORDER=0 SRC="forward.gif"></A>
+    <BR><A HREF="UserManual_9.html">Configuring, making and installing <B>Tao</B></A>
+    <IMG width="167" height="1" SRC="trans1x1.gif">
+    </td></tr><!-- end bottom matter -->
+
+    <tr><td colspan="3" class="addr"><!-- bottom panel --><ADDRESS><FONT SIZE=-1>&#169;1999,2000 Mark Pearson
+<A HREF="mailto:m.pearson@ukonline.co.uk">m.pearson@ukonline.co.uk</A> April 30, 2000</ADDRESS><BR></td></tr><!-- end bottom panel --></table></BODY></HTML>

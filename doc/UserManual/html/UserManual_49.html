@@ -1,0 +1,161 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<!-- HTML file produced from file: UserManual.tex --
+ -- using Hyperlatex v 2.3.1 (c) Otfried Cheong--
+ -- on Emacs 21.1 (patch 4) "Arches" XEmacs Lucid, Sun Apr 30 20:49:58 2000 -->
+<HEAD>
+<TITLE>Tao User Manual -- Instrument Declarations</TITLE>
+
+    <link rel=stylesheet href="../../taomanual.css" type="text/css">
+    
+</HEAD><BODY BACKGROUND="bg.gif">
+
+    <table width="500" border="0" align="left" cellspacing="2" cellpadding="2"><tr><td class="nav" valign="top"><!-- top panel --><A HREF="UserManual_48.html"><IMG ALT="Up" ALIGN=BOTTOM BORDER=0 SRC="up.gif"></A>
+    <BR><A HREF="UserManual_48.html">The Declarations Section</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" valign="top"><A HREF="UserManual_48.html"><IMG ALT="Back" ALIGN=BOTTOM BORDER=0 SRC="back.gif"></A>
+    <BR><A HREF="UserManual_48.html">The Declarations Section</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" valign="top"><A HREF="UserManual_50.html"><IMG ALT="Forward" ALIGN=BOTTOM BORDER=0 SRC="forward.gif"></A>
+    <BR><A HREF="UserManual_50.html">Device Declarations</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td></tr><!-- end top panel --><tr><td colspan="3" class="main"><!-- main text --><br><br>
+<H3>Instrument Declarations</H3>
+
+
+<B>Tao</B> provides a set of classes for creating pieces of the material described
+in section <A HREF="UserManual_20.html">*</A>. Each class deals with a creating
+a piece of material of a particular geometrical shape, so for example the
+user can create strings, circular sheets, rectangular sheets and
+elliptical sheets. The way in which <B>Tao</B>'s cellular material is actually
+implementated provides for future support of irregularly shaped
+components but in the present version the user is limited to these
+geometrical primitives.
+<P>In practice though this is not a serious limitation since there are 
+many other techniques available for designing interesting instruments.
+These include damping and locking parts of an instrument and constructing
+<EM>compound instruments</EM><A NAME="1"> by</A> coupling several pieces of material together
+using Connector devices. All of these techniques provide ample
+room for experimentation.
+<P>In order to create a <EM>primitive</EM> instrument
+ several pieces of information are required.
+These include the instrument type, the name by which it will be referred
+to in the script, its <I>x</I> and <I>y</I> frequencies, and its decay time.
+<P>The general form of an instrument declaration is illustrated by the
+following string declaration:
+<P><PRE>
+    String string(&lt;pitch&gt;, &lt;decay_time&gt;);
+</PRE>
+<P>where <CODE>String</CODE> is the name of the instrument class; <CODE>string</CODE>
+is the name of the particular instrument being created;
+<CODE>&lt;pitch&gt;</CODE> defines (indirectly) how long the string will be
+(the tension in <B>Tao</B>'s material cannot be altered so the length of a string
+is related to its pitch or frequency alone and vice versa); and
+<CODE>&lt;decay_time&gt;</CODE> determines the amplitude decay time of the instrument.
+<P>In the next example the placeholders <CODE>&lt;pitch&gt;</CODE> and <CODE>&lt;decay_time&gt;</CODE>
+are replaced with typical values which might occur in a script:
+<P><PRE>
+    String string(C#5+1/2, 4.5 secs);
+</PRE>
+<P>In this example the length of the string is set such that its pitch
+is C sharp plus a quarter-tone (1/2 a semitone) in octave 5, and
+its decay time is four and a half seconds. 
+The <CODE>&lt;pitch&gt;</CODE> argument can be specified in a number of different
+formats, some of which are directly analogous to those provided in
+Csound. The other formats are introduced throughout this section
+by way of example. The format used in the example above is referred to
+as <EM>note name format</EM><A NAME="2"> format.</A>
+<P>The <CODE>&lt;decay_time&gt;</CODE> argument consists of a numerical constant
+followed by the units of time, i.e. <CODE>sec</CODE>, <CODE>secs</CODE>, <CODE>min</CODE>,
+<CODE>mins</CODE> or <CODE>msecs</CODE>, representing seconds, minutes and milliseconds
+respectively.
+<P>A second practical example is given below, this time creating a
+rectangular sheet called <CODE>rect</CODE>:
+<P><PRE>
+    Rectangle rect(200 Hz, 500 Hz, 60 secs);
+</PRE>
+<P>In this example two pitch arguments are specified, and both are given
+in <EM>frequency format</EM><A NAME="3">.</A> The first
+determines the size of the instrument in the <I>x</I> direction and
+the second, the size in the <I>y</I> direction. It may seem slightly
+unintuitive at first to be specifying the size of a rectangular
+sheet in units of Hertz rather than physical dimensions such
+as metres or millimetres, but this practice is adopted
+for a number of good reasons:
+<P><OL><LI>It makes creating precisely pitched instruments a simpler matter;
+<LI><B>Tao</B>'s material is not based upon any real-world material so
+it would be meaningless to talk about a sheet of cellular material 5m by 3.5m;
+<LI>The instrument is described in units which are of more perceptual
+relevance to a musician than physical units of size (open to debate).
+</OL>
+<P>Another advantage of specifying dimensions by pitch or frequency is that it
+becomes a simple matter to construct an instrument which has an array of
+similar components but with different pitches for each. For example the
+following code fragment creates a set of rectangular components with uniform
+<I>y</I> dimension but pitches tuned to fractions of an octave for the
+<I>x</I> dimension. This kind of instrument might be the starting point
+for some sort of pitched percussion instrument for example:
+<P><PRE>
+    Rectangle rect1(8.0 oct, 500 Hz, 60 secs);
+    Rectangle rect2(8.2 oct, 500 Hz, 60 secs);
+    Rectangle rect3(8.4 oct, 500 Hz, 60 secs);
+    Rectangle rect4(8.6 oct, 500 Hz, 60 secs);
+    Rectangle rect5(8.8 oct, 500 Hz, 60 secs);
+    Rectangle rect6(9.0 oct, 500 Hz, 60 secs);
+</PRE>
+<P>This example shows yet another form of the pitch argument, i.e. 
+<EM>octave/fraction format</EM><A NAME="4">
+or</A> <CODE>oct</CODE> format for short. In this format the integer part specifies
+the octave and the fractional part after the decimal point specifies a
+fraction of an octave. 
+<P>The previous example opens the way for describing another important
+technique often used when creating instruments with arrays of similar components.
+<B>Tao</B> provides an <EM>array</EM><A NAME="5"> facility</A> for grouping
+together such components and giving them a common name. For example
+the following script code has much the same effect as the previous example
+but logically groups the six rectangular components together into an
+array with a single name <CODE>rect_array</CODE>:
+<P><PRE>
+Rectangle rect_array[6]=
+    {
+    (8.0 oct, 500 Hz, 60 secs),
+    (8.2 oct, 500 Hz, 60 secs),
+    (8.4 oct, 500 Hz, 60 secs),
+    (8.6 oct, 500 Hz, 60 secs),
+    (8.8 oct, 500 Hz, 60 secs),
+    (9.0 oct, 500 Hz, 60 secs)
+    };
+</PRE>
+<P>The individual components can be accessed using syntax which will be very
+familiar to C and C++ programmers:
+<P><PRE>
+    rect_array[0], rect_array[1] .. rect_array[5]
+</PRE>
+<P>The declarations for circular, elliptical and triangular sheets of material
+follow a similar format to the examples presented in this section, with
+elliptical and triangular sheets requiring two pitch values and circular
+sheets requiring only one (determining the diameter).
+<P>Examples are given below:
+<P><PRE>
+    Circle circle(5.03 pch, 20 secs)
+    Ellipse ellipse(6.00 pch, 50 Hz, 1 min + 20 secs)
+    Triangle triangle(100 Hz, 6.5 oct, 600 msecs)
+</PRE>
+<P>These declarations introduce the final pitch notation,
+<EM>octave/semitone format</EM><A NAME="6">
+or</A> <CODE>pch</CODE> format for short. In this format the fractional part after
+the decimal point is interpreted as semitones. For example <CODE>5.03 pch</CODE>
+means the third semitone above C in octave 5. Note that fractions of
+semitones are also possible. For example <CODE>5.035 pch</CODE> means 3.5
+semitones above C in octave 5.
+<P>Note also that the different pitch formats can be used side by side
+in an instrument declaration requiring more than one pitch.
+<P>
+    <BR></td></tr><!-- end main text --><tr><td class="nav" align="left" valign="top"><!-- bottom matter --><A HREF="UserManual_48.html"><IMG ALT="Up" ALIGN=BOTTOM BORDER=0 SRC="up.gif"></A>
+    <BR><A HREF="UserManual_48.html">The Declarations Section</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" align="left" valign="top"><A HREF="UserManual_48.html"><IMG ALT="Back" ALIGN=BOTTOM BORDER=0 SRC="back.gif"></A>
+    <BR><A HREF="UserManual_48.html">The Declarations Section</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" align="left" valign="top"><!-- bottom matter --><A HREF="UserManual_50.html"><IMG ALT="Forward" ALIGN=BOTTOM BORDER=0 SRC="forward.gif"></A>
+    <BR><A HREF="UserManual_50.html">Device Declarations</A>
+    <IMG width="167" height="1" SRC="trans1x1.gif">
+    </td></tr><!-- end bottom matter -->
+
+    <tr><td colspan="3" class="addr"><!-- bottom panel --><ADDRESS><FONT SIZE=-1>&#169;1999,2000 Mark Pearson
+<A HREF="mailto:m.pearson@ukonline.co.uk">m.pearson@ukonline.co.uk</A> April 30, 2000</ADDRESS><BR></td></tr><!-- end bottom panel --></table></BODY></HTML>

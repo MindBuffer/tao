@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<!-- HTML file produced from file: UserManual.tex --
+ -- using Hyperlatex v 2.3.1 (c) Otfried Cheong--
+ -- on Emacs 21.1 (patch 4) "Arches" XEmacs Lucid, Sun Apr 30 20:49:52 2000 -->
+<HEAD>
+<TITLE>Tao User Manual -- What the distribution contains</TITLE>
+
+    <link rel=stylesheet href="../../taomanual.css" type="text/css">
+    
+</HEAD><BODY BACKGROUND="bg.gif">
+
+    <table width="500" border="0" align="left" cellspacing="2" cellpadding="2"><tr><td class="nav" valign="top"><!-- top panel --><A HREF="UserManual_7.html"><IMG ALT="Up" ALIGN=BOTTOM BORDER=0 SRC="up.gif"></A>
+    <BR><A HREF="UserManual_7.html">Building and Installing <B>Tao</B></A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" valign="top"><A HREF="UserManual_14.html"><IMG ALT="Back" ALIGN=BOTTOM BORDER=0 SRC="back.gif"></A>
+    <BR><A HREF="UserManual_14.html">Setting PATH and LD_LIBRARY_PATH for the tcsh shell</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" valign="top"><A HREF="UserManual_16.html"><IMG ALT="Forward" ALIGN=BOTTOM BORDER=0 SRC="forward.gif"></A>
+    <BR><A HREF="UserManual_16.html">Testing <B>Tao</B></A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td></tr><!-- end top panel --><tr><td colspan="3" class="main"><!-- main text --><br><br>
+<H2>What the distribution contains</H2>
+This distribution has the following directory structure:
+<P><PRE>
+    libtao/
+    tao2wav/
+    tao2aiff/
+    taoparse/
+    include/
+    user-scripts/
+    examples/
+    doc/
+        UserManual/
+            html/
+        ClassReference/
+            latex/
+            html/
+        Dependencies/
+            html/
+</PRE>
+<P>These directories contain the following:
+<P><DL><DT><B>libtao/</B><DD> - source code for the C++ library which <B>Tao</B>
+is built upon.
+<DT><B>tao2wav/</B><DD> - source code for the program which converts
+<B>Tao</B>'s raw floating point output files in <CODE>.wav</CODE><A NAME="1"> format</A> ready for playback.
+<DT><B>taoparse/</B><DD> - lex and yacc source code for
+<B>Tao</B>'s synthesis language parser.
+<DT><B>include/</B><DD> - header files for C++ classes.
+<DT><B>user-scripts/</B><DD> - a set of user shell scripts including
+the following:
+<DL><DT><B>tao</B><DD> - shell script for compiling and executing a <B>Tao</B> script.
+<DT><B>tao-config</B><DD> - shell script which is useful when compiling
+and linking C++ programs with the <B>Tao</B> library <CODE>libtao</CODE>. 
+<DT><B>taosf</B><DD> - shell script for converting <B>Tao</B>'s output files to WAV
+format.
+</DL>
+<P><DT><B>examples/</B><DD> - a set of examples illustrating the
+main elements of <B>Tao</B>'s synthesis language.
+<DT><B>doc/</B><DD> - documentation of various kinds.
+This includes the following:
+<DL><P><DT><B>UserManual/</B><DD> - <CODE>Hyperlatex</CODE> sources for this manual which
+can be used to produce DVI and PostScript versions using LaTeX and 
+<CODE>dvips</CODE>, and the HTML version using <CODE>hyperlatex</CODE>. The HTML formatted
+version comes ready made with this distribution so you don't need
+<CODE>hyperlatex</CODE>, although the <EM>Dependencies</EM> document describes
+where to get it.
+<P><DT><B>ClassReference/</B><DD> - LaTeX and HTML documentation for the
+C++ library API. Both versions of this document are produced automatically
+from the C++ sources using a third party program called <CODE>Doxygen</CODE>.
+See the <EM>Dependencies</EM> document for details of where
+to get <CODE>Doxygen</CODE>.
+<P>[Actually I haven't got around to this yet as I am concentrating on
+making the distribution as robust as possible and finishing the user
+manual, but it will happen eventually].
+<P><DT><B>Dependencies/</B><DD> - <CODE>hyperlatex</CODE> sources for the document
+describing the external programs upon which <B>Tao</B> depends. Once
+again these sources can be used to produce HTML, DVI and 
+PostScript formatted versions and the HTML version comes ready built
+with the distribution.
+<P></DL>
+</DL>
+<P>The installation step described in the previous section installs the
+following files on your system (assuming <CODE>prefix=/usr/local</CODE>):
+<P><PRE>
+    /usr/local/bin
+        tao
+        taosf
+        tao2wav
+        taoparse
+    /usr/local/lib
+        libtao.so.*
+        libtao.a
+</PRE>
+<P>
+    <BR></td></tr><!-- end main text --><tr><td class="nav" align="left" valign="top"><!-- bottom matter --><A HREF="UserManual_7.html"><IMG ALT="Up" ALIGN=BOTTOM BORDER=0 SRC="up.gif"></A>
+    <BR><A HREF="UserManual_7.html">Building and Installing <B>Tao</B></A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" align="left" valign="top"><A HREF="UserManual_14.html"><IMG ALT="Back" ALIGN=BOTTOM BORDER=0 SRC="back.gif"></A>
+    <BR><A HREF="UserManual_14.html">Setting PATH and LD_LIBRARY_PATH for the tcsh shell</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" align="left" valign="top"><!-- bottom matter --><A HREF="UserManual_16.html"><IMG ALT="Forward" ALIGN=BOTTOM BORDER=0 SRC="forward.gif"></A>
+    <BR><A HREF="UserManual_16.html">Testing <B>Tao</B></A>
+    <IMG width="167" height="1" SRC="trans1x1.gif">
+    </td></tr><!-- end bottom matter -->
+
+    <tr><td colspan="3" class="addr"><!-- bottom panel --><ADDRESS><FONT SIZE=-1>&#169;1999,2000 Mark Pearson
+<A HREF="mailto:m.pearson@ukonline.co.uk">m.pearson@ukonline.co.uk</A> April 30, 2000</ADDRESS><BR></td></tr><!-- end bottom panel --></table></BODY></HTML>

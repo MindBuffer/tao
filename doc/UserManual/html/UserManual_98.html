@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<!-- HTML file produced from file: UserManual.tex --
+ -- using Hyperlatex v 2.3.1 (c) Otfried Cheong--
+ -- on Emacs 21.1 (patch 4) "Arches" XEmacs Lucid, Sun Apr 30 20:50:05 2000 -->
+<HEAD>
+<TITLE>Tao User Manual -- Stop Methods</TITLE>
+
+    <link rel=stylesheet href="../../taomanual.css" type="text/css">
+    
+</HEAD><BODY BACKGROUND="bg.gif">
+
+    <table width="500" border="0" align="left" cellspacing="2" cellpadding="2"><tr><td class="nav" valign="top"><!-- top panel --><A HREF="UserManual_93.html"><IMG ALT="Up" ALIGN=BOTTOM BORDER=0 SRC="up.gif"></A>
+    <BR><A HREF="UserManual_93.html">Device Methods</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" valign="top"><A HREF="UserManual_97.html"><IMG ALT="Back" ALIGN=BOTTOM BORDER=0 SRC="back.gif"></A>
+    <BR><A HREF="UserManual_97.html">Connector Methods</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" valign="top"><A HREF="UserManual_99.html"><IMG ALT="Forward" ALIGN=BOTTOM BORDER=0 SRC="forward.gif"></A>
+    <BR><A HREF="UserManual_99.html">Output Methods</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td></tr><!-- end top panel --><tr><td colspan="3" class="main"><!-- main text --><br><br>
+<H3>Stop Methods</H3>
+
+
+The following stop device methods are available:
+<P><PRE>
+    dampModeOn()
+    dampModeOff()
+    setAmount(&lt;amount&gt;)
+    setDamping(&lt;damping&gt;)
+    (&lt;access point&gt;)
+    (&lt;instr&gt;, &lt;x&gt;)
+    (&lt;instr&gt;, &lt;x&gt;, &lt;y&gt;)
+    (&lt;string&gt;, &lt;pitch&gt;)
+</PRE>
+<P>To briefly recap, the Stop device provides a rudimentary
+mechanism for stopping strings in order to obtain specific pitches
+from them. The <CODE>&lt;amount&gt;</CODE> attribute is a value in the
+range [0..1], with 0 meaning that the string is not stopped at all
+and 1 meaning that it is fully stopped. The <CODE>&lt;damping&gt;</CODE>
+attribute determines how highly damped the left hand side of the string
+will be (the right hand side is given the appropriate length to achieve
+the specified pitch).
+<P>The unnamed <CODE>(...)</CODE> methods are used to apply the stop to an
+instrument. Much like the bow and hammer devices there are three standard
+versions available, expecting either an access point, an instrument and
+single <I>x</I> coordinate, or an instrument and both <I>x</I> and <I>y</I> coordinates.
+However for the Stop device there is a fourth method
+<CODE>(&lt;string&gt;, &lt;pitch&gt;)</CODE> available. This method, given a string
+instrument and a pitch as arguments will automatically calculate at what
+point the Stop device should be applied to the string in order to produce
+the desired pitch.
+<P>Note that it is always the portion of the string to the right of the
+applied Stop device which has the correct pitch. This should be borne
+in mind if connecting the string to other components. If you build your
+instrument with the left hand sides of each string attached to some sort
+of resonator you will get all the wrong pitches when you start to play
+the instrument!
+<P>Note also that as with the Bow and Hammer devices the preferred
+syntax to use in a script when applying the device to an instrument
+is as follows:
+<P><PRE>
+    string(0.1) -- stop;
+</PRE>
+<P>which is exactly equivalent to:
+<P><PRE>
+    stop(string(0.1));
+</PRE>
+<P>The first format is more commonly used since it is more clearly
+legible when quickly scanning a script to see what it does. Wherever
+the <CODE>--</CODE> operator appears in a script, you know that there is
+some kind of interfacing between access points and devices taking
+place.
+<P>
+    <BR></td></tr><!-- end main text --><tr><td class="nav" align="left" valign="top"><!-- bottom matter --><A HREF="UserManual_93.html"><IMG ALT="Up" ALIGN=BOTTOM BORDER=0 SRC="up.gif"></A>
+    <BR><A HREF="UserManual_93.html">Device Methods</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" align="left" valign="top"><A HREF="UserManual_97.html"><IMG ALT="Back" ALIGN=BOTTOM BORDER=0 SRC="back.gif"></A>
+    <BR><A HREF="UserManual_97.html">Connector Methods</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" align="left" valign="top"><!-- bottom matter --><A HREF="UserManual_99.html"><IMG ALT="Forward" ALIGN=BOTTOM BORDER=0 SRC="forward.gif"></A>
+    <BR><A HREF="UserManual_99.html">Output Methods</A>
+    <IMG width="167" height="1" SRC="trans1x1.gif">
+    </td></tr><!-- end bottom matter -->
+
+    <tr><td colspan="3" class="addr"><!-- bottom panel --><ADDRESS><FONT SIZE=-1>&#169;1999,2000 Mark Pearson
+<A HREF="mailto:m.pearson@ukonline.co.uk">m.pearson@ukonline.co.uk</A> April 30, 2000</ADDRESS><BR></td></tr><!-- end bottom panel --></table></BODY></HTML>

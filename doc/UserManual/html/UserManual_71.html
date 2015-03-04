@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<!-- HTML file produced from file: UserManual.tex --
+ -- using Hyperlatex v 2.3.1 (c) Otfried Cheong--
+ -- on Emacs 21.1 (patch 4) "Arches" XEmacs Lucid, Sun Apr 30 20:50:01 2000 -->
+<HEAD>
+<TITLE>Tao User Manual -- Connection Statement</TITLE>
+
+    <link rel=stylesheet href="../../taomanual.css" type="text/css">
+    
+</HEAD><BODY BACKGROUND="bg.gif">
+
+    <table width="500" border="0" align="left" cellspacing="2" cellpadding="2"><tr><td class="nav" valign="top"><!-- top panel --><A HREF="UserManual_65.html"><IMG ALT="Up" ALIGN=BOTTOM BORDER=0 SRC="up.gif"></A>
+    <BR><A HREF="UserManual_65.html">Statements</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" valign="top"><A HREF="UserManual_70.html"><IMG ALT="Back" ALIGN=BOTTOM BORDER=0 SRC="back.gif"></A>
+    <BR><A HREF="UserManual_70.html">Method Statement</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" valign="top"><A HREF="UserManual_72.html"><IMG ALT="Forward" ALIGN=BOTTOM BORDER=0 SRC="forward.gif"></A>
+    <BR><A HREF="UserManual_72.html">Output Statement</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td></tr><!-- end top panel --><tr><td colspan="3" class="main"><!-- main text --><br><br>
+<H3>Connection Statement</H3>
+
+The connection statement is the means by which the end points of a
+Connector object are specified in a script. Each end of a 
+Connector object can be assigned either an access point or 
+a numerical value representing a fixed <EM>anchor point</EM><A NAME="1">.</A> The following
+script fragment illustrates the use of the connection statement in its
+various forms:
+<P><PRE>
+    String string1(100 Hz, 20 secs);
+    String string2(100 Hz, 20 secs);
+    String string3(100 Hz, 20 secs);
+    
+    Connector conn1, conn2, conn3;
+    
+    Init:
+        string1(0.5) -- conn1 -- string2(0.5);
+        string2(0.1) -- conn2 -- 0.0;
+        string2(right) -- conn3 -- string3(left) strength 0.5;
+        ...
+</PRE>
+<P>There are several features about the connection statement to note. Firstly
+it is possible for both ends of a Connector to be assigned
+access points, for one end to be assigned an access point whilst the other 
+is assigned an anchor point. However it is meaningless for both ends of a 
+Connector to be assigned anchor points since this would have
+no effect on any instruments and the Connector would thus be
+rendered useless.
+<P>The second thing to note is that regardless of whether access or anchor
+points are used the connection statement has an optional <CODE>strength</CODE>
+clause which allows the strength of the spring to be set. If the strength
+value is specified in the range [0..1] then the model's behaviour is
+guaranteed to remain stable. However some values higher than 1 may be
+useful at times but can also make the whole instrument model unstable
+to the point where it induces exponentially growing noisy vibrations.
+Unfortunately this is an limitation inherent in the discrete model used
+by <B>Tao</B>.
+<P>
+    <BR></td></tr><!-- end main text --><tr><td class="nav" align="left" valign="top"><!-- bottom matter --><A HREF="UserManual_65.html"><IMG ALT="Up" ALIGN=BOTTOM BORDER=0 SRC="up.gif"></A>
+    <BR><A HREF="UserManual_65.html">Statements</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" align="left" valign="top"><A HREF="UserManual_70.html"><IMG ALT="Back" ALIGN=BOTTOM BORDER=0 SRC="back.gif"></A>
+    <BR><A HREF="UserManual_70.html">Method Statement</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" align="left" valign="top"><!-- bottom matter --><A HREF="UserManual_72.html"><IMG ALT="Forward" ALIGN=BOTTOM BORDER=0 SRC="forward.gif"></A>
+    <BR><A HREF="UserManual_72.html">Output Statement</A>
+    <IMG width="167" height="1" SRC="trans1x1.gif">
+    </td></tr><!-- end bottom matter -->
+
+    <tr><td colspan="3" class="addr"><!-- bottom panel --><ADDRESS><FONT SIZE=-1>&#169;1999,2000 Mark Pearson
+<A HREF="mailto:m.pearson@ukonline.co.uk">m.pearson@ukonline.co.uk</A> April 30, 2000</ADDRESS><BR></td></tr><!-- end bottom panel --></table></BODY></HTML>

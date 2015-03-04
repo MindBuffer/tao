@@ -1,0 +1,13 @@
+Audio rate: 44100;
+
+Rectangle rectangle2(150 Hz, 800 Hz, 20 secs);
+
+Init:
+    rectangle2.lockLeft().lockRight();
+    ...
+
+Score 5 secs:
+    At 0 secs for 1 msecs:
+        rectangle2(0.1,0.1).applyForce(linear(30,0));
+	...
+    ...    

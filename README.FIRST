@@ -1,0 +1,67 @@
+Tao version 1.0-beta
+--------------------
+
+10 May 2006
+-----------
+
+This release includes a small optimisation to the position calculations for
+the individual cells in an instrument which should speed up the simulation/
+generation of samples a bit (on my machine, the pitches example goes down to
+9s from 13s before).  I've also added some documentation (what packages you
+need on cygwin: CygwinPackageRequirements.txt, and a hand-holding walkthrough
+of how to install it on OSX: doc/AdditionalInstallNotes.txt), and tidied up
+the configure script a bit.
+
+- Niall.
+
+31 August 2005
+--------------
+
+Sorry, that was stupid...  The previous version would only have compiled 
+on OS X if you had X11 (and possibly Fink) installed.  I've updated the 
+configure script so that it should compile on a stock mac now.
+
+- Niall.
+
+27 August 2005
+-------------
+
+I've updated the configure script and user-scripts/tao.in so that it'll 
+now compile on OS X, as well as cygwin (without alteration - all the steps
+that were outlined in CygwinNotes.txt are now automated).
+
+- Niall Moody.
+
+8 February 2005
+---------------
+
+This is a (very) slightly updated version of Tao, made so it'll compile with
+more recent versions of g++ (it really just replaces the use of the deprecated
+strstream with the more recent sstream header).  I've also added some notes on
+how to get it running under Cygwin (it's really not that hard) - I would have
+automated this in the configure script, but me and configure scripts just
+don't seem to get along...
+
+- Niall Moody at CMT (Centre for Music Technology), Glasgow University.
+
+26 April 2000
+-------------
+
+Please note: this is a beta release of Tao and as such there may still
+be errors in the configure and build process or undiscovered bugs in
+the software. The documentation is still very much a work in progress
+and as such is likely to change quite a bit at the moment. However, even
+in its present state it should tell you enough to get going.
+
+The User Manual states that Tao's C++ API is fully documented. This will
+eventually be true but at the moment it is most certainly not!
+
+Please note also that the new 'diagnose-lib' shell script provided
+for diagnosing configuration problems relating to dynamic link
+libraries is not guaranteed to give correct results. It may be useful
+but as with anything else in the Tao package, is not guaranteed to
+be so. 
+
+I hope you can get Tao to work and find it useful.
+
+Mark Pearson.

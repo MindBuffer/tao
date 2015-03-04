@@ -1,0 +1,494 @@
+\chapter{Conceptual Overview}
+\label{section:conceptual_overview}
+This section introduces the main concepts which you will need to have
+some grasp of in order to use \tao\ at anything but the simplest level.
+Topics covered include \tao's \emph{cellular material}; \emph{instruments}; 
+\emph{devices}; \emph{access points}; \emph{parameters}; and \emph{pitches}.
+
+\section{\tao's Cellular Material}
+\label{section:cellular_material}
+
+\tao\ is based around the notion of building complex vibrating structures
+from simpler acoustic building blocks. In order to realise this goal 
+a general purpose adaptable acoustic material is provided. The material
+consists of point masses arranged in a regular grid pattern and connected
+together with springs. The overall structure of the material is shown in
+figure \ref{fig:cells}. 
+
+\begin{figure}[htb]
+  \begin{Label}{fig:cells}
+    \begin{center}
+    \Image{cells}{height=5cm}{gif}
+    \end{center}
+    \caption{A small portion of \tao's cellular acoustic material}
+  \end{Label}
+\end{figure}
+
+Each point mass or \Term{cell} maintains a set of state variables for
+its position, velocity, mass, etc., and the overall state is updated in
+discrete time steps or \Term{ticks} according to rules which take into
+account a cell's own state and the states of its immediate neighbours.
+More specifically a cell's spring connections to its neighbours exert
+forces on the cell and from these forces Newton's laws of motion can
+be used to calculate the acceleration and velocity of the cell.
+
+Note that the cells are constrained to have one degree of freedom (in the
+direction of the $z$ axis). This has two practical advantages:
+
+\begin{itemize}
+\item It makes the calculations involved in animating the material simpler.
+\item It also makes it a simple matter to generate time varying waveforms
+from the vibrations in the material since all cells will vibrate about a
+fixed zero reference point at $z=0$ so long as at least one cell
+is fixed at that position.
+\end{itemize}
+
+One question which has often been asked in relation to \tao's cellular
+material is: `have you experimented with 3D blocks of material?'. The answer
+to this question is no, for the following reasons. Firstly, the computational
+expense of such instruments would be prohibitive, and secondly, although the
+restriction of working with 2D instruments may at first seem like a limitation,
+in practice it doesn't significantly affect \tao's ability to produce an
+wide variety of interesting sounds.
+
+\subsection{Cell Attributes}
+\label{section:cell_attributes}
+The most important \Term{attributes} maintained by each cell are its
+\Attr{mass}, \Attr{position}, \Attr{velocity}, 
+\Attr{force} and lastly \Attr{velocityMultiplier}. Not
+surprisingly these are used to keep track of the cell's state of motion
+and the forces acting upon it. The \Class{Cell} class is unusual in
+that it is seldom dealt with directly. However we will see that many
+of \tao's other classes have attributes which are often accessed
+and set via \Term{methods}
+
+The \Attr{velocityMultiplier} attribute is quite important. It holds
+a value in the range [0..1] and the velocity of the cell is multiplied
+by this value on each tick. This has the effect of dissipating energy (if the
+value is $<$ 1) and thus damping the vibrations of the cell. Each cell
+can have a different value for this attribute leading to non-uniform
+damping of the material and this feature is a very important tool for
+controlling the vibrational characteristics of the material as we will
+see later on in this manual. 
+
+For example with a simple string-like instrument consisting of a single row
+of cells linked together with springs, damping small regions at either end
+of the string more highly than the rest of the cells
+causes the higher frequency vibrations to die away more quickly than the
+lower ones. This leads to a more natural string-like spectral decay in the
+sounds produced by the instrument, whereas a string with uniform damping
+exhibits no significant change in the distribution of spectral energy as
+the sound evolves. 
+
+It is probably safe to say that all physically produced sounds
+exhibit some kind of spectral evolution, and as a general rule
+non-uniform damping always produces more interesting sounds from
+\tao\ instruments than uniform damping.
+
+The other main attributes that each cell maintains are pointers to its
+neighbours \Attr{north}, \Attr{east}, \Attr{south},
+\Attr{west}, \Attr{neast}, \Attr{nwest}, \Attr{seast}
+and \Attr{swest}. Each pointer indicates to a particular cell that
+it is connected to a neighbouring cell via a virtual spring. Similarly the
+neighbouring cell will reciprocate by keeping a pointer to the first. You do
+not need to deal with these pointers directly as an end-user \tao\ but it
+is worth knowing that they are there. 
+
+The final attribute is used to store other aspects of the cell's state,
+such as whether it is locked or free to move. This attribute is called
+\Attr{mode}.
+
+\subsection{The Emergent Behaviour of the Material}
+Having described the microscopic structure of the cellular material
+it is now time to say something about its macroscopic behaviour.
+One of the most appealing features of computer models in which many
+simple elements interact on a local basis according to well-defined
+rules is that they often exhibit interesting \Term{emergent behaviour}.
+In \tao's case the material appears to behave (not surpisingly) like an
+continuous elastic sheet when viewed from a distance.
+
+Figure \ref{fig:circle_example} shows a typical piece of \tao's material,
+in this case a circular sheet which has had a short impulse applied at a
+single point. The image is a snapshot taken some short time interval later
+and clearly shows wavefronts spreading out from the point of impact and
+also reflecting off of the boundary of the object.
+
+\begin{figure}[htb]
+  \begin{Label}{fig:circle_example}
+    \begin{center}
+    \Image{circle_example}{height=6cm}{gif}
+    \end{center}
+    \caption{Screenshot of typical \tao\ instrument}
+  \end{Label}
+\end{figure}
+
+In the graphical representation used the individual cells and springs
+are not visible. Instead what we see is a wireframe representation in which
+each line represents a single row of cells. Note how smoothly contoured
+the waves are, giving the impression that the material is 
+continuous and elastic in behaviour.
+
+\subsection{Generating Sound Output from the Material}
+In order to generate output waveforms the vibrations of the material
+are `listened' to directly. In order to achieve this a `sensor' is placed on the
+surface of the material at a chosen point and a time-varying trace of
+the motion of the point with respect to the $z$ axis is written to an
+output file. This numerical data can then be played back as digital
+audio samples.
+
+Output signals may be derived from mathematical expressions
+involving more than one point on an instrument. In addition, the
+positions of the points from which the signals are generated may be moved
+around under algorithmic control. These are just two of the tools at
+your disposal for creating interesting dynamically evolving sounds.
+
+\section{Instruments and Devices}
+\label{section:instruments_and_devices}
+Although the cellular material is actually composed of many hundreds of
+individual objects representing the cells and springs, from the user's
+point of view a higher level of abstraction is provided for creating
+and interacting with pieces of the material. This abstraction comes in
+the form of \emph{instruments}\index{instrument} and
+\emph{devices}\index{device}.
+
+\tao\ provides a set of classes for creating primitive acoustic
+building blocks. These are derived from a generic \ClassIndex{Instrument}
+class and include \Instr{String}, \Instr{Rectangle},
+\Instr{Circle}, \Instr{Ellipse} and \Instr{Triangle}
+\texonly{\index{instrument!building blocks}}. The \Instr{String}
+class creates a single line of cells and springs whilst the other
+classes create 2-D sheets of material in a variety of shapes. 
+Using these instrument classes you don't need to worry about
+creating the individual cells or springs which link them together
+as this is taken care of for you. 
+
+It should be mentioned here that in the rest of this document the
+generic term \Term{instrument} is used to refer both to these simple
+building blocks and also more complex arrangements in which several pieces of
+material are coupled together. In the latter case the term
+\Term{compound instrument} is used. 
+
+A number of other classes derived from a common \ClassIndex{Device} class
+are also provided. Devices are objects which:
+
+\begin{itemize}
+\item
+allow the primitive instruments listed above to be coupled together into more
+interesting \Term{compound instruments};
+\item 
+provide the means for applying external excitations to the instruments;
+\item
+enable sound output to be generated by `listening' to points on instruments,
+writing the resulting time varying waveforms to sound files.
+\end{itemize}
+
+Devices which are available in the current version of
+\tao\ include bows, hammers, connectors, stops and outputs.
+The purpose of each of each type of device is explained in the
+following sections. But before moving on another fundamental
+object class needs to be introduced -- the \Term{access point}.
+Whenever a device interacts with an instrument in some way an
+access point is involved. You don't need to worry too much
+about how to use them at the moment but they are described
+later on in section \ref{section:access_points}.
+
+\subsection*{The Bow Device}
+\label{section:bow_device}
+\index{Bow device}
+The bow device provides the user with a model of the interaction
+between a bow and an instrument. It works by mathematically modelling the
+static and dynamical frictional forces which occur between the bow and the
+instrument. Each bow device has the following user accessible
+attributes:
+
+\begin{description}
+\item[\Attr{velocity}] -- the current velocity of the bow.
+\item[\Attr{force}] -- the downward force applied to the bow. 
+\end{description}
+
+The bowing model used in this device is based loosely upon a model
+developed by Woodhouse.
+
+\subsection*{The Hammer Device}
+\label{section:hammer_device}
+\index{Hammer device}
+The Hammer device provides a generalised mechanism for producing
+percussive sounds. A Hammer device has the following attributes:
+
+\begin{description}
+\item[\Attr{mass}] -- the mass of the hammer.
+\item[\Attr{height}] -- the initial height from which the hammer is dropped.
+\item[\Attr{position}] -- the current height of the hammer.
+\item[\Attr{initVelocity}] -- the initial velocity of the hammer.
+\item[\Attr{velocity}] -- the current velocity of the hammer.
+\item[\Attr{maxImpacts}] -- the maximum number of the impacts with the
+target instrument.
+\item[\Attr{numImpacts}] -- the number of impacts with the target instrument
+since the hammer was dropped.
+\item[\Attr{gravity}] -- gravitational acceleration acting upon the hammer.
+\item[\Attr{damping}] -- degree of damping applied to the hammer.
+\item[\Attr{hardness}] -- how hard the impact surface of the hammer is.
+\end{description}
+
+All of these parameters may be altered under algorithmic control except the
+number of impacts which is read only. 
+
+\subsection*{The Connector Device}
+\label{section:connector_device}
+\index{Connector device}
+The Connector device provides a flexible mechanism for coupling 
+instrumental components together and coupling points on instrumental 
+components to fixed \Term{anchor} points. It does so by installing 
+springs between the
+access points or anchors specified. Anchor points may be numerical constants
+(usually 0.0) or arbitrary expressions, the latter being useful for driving
+an instrument with an external signal (external to the instrument, not \tao\ 
+itself).
+
+The technique of connecting an access point to a fixed anchor point
+is sometimes useful for restricting the amplitude of vibrations at certain
+points on an instrument. For example a component might have too many low
+frequency partials making the sound too bottom-heavy in which case various
+points on the instrument can be connected to zero anchor points allowing only
+the higher partials to continue vibrating. An extra attribute allows the
+strength of the installed spring to be set. This takes a value in the range
+[0..1] normally although higher values may work.
+
+One of the most powerful features of \tao\ lies in the fact that the
+coordinates specifying the position of an access points do not have to be
+constant. They can be time-varying values derived from expressions in the
+score. This leads to the ability to create instruments which morph
+structurally as they are being played. The Connector device is
+therefore one of the most important provided by \tao\ since it enables
+complex, dynamically evolving instruments to be constructed.
+
+\subsection*{The Output Device}
+\label{output_device}
+\index{Output device}
+The Output device provides a general means for writing floating point
+samples to output files. The samples are initially un-normalised but the 
+resulting data files may be normalised and converted into WAV format sound
+files with a separate program \Prog{tao2wav}. The minor inconvenience of
+having to convert \tao\ output files into a more usable format as a separate
+post-processing stage is imposed for good reason. Firstly it does have the
+advantage that the user doesn't have to worry about sound samples going out
+of range. Also, with a model which is heavily based around floating point
+calculations and physically vibrating entities it is impossible to know the
+amplitude of the vibrations in advance.
+
+The present version of \tao\ only allows one and two channel output files but
+this will be changed in future releases to allow for arbitrary numbers of
+channels.
+
+\subsection*{The Stop Device}
+\label{stop_device}
+\index{Stop device}
+The Stop device provides a mechanism for producing specific pitches from a
+string by stopping or fretting  it, i.e. temporarily changing its effective
+vibrating length. The Stop device is not an entirely accurate model of
+how a stopped string behaves and will probably be refined in future releases.
+It currently works by installing a Connector device between
+the specified access point and a fixed anchor position at 0.0. This restricts
+the vibrations of the string at the access point. In addition there is
+a `damping' attribute which causes a small region around the access point to
+be more highly damped than the rest of the string. This causes the string to
+almost stand still at the access point, which is the desired effect.
+
+
+\subsection{The Information Needed to Create an Instrument}
+
+When a new instrument is created three pieces of information are required
+from the user in the case of rectangular and elliptical sheets and two in
+the case of strings and circular sheets. These are:
+
+\begin{itemize}
+\item A frequency or pitch specifying the dimensions of the instrument
+in the $x$ direction
+\item A frequency or pitch specifying the dimensions of the instrument
+in the $y$ direction (for rectangular and elliptical sheets only)
+\item A decay time
+\end{itemize}
+
+The dimensions of a new instrument are always described in terms of
+pitches or frequencies rather than physical units such as metres or
+millimetres. For example when creating a new string the pitch specified
+is used to determine the length of the string.
+You may be thinking `what about the tension in the string?', but in
+\tao's cellular material the tension is fixed at an optimum value which
+gives the best frequency response, so the only factor affecting the
+pitch of a string is its length and vice versa.
+
+In the case of a rectangular sheet two pitches or frequencies are
+required. The first relates to the time taken for a wavefront to make
+the round trip from the left hand side of the sheet to the right and
+back again (travelling in the $x$ direction). The second relates
+to the time taken for a wavefront to make the round trip from the bottom
+to the top and back again (travelling in the $y$ direction).
+
+\hierindex{instrument!information needed to create}
+\begin{figure}[hbt]
+  \begin{Label}{fig:xandyfreqs}
+    \begin{center}
+    \Image{xandyfreqs}{height=7cm}{gif}
+    \end{center}
+    \caption{Relationship between x and y frequency and an instrument's size}
+  \end{Label}
+\end{figure}
+
+The precise relationship between the frequencies and dimensions of the
+various instrument types is illustrated by figure \ref{fig:xandyfreqs}.
+The constant \verb|Hz2CellConst| is defined by \tao\ and is used to
+translate a frequency into the appropriate number of cells required
+to produce that frequency of vibration.
+
+In order to explain this more clearly figure \ref{fig:circle_waves}
+shows four snapshots of a circular sheet having had a short impulse
+applied at its centre. The white arrows
+indicate part of the wavefront traveling across the sheet in the 
+$x$ direction, reflecting back off the boundary and eventually
+ending up back at the starting point again. Once the wavefront has
+traveled all the way to the other side of the sheet and then back
+to the centre again it has made one round trip. The speed of wave
+propagation is fixed for \tao's material so the \verb|Hz2CellConst|
+constant can be used to calculate how many cells it takes to produce
+the correct period $T$, and hence frequency $1/T$.
+
+\begin{figure}[htb]
+  \begin{Label}{fig:circle_waves}
+    \begin{center}
+    \Image{circle_waves}{height=7cm}{gif}
+    \end{center}
+    \caption{Round trip of a wavefront in a circular sheet}
+  \end{Label}
+\end{figure}
+
+
+The final piece of information required by all new instruments is a
+decay time, the time taken for vibrations to naturally die away
+when the instrument is excited in some way and then left to vibrate
+freely. The value given is used to calculate a default value
+for the \verb|velocityMultiplier| attribute of each cell. This initially
+gives the instrument uniform damping although this uniform behaviour
+can be subsequently altered by damping local regions of the instrument.
+More of this technique in section [TO DO: WRITE THIS SECTION].
+
+\section{Access Points}
+\label{section:access_points}
+In order for \tao\ to provide an interface between instruments and devices
+another key object is needed: the \Term{access point}. Access points
+allow forces to be applied to the material and also for the physical
+attributes of the material to be read off at \emph{any}\/ point, not just
+at the discrete set of points where cells exist. This interpolation facility
+is one of the most important as it overcomes some of the limitations associated
+with the material being discrete in nature. An example might be trying to
+simulate a string being stopped to a particular pitch. Without the ability
+to interpolate the position at which the stop is applied it might not be
+possible to achieve the desired pitch precisely.
+
+\begin{figure}[htb]
+  \begin{Label}{fig:instrument_coord_system}
+    \begin{center}
+    \Image{instrument_coord_system}{height=8cm}{gif}
+    \end{center}
+    \caption{The Instrument Coordinate System}
+  \end{Label}
+\end{figure}
+
+In short, all interactions between \tao's cellular material and the outside
+world take place via access points. This is probably a good place to 
+introduce the notion of the
+\emph{instrument coordinate system}\hierindex{instrument!coordinate system}.
+This coordinate system allows points in the range $(0..1, 0..1)$ to be
+specified.
+All instruments, regardless of their shape and size use the same 
+normalised coordinate system as illustrated in figure
+\ref{fig:instrument_coord_system}. Of course for some instruments
+such as the circular sheet depicted some points (such as point \textbf{a})
+will be invalid. If a script attempts to use such an access point
+nothing will happen. If the physical attributes are read off
+the instrument at such a point, they will all return values of zero.
+
+Note also that in the case of the string only the $x$ coordinate needs
+to be specified.
+
+\section{Instrument Visualisations}
+\label{instrument_visualisations}
+\hierindex{instrument!visualisation facility}
+\tao\ is capable of producing visualisations of the instruments constructed
+when a script is invoked. We have already seen one example of this is figure
+\ref{fig:circle_example}, but in that example the instrument only showed a 
+single circular sheet of material. Figure \ref{fig:compound_example} shows a
+\Term{compound instrument} consisting of five strings attached to a
+rectangular sheet. Access points are marked by small red points on the image
+and in this case they show that the left hand sides of each string are
+coupled to points on the rectangular sheet.
+
+\begin{figure}[htb]
+  \begin{Label}{fig:compound_example}
+    \begin{center}
+    \Image{compound_example}{height=8cm}{gif}
+    \end{center}
+    \caption{Screenshot of a compound instrument}
+  \end{Label}
+\end{figure}
+
+It is possible to translate, zoom, and rotate the image by holding down the
+left, middle and right mouse buttons respectively and moving the mouse.
+\tao\ automatically labels instruments and devices with their names
+(the names they are given when they are created in a script) and it is
+possible to toggle both types of labels on and off in cases where the
+graphics window becomes too cluttered with information. This is achieved
+by pressing the \textbf{I} key to toggle instrument labels on and off,
+and the \textbf{D} key to toggle device labels.
+
+\section{Parameters}
+\label{section:parameters}
+The term \Term{parameter}\/ is used as a generic term to refer to all
+numerical variables in \tao. There are floating point and integer parameters
+and the latter are declared as either being of type \verb|Integer|,
+\verb|Counter| or \verb|Flag|. These types are only used to make the
+intended function of a particular integer variable clear to the human reader.
+As far as the system is concerned they are functionally identical. 
+
+\section{Pitches and Frequencies}
+\label{section:pitches_and_frequencies}
+The Pitch\index{Pitch} object provides a generalised mechanism for expressing and
+converting between various pitch and frequency formats. The formats
+supported are as follows:
+
+\begin{itemize}
+\item \texttt{\emph{value} Hz} (cycles per second, analogous to Csound's cps notation);
+\item \texttt{\emph{octave}.\emph{semitone}} (analogous to Csound's pch notation);
+\item \texttt{\emph{octave}.\emph{decimal}} (analogous to Csound's oct notation);
+\item note name notation (the pitch is represented as a character string).
+\end{itemize}
+
+In the last case the pitch names \verb|C-G| can be used followed by an
+optional \verb|b| for flat or \verb|#| for sharp. The basic pitch
+name of the note is then followed by an octave number (whose value
+has the same meaning as the integer parts of the \verb|pch| and
+\verb|oct| notations).
+Finally an optional microtonal adjustment may be added in the form of a
+fraction \verb|+<x>/<y>| or \verb|-<x>/<y>|
+which adds/subtracts a fraction of a semitone to/from the pitch given.
+Some practical examples are given below:
+
+\begin{verbatim}
+    Pitch p1 = 110.5 Hz;
+    Pitch p2 = C#5+1/2;
+    Pitch p3 = 8.05 pch;
+    Pitch p4 = 6.1764 oct;
+\end{verbatim}
+
+Pitch methods include:
+
+\begin{description}
+\item[asPitch()]
+returns a number representing the pitch converted to pch notation;
+\item[asOctave()]
+returns a number representing the pitch converted to oct notation;
+\item[asFrequency()]
+returns a number representing the pitch converted to a frequency;
+\item[asName()]
+returns a character string representing the name of the pitch.
+\end{description}

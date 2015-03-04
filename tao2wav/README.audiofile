@@ -1,0 +1,4 @@
+Local copies of the audiofile library headers audiofile.h and
+aupvlist.h are included here since the version of aupvlist.h
+which comes with Red Hat 6.0 contains a syntax error, which
+has been corrected for the local version.

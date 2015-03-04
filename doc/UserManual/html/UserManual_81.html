@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<!-- HTML file produced from file: UserManual.tex --
+ -- using Hyperlatex v 2.3.1 (c) Otfried Cheong--
+ -- on Emacs 21.1 (patch 4) "Arches" XEmacs Lucid, Sun Apr 30 20:50:02 2000 -->
+<HEAD>
+<TITLE>Tao User Manual -- Mathematical Functions</TITLE>
+
+    <link rel=stylesheet href="../../taomanual.css" type="text/css">
+    
+</HEAD><BODY BACKGROUND="bg.gif">
+
+    <table width="500" border="0" align="left" cellspacing="2" cellpadding="2"><tr><td class="nav" valign="top"><!-- top panel --><A HREF="UserManual_79.html"><IMG ALT="Up" ALIGN=BOTTOM BORDER=0 SRC="up.gif"></A>
+    <BR><A HREF="UserManual_79.html">Expressions</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" valign="top"><A HREF="UserManual_80.html"><IMG ALT="Back" ALIGN=BOTTOM BORDER=0 SRC="back.gif"></A>
+    <BR><A HREF="UserManual_80.html">Operators</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" valign="top"><A HREF="UserManual_82.html"><IMG ALT="Forward" ALIGN=BOTTOM BORDER=0 SRC="forward.gif"></A>
+    <BR><A HREF="UserManual_82.html">The time-varying functions <EM>linear</EM> and <EM>expon</EM></A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td></tr><!-- end top panel --><tr><td colspan="3" class="main"><!-- main text --><br><br>
+<H3>Mathematical Functions</H3>
+
+
+Mathematical functions available from within <B>Tao</B>'s synthesis language
+are inhereted directly from the gnu C++ math library. These include:
+<A NAME="1">&nbsp;</A>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<P><PRE>
+    acos(x)     arc cosine.
+    acosh(x)    inverse hyperbolic cosine.
+    asin(x)     arc sine.
+    atan(x)     arc tangent.
+    atanh(x)    inverse hyperbolic tangent.
+    atan2(x,y)  arc tangent of two variables.
+    cbrt(x)     cube root.
+    cos(x)      cosine.
+    cosh(x)     hyperbolic cosine.
+    drem(x,y)   floating point remainder.
+    exp(x)      exponential.
+    fabs(x)     absolute value of floating point number.
+    ceil(x)     smallest integral number not less than x.
+    floor(x)    largest integral number not greater than x.
+    hypot(x,y)  Euclidean distance function.
+    log(x)      natural logarithm.
+    log10(x)    base-10 logarithm.
+    log1p(x)    logarithm of 1+x.
+    pow(x,y)    value of x raised to the power of y.
+    rint(x)     round to closest integer.
+    sin(x)      sine.
+    sinh(x)     hyperbolic sine.
+    sqrt(x)     square root.
+    tan(x)      tangent.
+    tanh(x)     hyperbolic tangent.
+</PRE>
+<P>The set of functions which are available is currently governed by what
+<B>Tao</B>'s script parser has been told to expect. If <B>Tao</B> is ported
+to an OS other than Linux in the future this strategy will have to
+be rethought, since different math libraries often vary in the names
+and availability of functions.
+<P>In addition to the standard math library functions two random number
+functions are also provided. These are <CODE>randomi(x,y)</CODE>
+<A NAME="2">,</A>
+which returns a random integer in the range <CODE>[x..y]</CODE>; and <CODE>randomf(x,y)</CODE>
+<A NAME="3">,</A>
+which returns a random floating point number in the range <CODE>[x..y]</CODE> inclusive.
+<P>
+    <BR></td></tr><!-- end main text --><tr><td class="nav" align="left" valign="top"><!-- bottom matter --><A HREF="UserManual_79.html"><IMG ALT="Up" ALIGN=BOTTOM BORDER=0 SRC="up.gif"></A>
+    <BR><A HREF="UserManual_79.html">Expressions</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" align="left" valign="top"><A HREF="UserManual_80.html"><IMG ALT="Back" ALIGN=BOTTOM BORDER=0 SRC="back.gif"></A>
+    <BR><A HREF="UserManual_80.html">Operators</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" align="left" valign="top"><!-- bottom matter --><A HREF="UserManual_82.html"><IMG ALT="Forward" ALIGN=BOTTOM BORDER=0 SRC="forward.gif"></A>
+    <BR><A HREF="UserManual_82.html">The time-varying functions <EM>linear</EM> and <EM>expon</EM></A>
+    <IMG width="167" height="1" SRC="trans1x1.gif">
+    </td></tr><!-- end bottom matter -->
+
+    <tr><td colspan="3" class="addr"><!-- bottom panel --><ADDRESS><FONT SIZE=-1>&#169;1999,2000 Mark Pearson
+<A HREF="mailto:m.pearson@ukonline.co.uk">m.pearson@ukonline.co.uk</A> April 30, 2000</ADDRESS><BR></td></tr><!-- end bottom panel --></table></BODY></HTML>

@@ -1,0 +1,47 @@
+Audio rate: 44100;
+
+String array1[]=
+    {
+    (200 Hz, 20 secs),
+    (220 Hz, 20 secs),
+    (240 Hz, 20 secs),
+    (260 Hz, 20 secs)
+    };
+
+String array2[]=
+    {
+    (8.00 pch, 20 secs),
+    (8.04 pch, 20 secs),
+    (8.06 pch, 20 secs),
+    (8.08 pch, 20 secs)
+    };
+
+String array3[]=
+    {
+    (8.0 oct, 20 secs),
+    (8.2 oct, 20 secs),
+    (8.4 oct, 20 secs),
+    (8.6 oct, 20 secs)
+    };
+
+Counter n;
+
+Init:
+    For n = 0 to 3:
+        array1[n].lockEnds();
+        array2[n].lockEnds();
+        array3[n].lockEnds();
+	...
+    ...
+
+Score 5 secs:
+    Label(array1[0], 1.0, 1.0, -1.0, "User-defined label!", 0.0, 1.0, 0.0);
+
+    At start for 0.1 msecs:
+        For n = 0 to 3:
+	    array1[n](0.1).applyForce(1.0);
+	    array2[n](0.1).applyForce(1.0);
+	    array3[n](0.1).applyForce(1.0);
+	    ...
+	...
+    ...

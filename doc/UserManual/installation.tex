@@ -1,0 +1,554 @@
+\chapter{Building and Installing \tao}
+\label{section:installation}
+\tao\ was initially developed on SGI Irix 5.3 but was ported in 1998 to
+Red Hat Linux 5.0. Since then it has been developed primarily on Red
+Hat 6.0. It has not been tested with other \index{Unix}Unix systems but
+since it only uses widely available Unix tools and platform
+independent libraries it is highly probable that it would work just
+as well on other systems. 
+
+\section{What else do you need to have installed?}
+\label{section:whatdoyouneed}
+\tao\ requires a handful of other programs and libraries to be
+installed before it will work properly. The main packages which
+you absolutely need are listed first in this section. Towards
+the end of the section more details are given of tools which
+are only required if you want to build the documentation from
+the sources.
+
+The essential packages to have installed are
+
+\begin{itemize}
+\item The GNU C++ compiler;
+\item \Prog{OpenGL} (or \Prog{Mesa}) libraries and header files;
+\item GL Utility Toolkit (\Prog{GLUT}) libraries and headers;
+\item The \Prog{lex} and \Prog{yacc} compiler tools (or \Prog{flex}
+and \Prog{bison} if you are using GNU versions).
+\item Michael Pruett's port of the SGI audiofile library.
+\end{itemize}
+
+The GLUT libraries and headers come packaged with Mesa
+in the most recent versions so you don't have to search for them
+separately if you choose to use Mesa as your OpenGL replacement,
+but otherwise you may have to download and install them separately.
+Similarly the audiofile libraries and headers should be available
+on SGI machines, and Red Hat 6.0 comes as standard with Michael
+Pruetts implementation of this API (although one of the header
+files had a syntax error which I have temporarily fixed by including
+the corrected headers with this distribution). But if you can't
+find any \Lib{libaudiofile.*} files on your system then you need
+to download this package too.
+
+Source packages for the above are available at the following URLs:
+
+\begin{itemize}
+\item\xlink{http://www.mesa3d.org}{http://www.mesa3d.org}
+\item\xlink{http://reality.sgi.com/opengl/glut3}{http://reality.sgi.com/opengl/glut3}
+\item\xlink{http://www.68k.org/~michael/audiofile/}{http://www.68k.org/~michael/audiofile/} 
+\end{itemize}
+
+Follow the installation instructions provided with each package. In practice
+this should be quite a simple process.
+
+NOTE: One thing to bear in mind is that if you choose instead to
+download and install RPM packages for the above you must install
+the associated development packages also. For example the audiofile RPMs
+installed on my system include the following:
+
+\begin{itemize}
+\item\Rpm{audiofile-0.1.6-5}
+\item\Rpm{audiofile-devel-0.1.6-5}
+\end{itemize}
+
+If you don't have the latter \emph{development} package then none of the
+header files for the library will be installed, and in addition some
+essential symbolic links will be missing in the library directory.
+
+For Mesa and GLUT the RPMs you need are:
+
+\begin{itemize}
+\item\Rpm{Mesa-3.0.*}
+\item\Rpm{Mesa-devel-3.0.*}
+\item\Rpm{Mesa-glut-3.0.*}
+\item\Rpm{Mesa-glut-devel-3.0.*}
+\end{itemize}
+
+Later versions should work just as well but if you have any problems
+please let me know so that I can try to sort them out.
+
+\section{Configuring, making and installing \tao}
+As with most GNU-style software there are three easy steps to installing
+\tao\ assuming everything goes to plan. First change to the directory
+where you have unpacked the distribution and type the following
+commands one by one, waiting for any intervening output from each
+command to finish before typing the next.
+
+\begin{verbatim}
+    ./configure
+    make
+    make install
+\end{verbatim}
+
+The default path for installation of the binaries, library files and
+shell scripts is \Path{/usr/local} so you will need root access in order
+to use the default. If you do not have root access then change the
+above to:
+
+\begin{verbatim}
+     ./configure --prefix=<your path>
+\end{verbatim}
+
+where \verb|<your path>| is the full path to wherever you want to
+install Tao.
+
+The configure script checks to see if you have the necessary programs
+headers and libraries installed. If you do not the configuration will
+abort with a message telling you what is missing. 
+
+\subsection{Troubleshooting the configuration process}
+If the configure script fails it should give you some feedback about
+what it can't find on your system. One of the most common problems
+is not being able to find library files.
+
+Two common things to check for are: 
+
+\begin{enumerate}
+\item
+Check the value of the \EnvVar{LD\_LIBRARY\_PATH} environment variable. This
+is used to tell your system where to look for libraries which are
+not installed in \Path{/usr/lib}. Quite often packages which you install
+yourself will put library files in \Path{/usr/local/lib} by default. If 
+\EnvVar{LD\_LIBRARY\_PATH} doesn't point to this directory (or wherever else
+the library files are installed) then programs which depend on these
+libraries at run time will not be able to find them.
+ 
+To find out the value type:
+
+\begin{verbatim}
+   echo $LD_LIBRARY_PATH
+\end{verbatim}
+
+If the value is empty or doesn't contain \Path{/usr/local/lib} or any of
+the paths where your libraries are located in its colon separated list of paths
+then you must amend it so that it does. To do this first find out which shell you
+use by typing:
+
+\begin{verbatim}
+   echo $SHELL
+\end{verbatim}
+
+If you're using the \Prog{bash} shell see section \ref{section:bash_shell}
+below for details of how to amend the value. If you're using the \Prog{tcsh}
+shell see section \ref{section:tcsh_shell}.
+
+\item
+If you install Mesa, GLUT or audiofile via RPM binary distributions
+check that you have the appropriate \emph{development} packages installed
+also. These include:
+
+\begin{itemize}
+\item\Rpm{audiofile-devel-0.1.6-*}
+\item\Rpm{Mesa-devel-3.0.*}
+\item\Rpm{Mesa-glut-devel-3.0.*}
+\end{itemize}
+
+These packages provide header files and symbolic links to the libraries
+(e.g. \Lib{libaudiofile.so} linked to \Lib{libaudiofile.so.0.0}).
+Without these packages the libraries themselves may be installed
+but you still won't be able to compile and link programs with them.
+\end{enumerate}
+
+If, after reading this section you are still baffled then take a look
+at the next section too, since there is a further tool you can use to
+help diagnose problems.
+
+\subsection{If you are still stuck with configuration problems}
+\label{section:stillstuck}
+After receiving a emails from some \tao\ users who had run into
+problems with the configure script I decided to write a shell script
+as and aid to testing for installed libraries, their locations,
+and whether or not the executables dependent on those libraries
+would be able to find them. This shell script is located in the top
+level directory of the distribution and is called \Prog{diagnose-lib}.
+
+Typing \verb|diagnose-lib| without any arguments prints out the following
+usage message:
+
+\begin{verbatim}
+    Usage: diagnose-lib <libname>
+    Diagnose problems in finding shared libraries during
+    configuration of Tao
+
+    <libname> can be one of the following:
+    'gl', 'GL', 'glu', 'GLU', 'glut' or 'audiofile'. 
+\end{verbatim}
+
+So, for example, if the configure script claims that you don't have any
+OpenGL libraries installed but you are convinced that you do, type:
+
+\begin{verbatim}
+    ./diagnose-lib gl
+\end{verbatim}
+to check for the GL library or
+\begin{verbatim}
+    ./diagnose-lib glu
+\end{verbatim}
+for the GLU library.
+
+The \verb|diagnose-lib| script will respond with information about whether
+it can find a library of the right name, where that library is installed
+and whether the executables which depend on that library will be able
+to find it. It does so by searching obvious locations such as
+\verb|/usr/lib|, \verb|/usr/local/lib| first and then searches the
+directory tree rooted at your home directory. If it fails to find
+the library it will abort and let you know.
+
+If on the other hand it does find a suitable candidate it then checks
+ to see whether either the file \Filename{/etc/ld.so.conf} or the environment
+variable \EnvVar{LD\_LIBRARY\_PATH} contain the appropriate path to
+find this file. These are the two principal mechanisms by which your
+system locates \emph{shared objects} or \emph{dynamic link libraries}
+at run time.
+
+If neither contain the path to this file a suitable message is printed out
+and suggestions for solving the problem are given.
+
+If you find that you are still having problems after following any advice
+given by the \verb|diagnose-lib| script then please feel free to email
+me at \xlink{m.pearson@ukonline.co.uk}{mailto:m.pearson@ukonline.co.uk}.
+I will try to help out where I can.
+
+\subsection{Continuing with the build process}
+Assuming the configuration part worked you can continue with the
+build process, i.e. \verb|make| and \verb|make install|. After
+this you should have the following files installed (assuming that
+\Path{prefix=/usr/local}):
+
+\begin{verbatim}
+    /usr/local/  
+        lib/
+            libtao.so*
+            libtao.a
+        bin/
+            tao
+            tao-config
+            taosf
+            taoparse
+            tao2wav
+\end{verbatim}
+
+The install process leaves \tao's header files where they are but
+provides a shell script \Prog{tao-config} which can be used to find out
+where both these headers and the various libraries are installed.
+This is particularly useful if you want to write your own C++ programs
+and link them against the \tao\ library. It is used in the following
+way:
+
+\begin{verbatim}
+    tao-config --prefix     =>  location for installed files
+    tao-config --cflags     =>  command line flags for the compiler
+                                to find Tao's header files
+    tao-config --libs       =>  command line flags for the compiler
+                                to find Tao's libraries
+\end{verbatim}
+
+The next step is important. In order for your system to locate
+the binary executables, shell scripts and libraries you have to set
+two environment variables: \EnvVar{PATH} and \EnvVar{LD\_LIBRARY\_PATH}.
+This process is described step by step in the following sections. The
+first thing you need to do though is find out which UNIX shell you use.
+To do this type:
+
+\begin{verbatim}
+    echo $SHELL
+\end{verbatim}
+
+\subsubsection{Setting PATH and LD\_LIBRARY\_PATH for the bash shell}
+\label{section:bash_shell}
+Type the following to see if \Path{/usr/local/bin} is already in your path:
+
+\begin{verbatim}
+    echo $PATH
+\end{verbatim}
+
+If not then open the \Filename{.bash\_profile} file in your home directory and
+add the following lines:
+
+\begin{verbatim}
+    PATH=$PATH:/usr/local/bin
+    export PATH
+\end{verbatim}
+
+Then type the following to see if \Path{/usr/local/lib} is in your
+library loading path:
+
+\begin{verbatim}
+    echo $LD_LIBRARY_PATH
+\end{verbatim}
+
+If not then add the following lines to the \Filename{.bash\_profile} file in
+your home directory:
+
+\begin{verbatim}
+    LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
+    export LD_LIBRARY_PATH
+\end{verbatim}
+
+\subsubsection{Setting PATH and LD\_LIBRARY\_PATH for the tcsh shell}
+\label{section:tcsh_shell}
+Type the following to see if \Path{/usr/local/bin} is in your path:
+
+\begin{verbatim}
+    echo $PATH
+\end{verbatim}
+
+If not then add the following line to the \Filename{.tcshrc} file in
+your home directory:
+
+\begin{verbatim}
+    setenv PATH $PATH:/usr/local/bin
+\end{verbatim}
+
+Then type the following to see if \Path{/usr/local/lib} is in your
+library loading path:
+
+\begin{verbatim}
+    echo $LD_LIBRARY_PATH
+\end{verbatim}
+
+If not then add the following line to the \Filename{.tcshrc} file in
+your home directory:
+
+\begin{verbatim}
+    setenv LD_LIBRARY_PATH $LD_LIBRARY_PATH:/usr/local/lib
+\end{verbatim}
+
+\section{What the distribution contains}
+This distribution has the following directory structure:
+
+\begin{verbatim}
+    libtao/
+    tao2wav/
+    tao2aiff/
+    taoparse/
+    include/
+    user-scripts/
+    examples/
+    doc/
+        UserManual/
+            html/
+        ClassReference/
+            latex/
+            html/
+        Dependencies/
+            html/
+\end{verbatim}
+
+These directories contain the following:
+
+\begin{description}
+\item[libtao/] -- source code for the C++ library which \tao\
+is built upon.
+\item[tao2wav/] -- source code for the program which converts
+\tao's raw floating point output files in \verb|.wav|\index{WAV output
+files} format ready for playback.
+\item[taoparse/] -- lex and yacc source code for
+\tao's synthesis language parser.
+\item[include/] -- header files for C++ classes.
+\item[user-scripts/] -- a set of user shell scripts including
+the following:
+\begin{description}
+\item[tao] -- shell script for compiling and executing a \tao\ script.
+\item[tao-config] -- shell script which is useful when compiling
+and linking C++ programs with the \tao\ library \Lib{libtao}. 
+\item[taosf] -- shell script for converting \tao's output files to WAV
+format.
+\end{description}
+
+\item[examples/] -- a set of examples illustrating the
+main elements of \tao's synthesis language.
+\item[doc/] -- documentation of various kinds.
+This includes the following:
+\begin{description}
+
+\item[UserManual/] -- \Prog{Hyperlatex} sources for this manual which
+can be used to produce DVI and PostScript versions using \LaTeX\ and 
+\Prog{dvips}, and the HTML version using \Prog{hyperlatex}. The HTML formatted
+version comes ready made with this distribution so you don't need
+\Prog{hyperlatex}, although the \emph{Dependencies} document describes
+where to get it.
+
+\item[ClassReference/] -- \LaTeX\ and HTML documentation for the
+C++ library API. Both versions of this document are produced automatically
+from the C++ sources using a third party program called \Prog{Doxygen}.
+See the \emph{Dependencies} document for details of where
+to get \Prog{Doxygen}.
+
+[Actually I haven't got around to this yet as I am concentrating on
+making the distribution as robust as possible and finishing the user
+manual, but it will happen eventually].
+
+\item[Dependencies/] -- \Prog{hyperlatex} sources for the document
+describing the external programs upon which \tao\ depends. Once
+again these sources can be used to produce HTML, DVI and 
+PostScript formatted versions and the HTML version comes ready built
+with the distribution.
+
+\end{description}
+\end{description}
+
+The installation step described in the previous section installs the
+following files on your system (assuming \Path{prefix=/usr/local}):
+
+\begin{verbatim}
+    /usr/local/bin
+        tao
+        taosf
+        tao2wav
+        taoparse
+    /usr/local/lib
+        libtao.so.*
+        libtao.a
+\end{verbatim}
+
+\section{Testing \tao}
+To test that everything is working once the installation is complete open
+a new shell window. Change to the top level directory in the \tao\
+distribution copy the script \Path{examples/test.tao} to your home
+directory. This test script contains the following text although you don't
+need to understand how it works for the moment.
+
+\begin{verbatim}
+    Audio rate: 44100;
+
+    Circle c(800 Hz, 20 secs);
+    String strings[4]=
+        {
+        (800 Hz, 20 secs),
+        (810 Hz, 20 secs),
+        (820 Hz, 20 secs),
+        (830 Hz, 20 secs)
+        };
+
+    Rectangle r(800 Hz, 900 Hz, 20 secs);
+    Triangle t(800 Hz, 900 Hz, 20 secs);
+    Connector conn1, conn2, conn3, conn4;
+    Counter s;
+
+    Init:
+        For s = 0 to 3:
+            strings[s].lockEnds();
+            ...
+
+        c.lockPerimeter();
+        r.lockCorners();
+        t.lockLeft().lockRight();
+
+        strings[0](0.1) -- conn1 -- strings[1](0.1);
+        strings[1](0.9) -- conn2 -- strings[2](0.9);
+        strings[2](0.1) -- conn3 -- strings[3](0.1);
+
+        r(0.6,0.2) -- conn4 -- 0.0;
+
+        r.placeRightOf(c,20);
+        t.placeAbove(r);
+        ...
+
+    Score 20 secs:
+        At start for 0.1 msecs:
+            strings[0](0.1).applyForce(1.0);
+            strings[1](0.1).applyForce(1.0);
+            strings[2](0.1).applyForce(1.0);
+            strings[3](0.1).applyForce(1.0);
+
+            c(0.1,0.5).applyForce(10.0);
+            r(0.7,0.8).applyForce(10.0);
+            t(0.8,0.6).applyForce(10.0);
+            ...
+        ...
+\end{verbatim}
+
+Change directory in the shell window to your home directory and type:
+\begin{verbatim}
+    tao test
+\end{verbatim}
+
+If everything is working OK \tao\ should respond firstly by printing
+the following messages in the shell window:
+
+\begin{verbatim}
+    ========================================
+    |     Tao (c) 1996-99 Mark Pearson     |
+    | Sound Synthesis with Physical Models |
+    ========================================
+
+    Processing test.tao
+    Making test.exe
+    Executing test.exe
+
+    Sample rate=44100 KHz
+    Score duration=1 seconds                
+\end{verbatim}
+
+It should then open a window like the one shown in figure \ref{fig:instrvis}.
+This is \tao's \emph{instrument visualisation window}\index{instrument!visualisation window},
+which presents a 3-D animated representation of the instruments
+described in the script \Filename{test.tao}. In the current implementation this
+window is meant for visualisation only, it is not possible to edit the
+instruments graphically.
+
+\begin{figure}[htb]
+  \begin{Label}{fig:instrvis}
+    \begin{center}
+    \Image{instrvis}{height=7cm}{gif}
+    \end{center}
+    \caption{\tao's instrument visualisation window}
+  \end{Label}
+\end{figure}
+
+This is a good opportunity to try some of the key and mouse bindings which
+affect the behaviour of the instrument visualisation window. These are
+listed below but there is one thing you have to do first to set the synthesis
+engine in motion.
+
+\textbf{IMPORTANT:} When the visualisation window opens initially the
+instrument animation is paused. This gives you time to move/resize/rotate
+the image to get the view you want before setting everything in motion.
+So the first thing you need to do is press the \textbf{right-arrow} key.
+After doing this you should see the instruments spring to life, showing
+the propagating waves. You can now try out some of the key and mouse bindings.
+
+\subsection*{Key bindings}
+\label{section:key_and_mouse_bindings}
+\index{key bindings}
+\begin{description}
+\item[Down-arrow] Reduce the visible amplitude of the vibrations.
+\item[Up-arrow] Increase the visible amplitude of the vibrations.
+\item[Left-arrow] Decrease the number of ticks between displayed frames
+i.e. make the animation slower but smoother.
+\item[Right-arrow] Increase the number of ticks between displayed frames
+i.e. make the animation faster but more jerky.
+\item[Esc] Exit and close the graphics window.
+\end{description}
+
+\subsection*{Mouse bindings}
+\index{mouse bindings}
+In addition there are a number of mouse functions which work when the
+appropriate button is held down and the mouse is moved:
+
+\begin{description}
+\item[Left-mouse] Translate the image.
+\item[Middle-mouse] Zoom in/out.
+\item[Right-mouse] Rotate the image.
+\end{description}
+
+
+
+
+
+
+
+
+
+
+

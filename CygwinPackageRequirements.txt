@@ -1,0 +1,32 @@
+Cygwin package requirements:
+
+- The default cygwin stuff, to start with.
+
+::Audio::
+- libaudiofile0
+- libaudiofile-devel
+
+::Devel::
+- bison
+- flex
+- gcc
+- make
+
+::Graphics::
+- freeglut
+- opengl
+
+::X11::
+- xorg-x11-devel
+- XFree86-lib-compat
+
+(not entirely sure about that last one - you may be able to get away without
+ it?)
+
+You may also have to run the configure script as:
+./configure --prefix=/usr
+to install it into the /usr directory. For some reason, I was unable to get any
+executables built via the tao script to link against libtao when it's in
+/usr/local/lib. I don't know if this is just down to my not knowing the correct
+environment variable to use (PATH & LD_LIBRARY_PATH didn't seem to work), or if
+it's a bug in cygwin, since it definitely worked before.

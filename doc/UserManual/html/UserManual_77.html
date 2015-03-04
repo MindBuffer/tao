@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<!-- HTML file produced from file: UserManual.tex --
+ -- using Hyperlatex v 2.3.1 (c) Otfried Cheong--
+ -- on Emacs 21.1 (patch 4) "Arches" XEmacs Lucid, Sun Apr 30 20:50:02 2000 -->
+<HEAD>
+<TITLE>Tao User Manual -- Streams of Events and Iteration</TITLE>
+
+    <link rel=stylesheet href="../../taomanual.css" type="text/css">
+    
+</HEAD><BODY BACKGROUND="bg.gif">
+
+    <table width="500" border="0" align="left" cellspacing="2" cellpadding="2"><tr><td class="nav" valign="top"><!-- top panel --><A HREF="UserManual_75.html"><IMG ALT="Up" ALIGN=BOTTOM BORDER=0 SRC="up.gif"></A>
+    <BR><A HREF="UserManual_75.html">Describing Musical Events</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" valign="top"><A HREF="UserManual_76.html"><IMG ALT="Back" ALIGN=BOTTOM BORDER=0 SRC="back.gif"></A>
+    <BR><A HREF="UserManual_76.html">Nested control structures and the special variables start and end</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" valign="top"><A HREF="UserManual_78.html"><IMG ALT="Forward" ALIGN=BOTTOM BORDER=0 SRC="forward.gif"></A>
+    <BR><A HREF="UserManual_78.html">Comparison with Csound</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td></tr><!-- end top panel --><tr><td colspan="3" class="main"><!-- main text --><br><br>
+<H3>Streams of Events and Iteration</H3>
+Often it is necessary to repeat some simple event iteratively in order to
+form a stream of similar events. One example of this might be repeatedly
+striking an object at short (random) intervals in order to create a
+dense granular texture. This section describes a common technique
+for implementing such streams of events <sup><A HREF="UserManual_156.html#footnote-2">2</A></sup>.
+<P>In order to describe an iterated event we will use the technique of
+nested control structures described in the previous section, but in
+a particular way, which allows an
+event to reschedule itself once its time is up. The following example
+script schedules a series of events to occur at one second intervals.
+Each individual event is trivial in nature, simply printing a message
+to the shell window showing the time at which it occurs (performance-time,
+not real-time).
+<P><PRE>
+    Audio rate: 44100;
+
+    Param eventStart=0.0, eventDur=0.01, interval=1.0;
+
+    Init:
+        ...
+
+    Score 10 secs:
+        At eventStart for eventDur:
+            At start:
+                Print "Time=", Time, newline;
+                ...
+            At end:
+                eventStart += interval;
+                ...
+            ...
+        ...
+</PRE>
+<P>The first thing to note about this script is that it contains a
+hierarchy of nested control structures. The outermost <CODE>Score</CODE>
+control structure contains a single <CODE>At..for</CODE> structure, which in
+turn contains two further <CODE>At</CODE> structures. The rest of the script
+is quite straightforward to understand. The parameters <CODE>eventStart</CODE>
+and <CODE>eventDur</CODE> are used to define the start time and duration of
+each event and the parameter <CODE>interval</CODE> is used to define the
+interval between successive events. The key element is the use of the
+<CODE>At end:</CODE> control structure. Every time the event occurs
+the body of the <CODE>At end:</CODE> structure is executed just once at the
+very end of the event, and when it is a new start time is calculated
+for the next event.
+<P>The script produces the following output:
+<P><PRE>
+    Sample rate=44100 KHz
+    Score duration=10 seconds
+    Time=0
+    Time=1
+    Time=2
+    Time=3
+    Time=4
+    Time=5
+    Time=6
+    Time=7
+    Time=8
+    Time=9
+    Time=10
+</PRE>
+<P>Of course the time interval between events does not have to be fixed.
+The value by which the <CODE>eventStart</CODE> parameter is incremented
+can be derived from an arbitrary mathematical expression (see
+section <A HREF="UserManual_79.html">*</A> for details of expression syntax).
+Since expressions can include numerical values derived from physical
+attributes read off the various instruments and devices, this technique
+opens the way for quite complex self-evolving events to be described.
+This is one of <B>Tao</B>'s strengths: any physical attribute, such as the
+velocity of a point on an instrument or the current height of a hammer
+device can potentially be used as input to an algorithm which is playing
+the very same instruments and devices.
+<P>
+    <BR></td></tr><!-- end main text --><tr><td class="nav" align="left" valign="top"><!-- bottom matter --><A HREF="UserManual_75.html"><IMG ALT="Up" ALIGN=BOTTOM BORDER=0 SRC="up.gif"></A>
+    <BR><A HREF="UserManual_75.html">Describing Musical Events</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" align="left" valign="top"><A HREF="UserManual_76.html"><IMG ALT="Back" ALIGN=BOTTOM BORDER=0 SRC="back.gif"></A>
+    <BR><A HREF="UserManual_76.html">Nested control structures and the special variables start and end</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" align="left" valign="top"><!-- bottom matter --><A HREF="UserManual_78.html"><IMG ALT="Forward" ALIGN=BOTTOM BORDER=0 SRC="forward.gif"></A>
+    <BR><A HREF="UserManual_78.html">Comparison with Csound</A>
+    <IMG width="167" height="1" SRC="trans1x1.gif">
+    </td></tr><!-- end bottom matter -->
+
+    <tr><td colspan="3" class="addr"><!-- bottom panel --><ADDRESS><FONT SIZE=-1>&#169;1999,2000 Mark Pearson
+<A HREF="mailto:m.pearson@ukonline.co.uk">m.pearson@ukonline.co.uk</A> April 30, 2000</ADDRESS><BR></td></tr><!-- end bottom panel --></table></BODY></HTML>

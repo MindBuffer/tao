@@ -1,0 +1,288 @@
+\chapter{Closing Comments}
+This closing section of the User Manual is basically a place for
+anything else I thought was important enough to include, but couldn't
+find a suitable place for elsewhere.
+
+\section{Background to \tao's design and implementation}
+During my Music Technology masters degree at the University of York I was
+impressed by freeware audio and synthesis tools such as \Prog{Csound}.
+One of the things that impressed me about Csound in particular was that
+it was a synthesis language and allowed a finite set of primitive
+building blocks to be assembled in an infinite number of ways. 
+
+However, my experience as a musician playing a variety of acoustic
+instruments told me that whilst Csound's unit generator approach was
+quite powerful, it also had several shortcomings. For example, when
+playing an acoustic instrument such as a guitar or even just experimenting
+with `found sounds' there is something very direct and intuitive about
+the mode of experimentation. If you want something to make a louder
+and brighter sound you just hit it harder!
+
+Whilst Csound's unit
+generator approach does allow you to design instruments with input
+parameters and feed different values into these inputs in a score,
+it doens't allow you to think directly in terms of forces, velocities,
+spatial positioning of excitations etc. So I wanted to set out to
+design a synthesis program which would carry on the tradition of
+programs like Csound, in providing an open-ended synthesis language,
+but would be capable of creating much more tangibly physical
+instruments. Another item which was high on the agenda was to be able
+to visualise the instruments.
+
+\tao\ arose out of my interests in a number of different areas
+including musical performance, electroacoustic music, computer
+modeling of complex dynamical systems, cellular automata, and
+computer graphics.
+
+I have thought for a long time that whilst GUIs (graphical
+user interfaces) are invaluable tools in certain situations there are
+still many things which are more elegantly expressed in text/language
+form. Take general computer programming languages for example, or
+the rapidly growing number of `mark-up languages' such as HTML, XML,
+VRML. Text is a very powerful tool for communicating structured
+ideas and has the advantage that it can serve as the basis for
+more user friendly GUI-based tools to sit on top.
+
+It is for this reason that I concentrated my efforts on designing a
+text based interface to \tao\ which would be simple to use, clear to read
+and above all accessible to musicians with some degree of technical
+competency (having used tools such as Csound for example). Having
+stated this however it is likely that the format of the language and
+the lack of a GUI will be addressed in the future, along with several
+other aspects of the user interface.
+
+\tao\ was originally developed as part of my DPhil at the
+University of York, England and then subsequently during a one year
+visiting research fellowship to the Australian Centre for the Arts
+and Technology at the Australian National University in Canberra.
+
+My DPhil addressed the question of precisely why it is that digitally
+synthesised sounds often lack the \emph{warmth}, \emph{life}, and
+\emph{organic} qualities of acoustically produced sounds, whether
+musical in the traditional sense or not. What came out of this work,
+apart from a thesis of course, was \tao.
+
+As mentioned earlier on I wanted a system which would be capable of producing
+\emph{organic sounds}. The term \emph{organic}
+is quite difficult to define precisely but my thesis \emph{Synthesis
+of Organic Sounds for Electroacoustic Music: Cellular Models and the
+TAO Computer Music Program} does a better job of
+addressing the issues than I have scope to do here. Very briefly though
+the term \emph{organic} is used to refer to sounds which are:
+
+\begin{itemize}
+\item complex
+\item fluid
+\item dynamic
+\item coherent
+\item lively
+\item suggestive of physical and energetic causality
+\end{itemize}
+
+The term \Term{coherence} is used to refer to the fact that in sounds
+produced by physical means, the transient behaviour, the perception
+of the sound having been produced by some physical mechanism and
+the overall character of the sound hang together very well. This cannot
+be said of many digitally synthesised sounds, even those produced by
+some physical modeling techniques. This problem of synthesising
+\emph{complex}, \emph{coherent} and \emph{organic} sounds was the main
+focus of the whole project.
+
+The original design goals which have been adhered to throughout \tao's
+development were to produce a system which would have the following
+features:
+
+\begin{itemize}
+\item capable of synthesising a wide variety of acoustic and
+instrumental-like sounds with organic qualities;
+\item relatively straightforward to use, making physical modeling accessible
+to those without a strong maths or physics background without compromising
+the power or flexibility of the tool;
+\item based around a flexible and open-ended synthesis language following
+in the tradition of other synthesis languages such as Csound (this objective
+is ongoing, the current synthesis language used by \tao\ is only one possible
+language for controlling it).
+\end{itemize}
+
+\section{The computational expense of Tao's synthesis engine}
+\tao\ takes what has been referred to as the `brute force' approach to physical
+modelling and as such is not as efficient as some of the digital waveguide
+models developed by Julius Smith et al. However at the time of designing \tao\
+I made a conscious decision to steer away from the obsession with real-time
+performance and look at what would be possible if I just concentrated on the
+conceptual structure of the system. First and foremost I wanted to design
+a system which made instruments which were tangible objects. As a musician
+I am accustomed to being able to experiment with sound in a direct,
+physical and intuitive manner and having a system which was capable
+of visualising the instruments was quite high on the list of priorities.
+At least if I couldn't actually get my hands on the instruments I could
+see them, which would in turn fuel my imagination for things to try out.
+
+Real instruments such as stringed or percussion instruments have a wonderful
+property that their 'user interface' is spatially distributed, and more
+importantly, doing things to the instrument at different spatial locations
+leads to markedly different timbral results.
+
+In my DPhil thesis I argued that details which make a huge difference to the
+aesthetic appeal of the sounds produced from a physical model are often simply
+missed out in the name of real-time performance. I do not make any great
+claims about my model being so much more mathematically accurate than any
+others simply because it needs more processing power, but one
+thing I would say is that in the majority of cases musicians and composers
+who have heard the sounds which \tao\ is capable of producing have commented
+on their \emph{organic} and inherent musical qualities, which cannot be a bad
+thing. Besides, with the exponential growth in computing power, the number
+crunching needed by \tao\ simply may not be an issue in the near future.
+
+The calculations employed to animate the model are described in detail in
+my thesis. As they stand I am sure that improvements could be made in the
+name of efficiency and optimisation although they have already been optimised
+to an extent. There may be ways in which the efficiency could be radically
+improved without compromising the quality of the sounds produced and indeed
+I would be very interested to hear any ideas from individuals more mathematically
+skilled than myself. \tao\ is based upon mathematical skills I picked up at
+school level, so there should be room for improvement!
+
+\section{Deficiencies in Tao's synthesis language}
+\label{section:script_deficiencies}
+\tao's synthesis language was developed primarily as a test-bed for the synthesis
+engine. It has evolved into a usable language but lacks several features for
+larger scale compositional work including:
+\begin{itemize}
+\item
+Encapsulation of events
+\item
+Encapsulation of instrument components
+\item
+Table generating and reading functions
+\end{itemize}
+
+What is meant by `encapsulation of events' is the ability to describe a
+complex algorithm for producing some kind of high-level event and then
+place this algorithm inside a black box with input parameters. The
+algorithm would then be invoked whenever it was needed
+(much like a C or C++ function) using just its name and arguments.
+The addition of this feature would make it a much simpler matter to
+produce complex multi-layered textures of sound.
+
+Encapsulation as applied to instruments refers to the ability to create
+compound instruments where the components of the instrument are arranged
+hierarchically with parent-child relationships. For example an instrument
+named `guitar' might have child components named `string1', `string2'
+etc. In order to achieve this the syntax of \tao's synthesis language
+would need to be modified to allow components to be created within the
+scope of other components, much as local variables may be declared
+within C or C++ functions.
+
+It would also be possible to describe template instruments which would
+act as templates for whole families of instruments with similar
+characteristics. For example the description of a `guitar' template
+instrument would allow the construction of multiple instances each
+having their own body sizes and string tunings, but with aspects of
+the physical structure common to each instance.
+
+Table reading functions are an essential part of any synthesis program
+and the only way they can be implemented at the moment is by setting
+up arrays of values by hand and accessing (and interpolating them)
+yourself with parameters declared in the script. Of course all the 
+math library functions are available in the synthesis language so it
+is feasible to write table initialisation code in the Init part of
+the score, but it is still cumbersome compared with \Prog{Csound}'s
+provision of table generating features.
+
+\section{New Devices}
+As it stands there are only a handful of devices available for use. A
+long term goal is to expand this set of available devices in order to
+make \tao a more powerful and enticing environment for sound design.
+
+\section{Parallel Processing}
+I did carry out some initial investigations into how \tao could be 
+parallelised whilst at the Australian Centre for the Arts and Technology
+during 1997-8 and came up with the idea of using Posix threads (pthreads)
+to split the number crunching performed by the synthesis engine up into
+separate threads. Unfortunately the work went no further than that but
+will be resumed one day if I have access to a multi-processor machine.
+
+\section{The User Interface}
+As with the parallelisation of \tao's synthesis engine I did some evaluation
+of the various options available both on the SGI and Linux platforms
+for building a GUI for \tao\ whilst at ACAT. However at the time there were
+too many other things to be done to improve the basic synthesis engine
+and I never atually implemented anything concrete. Since then
+the main GUI toolkits for Linux (Gtk and Qt) have become more widely
+used and documented and as such are obvious choices. Of course the use
+of Qt would also make it very easy to create a port for other platforms
+such as MS Windows.
+
+I have had some more general thoughts on the subject of GUIs though and
+having had some brief experience of 3-D animation packages such as Side Effects'
+Houdini and more recently Blender I think that many of the concepts 
+used in their interfaces would be applicable to \tao\. To be more specific
+the ability of such packages to control and animate the values of any
+parameters with the use of various spline, bezier and NURBS curves
+is directly applicable. The other obvious area in which there is overlap
+is that \tao\ is basically a modeling tool and many of the concepts used
+in the user interfaces of animation packages such as object heirarchies;
+different views, layers of objects etc. would also be applicable.
+
+Both Houdini and Blender allow the evolution of objects to be described
+in a procedural manner through the use of use of scripting. Blender in
+particular uses the Python OO scripting language. \tao\ could also benefit
+from the dual GUI/scripting approach. 
+
+To summarise, the following features would be desirable in a new
+interface for \tao:
+
+\begin{itemize}
+\item
+a curve editor with editable curves representing arbitrary parameters;
+\item
+a graphical instrument editor with a suitable toolbox;
+\item
+a 3D visualisation window with rotate/zoom/translate capabilities;
+\item
+some kind of data block structure showing hierarchies of components,
+devices and other objects and their relationships;
+\item
+some kind of integrated graphical and text based score system
+where changes in the graphical representation would immediately
+lead to changes in the text version and vice versa.
+\end{itemize}
+
+\section{Contributing to Tao's development}
+Finally a word on how you can contribute to \tao's development.
+
+\begin{itemize}
+\item
+Email me if you find any glaring errors or mistakes in this manual or
+the software itself.
+\item
+Tell your friends about \tao. The more interest there is in \tao\ the
+more likely I am to continue development.
+\item
+If anyone would like to set up a CVS server or mailing list I would be
+happy to cooperate. I may eventually do both myself as and when I get time.
+\item
+I am happy to discuss ways in which any aspect of \tao\ can be improved
+or developed. 
+\end{itemize}
+
+To conclude -- my vision when I started designing \tao\ was to create a
+powerful and intuitive sound synthesis tool which would allow composers
+to create their own `acoustic' instruments to order. There is still a
+long way to go to realise this vision but \tao\ is already fun to play with
+in its present state. As machines become faster and faster it will become
+possible to experiment with increasingly complex (and realistic) instruments,
+eventually in real-time. The provision of a sophisticated GUI and maybe even
+haptic feedback interfaces will eventually bring \tao\ closer to this goal. 
+
+In the meantime I hope you find \tao\ useful and enjoy using it!
+
+Mark Pearson.
+
+
+
+
+
+
+

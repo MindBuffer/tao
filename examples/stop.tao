@@ -1,0 +1,45 @@
+// stop.tao - a simple Tao script illustrating the use of the Stop device.
+//
+// This script creates a single string and a Stop device. It applies the
+// Stop device at a position which traverses the string over the duration
+// of the performance. In addition the `amount' attribute of the Stop
+// device is changed gradually from 0 to 1 near the beginning of the
+// performance and then back from 1 to 0 near the end. Watch for the
+// effect this has on the amount of movement the Stop device allows. When
+// amount=0, the string is restrained at the stop positio but nowhere near
+// as much as when amount=1.
+
+Audio rate: 44100;
+
+String string(200 Hz, 40 secs);
+
+Stop stop;
+
+Param position, amount=0.0;
+
+Init:
+    string.lockEnds();
+    ...
+    
+Score 0.3 secs:
+    At 0 secs for 0.1 msecs:
+	string(0.9).applyForce(10.0);
+	...
+
+    position=linear(0.1, 0.9);
+	
+    string(position) -- stop;
+
+    From 0.05 secs to 0.1 secs:
+	amount=linear(0,1);
+        stop.setAmount(linear(0,1));
+	...
+
+    From 0.20 to 0.25 secs:
+	amount=linear(1,0);
+        stop.setAmount(linear(1,0));
+	...
+
+    Every 0.005 secs:
+	Print Time, " ", amount, newline; ...
+    ...

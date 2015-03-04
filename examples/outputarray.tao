@@ -1,0 +1,21 @@
+Audio rate: 44100;
+
+String string(200 Hz, 30 secs);
+
+Output outputs(mono)[5];
+
+Init:
+    string.lockEnds();
+    ...
+
+Score 30 secs:
+    At start for 0.1 secs:
+        string(0.1).applyForce(1.0);
+	...
+
+    outputs[0].ch1: string(0.1);
+    outputs[1].ch1: string(0.3);
+    outputs[2].ch1: string(0.5);
+    outputs[3].ch1: string(0.7);
+    outputs[4].ch1: string(0.9);
+    ...

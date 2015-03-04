@@ -1,0 +1,199 @@
+(If you're not familiar with unix-style systems (this is probably most
+ relevant to OSX users), you may want to read the AdditionalInstallNotes.txt
+ file in the doc subdirectory - Niall Moody, 9/5/06)
+
+Requirements
+------------
+
+    Tao has been built and tested on both Irix 6.2 and Red Hat Linux 5.0
+    (and more recently Red Hat 6.0). It requires X windows and OpenGL
+    compatible libraries and headers to be installed, either true OpenGL
+    or a clone such as Brian Paul's MesaGL (which works fine for me), and
+    Mark Kilgard's GLUT (GL Utility Toolkit) library and headers. It also
+    requires the following tools (if building from the sources):
+
+        A C++ compiler      (preferably gnu g++ but the code should
+                             compile perfectly well under others)
+        flex or lex         (lexical analyser generators)
+        bison or yacc       (parser generators)
+        Doxygen             (a tool for generating documentation from
+                             C++ sources)
+        hyperlatex          (a tool for generating multi-format
+                             documentation)
+
+    You only need Doxygen and Hyperlatex if you intend to build the
+    documentation from the sources. Please note that even if you download
+    a binary distribution, you will still need a C++ compiler since Tao
+    uses the compiler every time a script is run.
+    
+    Tao works with both OpenGL and Mesa3D since there the rendering is
+    not particularly flashy or advanced.
+
+    For Mesa3D headers, libraries and examples go to
+
+        www.mesa3d.org
+    
+    If you are using Mesa3D then you should get the GLUT libraries and
+    headers thrown in for convenience. If not then go to
+
+        http://reality.sgi.com/opengl/
+
+    and look for `GLUT'
+
+
+Steps for installation
+----------------------
+
+    As with most GNU style software there are 3 easy steps to installing
+    Tao. First change to the directory where you have unpacked Tao and
+    type:
+
+        ./configure
+        make
+        make install
+
+    The default path for installation of the binaries, library files and
+    shell scripts is /usr/local, so you will need root access in order
+    to use the default. If you do not have root access then change the
+    above to
+
+         ./configure --prefix=<your path>
+
+    where <your path> is the full path to wherever you want to install Tao.
+
+    The `configure' part checks to see if you have the necessary programs
+    headers and libraries installed. If you do not the configuration will
+    abort with a message telling you what is missing. See the earlier
+    part of this README for details on where to get the components you
+    need in order to use Tao.
+	
+    Assuming the `make' and `make install' parts work OK you should now
+    have the following files installed (I will assume that prefix=/usr/local)
+
+        /usr/local/
+            
+            lib/
+                libtao.so*
+                libtao.a
+
+            bin/
+                tao
+                tao-config
+                taosf
+                taoparse
+                tao2aiff
+
+    The install process leaves Tao's header files where they are but
+    provides a shell script 'tao-config' which can be used to find out
+    where both these headers and the various libraries are installed.
+    This is particularly useful if you want to write your own C++ programs
+    and link them against the Tao libraries. It is used in the following
+    way:
+
+        tao-config --prefix     =>  location for installed files
+        tao-config --includes   =>  command line flags for the compiler
+                                    to find Tao's header files
+        tao-config --libs       =>  command line flags for the compiler
+                                    to find Tao's libraries
+
+    The next step is VERY IMPORTANT - in order for your system to locate
+    the binary executables, shell scripts and libraries you have to set
+    two environment variables, PATH and LD_LIBRARY_PATH. This process is
+    described in detail below.
+
+
+    If you use the `bash' shell
+    ---------------------------
+
+    Type the following to see if '/usr/local/lib' is already in your path:
+
+        set | grep PATH
+
+    If not then open the '.bash_profile' file in your home directory and
+    add the following lines:
+
+        PATH=$PATH:/usr/local/bin
+        export PATH
+
+    Then type the following to see if '/usr/local/lib' is in your
+    library loading path:
+
+        set | grep LD_LIBRARY_PATH
+
+    If it is then you don't need to do anything else. If the result
+    of this command is empty then add the following lines to your
+    '.bash_profile' file:
+
+        LD_LIBRARY_PATH=/usr/local/lib
+        export LD_LIBRARY_PATH
+
+    If the result is not empty but '/usr/local/lib' is not listed as
+    one of the paths to search then add the following lines:
+
+        LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
+        export LD_LIBRARY_PATH
+        
+
+    If you use the `tcsh' shell
+    ---------------------------
+
+    Type the following to see if '/usr/local/bin' is in your path:
+
+        setenv | grep PATH
+
+    If not then add the following lines to the '.tcshrc' file in
+    your home directory:
+
+        setenv PATH $PATH:/usr/local/bin
+
+    Then type the following to see if '/usr/local/lib' is in your
+    library loading path:
+
+        setenv | grep LD_LIBRARY_PATH
+
+    If it is then you don't need to do anything else. If the result
+    of this command is empty then add the following line to your
+    '.tcshrc' file:
+
+        setenv LD_LIBRARY_PATH /usr/local/lib
+
+    If the result is not empty but '/usr/local/lib' is not listed as
+    one of the paths to search then add the following line:
+
+        setenv LD_LIBRARY_PATH $LD_LIBRARY_PATH:/usr/local/lib
+
+
+Testing Tao
+-----------
+
+    Assuming that everything went OK with the build and install the next
+    step is to test that everything is working. To do this copy the file
+    `test.tao' from the `examples' directory into your home directory and
+    type:
+
+        tao test
+
+    Tao should respond with the following messages:
+
+        ========================================
+        |     Tao (c) 1996-99 Mark Pearson     |
+        | Sound Synthesis with Physical Models |
+        ========================================
+
+        Processing test.tao
+        Making test.exe
+        Executing test.exe
+
+        Sample rate=44100 KHz
+        Score duration=20 seconds                
+
+    You should then see Tao's instrument visualisation window open. When
+    this window opens initially Tao is in 'pause' mode. This gives you
+    time to move, rotate and zoom the image before setting the synthesis
+    in motion. To unpause Tao press the [right-arrow] cursor key. This
+    should set the instrument in motion. For more information on what to
+    do next refer to the User Manual.
+
+
+
+

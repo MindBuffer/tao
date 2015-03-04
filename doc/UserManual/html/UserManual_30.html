@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<!-- HTML file produced from file: UserManual.tex --
+ -- using Hyperlatex v 2.3.1 (c) Otfried Cheong--
+ -- on Emacs 21.1 (patch 4) "Arches" XEmacs Lucid, Sun Apr 30 20:49:55 2000 -->
+<HEAD>
+<TITLE>Tao User Manual -- The Information Needed to Create an Instrument</TITLE>
+
+    <link rel=stylesheet href="../../taomanual.css" type="text/css">
+    
+</HEAD><BODY BACKGROUND="bg.gif">
+
+    <table width="500" border="0" align="left" cellspacing="2" cellpadding="2"><tr><td class="nav" valign="top"><!-- top panel --><A HREF="UserManual_24.html"><IMG ALT="Up" ALIGN=BOTTOM BORDER=0 SRC="up.gif"></A>
+    <BR><A HREF="UserManual_24.html">Instruments and Devices</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" valign="top"><A HREF="UserManual_29.html"><IMG ALT="Back" ALIGN=BOTTOM BORDER=0 SRC="back.gif"></A>
+    <BR><A HREF="UserManual_29.html">The Stop Device</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" valign="top"><A HREF="UserManual_31.html"><IMG ALT="Forward" ALIGN=BOTTOM BORDER=0 SRC="forward.gif"></A>
+    <BR><A HREF="UserManual_31.html">Access Points</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td></tr><!-- end top panel --><tr><td colspan="3" class="main"><!-- main text --><br><br>
+<H3>The Information Needed to Create an Instrument</H3>
+<P>When a new instrument is created three pieces of information are required
+from the user in the case of rectangular and elliptical sheets and two in
+the case of strings and circular sheets. These are:
+<P><UL><LI>A frequency or pitch specifying the dimensions of the instrument
+in the <I>x</I> direction
+<LI>A frequency or pitch specifying the dimensions of the instrument
+in the <I>y</I> direction (for rectangular and elliptical sheets only)
+<LI>A decay time
+</UL>
+<P>The dimensions of a new instrument are always described in terms of
+pitches or frequencies rather than physical units such as metres or
+millimetres. For example when creating a new string the pitch specified
+is used to determine the length of the string.
+You may be thinking `what about the tension in the string?', but in
+<B>Tao</B>'s cellular material the tension is fixed at an optimum value which
+gives the best frequency response, so the only factor affecting the
+pitch of a string is its length and vice versa.
+<P>In the case of a rectangular sheet two pitches or frequencies are
+required. The first relates to the time taken for a wavefront to make
+the round trip from the left hand side of the sheet to the right and
+back again (travelling in the <I>x</I> direction). The second relates
+to the time taken for a wavefront to make the round trip from the bottom
+to the top and back again (travelling in the <I>y</I> direction).
+<P><P>  <A NAME="1">
+    <BLOCKQUOTE><CENTER>
+    
+    
+    <IMG  SRC="xandyfreqs.gif">
+    
+    </CENTER></BLOCKQUOTE>
+    <CENTER>Relationship between x and y frequency and an instrument's size</CENTER>
+  </A>
+<P><P>The precise relationship between the frequencies and dimensions of the
+various instrument types is illustrated by figure <A HREF="#1">*</A>.
+The constant <CODE>Hz2CellConst</CODE> is defined by <B>Tao</B> and is used to
+translate a frequency into the appropriate number of cells required
+to produce that frequency of vibration.
+<P>In order to explain this more clearly figure <A HREF="#2">*</A>
+shows four snapshots of a circular sheet having had a short impulse
+applied at its centre. The white arrows
+indicate part of the wavefront traveling across the sheet in the 
+<I>x</I> direction, reflecting back off the boundary and eventually
+ending up back at the starting point again. Once the wavefront has
+traveled all the way to the other side of the sheet and then back
+to the centre again it has made one round trip. The speed of wave
+propagation is fixed for <B>Tao</B>'s material so the <CODE>Hz2CellConst</CODE>
+constant can be used to calculate how many cells it takes to produce
+the correct period <I>T</I>, and hence frequency <I>1/T</I>.
+<P><P>  <A NAME="2">
+    <BLOCKQUOTE><CENTER>
+    
+    
+    <IMG  SRC="circle_waves.gif">
+    
+    </CENTER></BLOCKQUOTE>
+    <CENTER>Round trip of a wavefront in a circular sheet</CENTER>
+  </A>
+<P><P>The final piece of information required by all new instruments is a
+decay time, the time taken for vibrations to naturally die away
+when the instrument is excited in some way and then left to vibrate
+freely. The value given is used to calculate a default value
+for the <CODE>velocityMultiplier</CODE> attribute of each cell. This initially
+gives the instrument uniform damping although this uniform behaviour
+can be subsequently altered by damping local regions of the instrument.
+More of this technique in section [TO DO: WRITE THIS SECTION].
+<P>
+    <BR></td></tr><!-- end main text --><tr><td class="nav" align="left" valign="top"><!-- bottom matter --><A HREF="UserManual_24.html"><IMG ALT="Up" ALIGN=BOTTOM BORDER=0 SRC="up.gif"></A>
+    <BR><A HREF="UserManual_24.html">Instruments and Devices</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" align="left" valign="top"><A HREF="UserManual_29.html"><IMG ALT="Back" ALIGN=BOTTOM BORDER=0 SRC="back.gif"></A>
+    <BR><A HREF="UserManual_29.html">The Stop Device</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" align="left" valign="top"><!-- bottom matter --><A HREF="UserManual_31.html"><IMG ALT="Forward" ALIGN=BOTTOM BORDER=0 SRC="forward.gif"></A>
+    <BR><A HREF="UserManual_31.html">Access Points</A>
+    <IMG width="167" height="1" SRC="trans1x1.gif">
+    </td></tr><!-- end bottom matter -->
+
+    <tr><td colspan="3" class="addr"><!-- bottom panel --><ADDRESS><FONT SIZE=-1>&#169;1999,2000 Mark Pearson
+<A HREF="mailto:m.pearson@ukonline.co.uk">m.pearson@ukonline.co.uk</A> April 30, 2000</ADDRESS><BR></td></tr><!-- end bottom panel --></table></BODY></HTML>

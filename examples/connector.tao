@@ -1,0 +1,24 @@
+Audio rate: 44100;
+
+String string1(200 Hz, 30 secs);
+String string2(200 Hz, 30 secs);
+
+Connector conn;
+
+Param x1,x2;
+
+Init:
+    string1.lockEnds();
+    string2.lockEnds();
+    ...
+
+Score 1 secs:
+    At start for 1 msecs:
+        string1(0.1).applyForce(1.0);
+	...
+
+    x1 = linear(0,1);
+    x2 = linear(1,0);
+
+    string1(x1) -- conn -- string2(x2);
+    ...    

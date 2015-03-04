@@ -1,0 +1,59 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<!-- HTML file produced from file: UserManual.tex --
+ -- using Hyperlatex v 2.3.1 (c) Otfried Cheong--
+ -- on Emacs 21.1 (patch 4) "Arches" XEmacs Lucid, Sun Apr 30 20:49:51 2000 -->
+<HEAD>
+<TITLE>Tao User Manual -- Configuring, making and installing <B>Tao</B></TITLE>
+
+    <link rel=stylesheet href="../../taomanual.css" type="text/css">
+    
+</HEAD><BODY BACKGROUND="bg.gif">
+
+    <table width="500" border="0" align="left" cellspacing="2" cellpadding="2"><tr><td class="nav" valign="top"><!-- top panel --><A HREF="UserManual_7.html"><IMG ALT="Up" ALIGN=BOTTOM BORDER=0 SRC="up.gif"></A>
+    <BR><A HREF="UserManual_7.html">Building and Installing <B>Tao</B></A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" valign="top"><A HREF="UserManual_8.html"><IMG ALT="Back" ALIGN=BOTTOM BORDER=0 SRC="back.gif"></A>
+    <BR><A HREF="UserManual_8.html">What else do you need to have installed?</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" valign="top"><A HREF="UserManual_10.html"><IMG ALT="Forward" ALIGN=BOTTOM BORDER=0 SRC="forward.gif"></A>
+    <BR><A HREF="UserManual_10.html">Troubleshooting the configuration process</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td></tr><!-- end top panel --><tr><td colspan="3" class="main"><!-- main text --><br><br>
+<H2>Configuring, making and installing <B>Tao</B></H2>
+As with most GNU-style software there are three easy steps to installing
+<B>Tao</B> assuming everything goes to plan. First change to the directory
+where you have unpacked the distribution and type the following
+commands one by one, waiting for any intervening output from each
+command to finish before typing the next.
+<P><PRE>
+    ./configure
+    make
+    make install
+</PRE>
+<P>The default path for installation of the binaries, library files and
+shell scripts is <CODE>/usr/local</CODE> so you will need root access in order
+to use the default. If you do not have root access then change the
+above to:
+<P><PRE>
+     ./configure --prefix=&lt;your path&gt;
+</PRE>
+<P>where <CODE>&lt;your path&gt;</CODE> is the full path to wherever you want to
+install Tao.
+<P>The configure script checks to see if you have the necessary programs
+headers and libraries installed. If you do not the configuration will
+abort with a message telling you what is missing. 
+<P><MENU>
+<LI><A HREF="UserManual_10.html">Troubleshooting the configuration process</A>
+<LI><A HREF="UserManual_11.html">If you are still stuck with configuration problems</A>
+<LI><A HREF="UserManual_12.html">Continuing with the build process</A>
+</MENU>
+
+    <BR></td></tr><!-- end main text --><tr><td class="nav" align="left" valign="top"><!-- bottom matter --><A HREF="UserManual_7.html"><IMG ALT="Up" ALIGN=BOTTOM BORDER=0 SRC="up.gif"></A>
+    <BR><A HREF="UserManual_7.html">Building and Installing <B>Tao</B></A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" align="left" valign="top"><A HREF="UserManual_8.html"><IMG ALT="Back" ALIGN=BOTTOM BORDER=0 SRC="back.gif"></A>
+    <BR><A HREF="UserManual_8.html">What else do you need to have installed?</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" align="left" valign="top"><!-- bottom matter --><A HREF="UserManual_10.html"><IMG ALT="Forward" ALIGN=BOTTOM BORDER=0 SRC="forward.gif"></A>
+    <BR><A HREF="UserManual_10.html">Troubleshooting the configuration process</A>
+    <IMG width="167" height="1" SRC="trans1x1.gif">
+    </td></tr><!-- end bottom matter -->
+
+    <tr><td colspan="3" class="addr"><!-- bottom panel --><ADDRESS><FONT SIZE=-1>&#169;1999,2000 Mark Pearson
+<A HREF="mailto:m.pearson@ukonline.co.uk">m.pearson@ukonline.co.uk</A> April 30, 2000</ADDRESS><BR></td></tr><!-- end bottom panel --></table></BODY></HTML>

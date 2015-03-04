@@ -1,0 +1,13 @@
+Audio rate: 44100;
+
+Ellipse ellipse2(200 Hz, 400 Hz, 20 secs);
+
+Init:
+    ellipse2.lock(left, 0.8, centre, centre);
+    ...
+
+Score 5 secs:
+    At 0 secs for 0.5 msecs:
+        ellipse2(0.3,0.2).applyForce(linear(30,0));
+	...
+    ...    

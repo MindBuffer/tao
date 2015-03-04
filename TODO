@@ -1,0 +1,69 @@
+The Software
+------------
+
+Make the synthesis engine more efficient.
+
+Start designing a GUI with gtk+ or Qt.
+
+Figure out how a scripting language such as Python
+could be used to provide better encapsulation for
+Tao without slowing down what is already a very
+computationally expensive technique. This would
+require replacing Tao's current method of executing
+a script i.e. Tao script -> C++ program -> Link
+with libtao -> Executable -> Launch, with scripts
+which were truly interpreted. The biggest problem
+here is in still being able to express model-rate
+interactions between instuments and devices. One
+solution might be to allow expressions to be
+implemented on the fly as efficient signal flow
+networks as in Csound until no longer needed at which
+point they would be dismantled.
+
+Design table generator/reader classes.
+
+Encapsulation
+    o Instruments (constructed from re-usable
+      components).
+    o Performance Techniques (parametric 
+      algorithms for re-use within a score).
+
+Develop self-tests for configuration and installation
+including Tao scripts which test every feature for
+correct operation.
+
+Improve syntax and run-time error handling. At the
+moment, many script errors just lead to an unhelpful
+'Parse failed' message. Compilation errors generated
+by g++ could be parsed and used to give the user
+more feedback about where an error occurred in
+the original script.
+
+
+The Documentation
+-----------------
+
+Take all example scripts in User Manual and put them
+in the examples directory, sensibly named.
+
+Remove Dependencies document and either put everything
+in it into the User Manual, or take all the installation
+instructions out of the User Manual and put them into
+a separate Install Guide. Probably best to put everything
+into one document.
+
+Tidy up typographical conventions used. Things are a bit
+of a mess at the moment. This needs to be coordinated
+with LaTeX macros for index entries, most of which also
+format their arguments in some way both in the main
+text and index.
+
+Re-write old sections such as 'Information Needed
+to Create an Instrument'.
+
+
+Tutorial
+--------
+
+Write a set of useful tutorial scripts and document
+them in the tutorial section of the User Manual.

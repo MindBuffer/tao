@@ -1,0 +1,13 @@
+Audio rate: 44100;
+
+Rectangle rectangle(300 Hz, 400 Hz, 20 secs);
+
+Init:
+    rectangle.lockCorners();
+    ...
+
+Score 5 secs:
+    At 0 secs for 1 msecs:
+        rectangle(0.1,0.1).applyForce(linear(30,0));
+	...
+    ...    
