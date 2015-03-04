@@ -1,0 +1,17 @@
+Audio rate: 44100;
+
+String string(200 Hz, 30 secs);
+
+Hammer hammer;
+
+Init:
+    string.lockEnds();
+    string(0.7) -- hammer;
+    hammer.setGravity(0.0001).setMass(200.0);
+    ...
+
+Score 10 secs:
+    At 0 secs:
+        hammer.drop();
+	...
+    ...

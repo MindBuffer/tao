@@ -1,0 +1,30 @@
+// accesspoint1.tao
+//
+// Shows how to create and initialise two AccessPoint objects and then use
+// them to specify where to take output from a string.
+
+Audio rate: 44100;
+
+String s1(100 Hz, 20 secs);
+
+AccessPoint l=s1(0.1), r=s1(0.9);
+
+Output out(2);
+
+Init:
+    s1.lockEnds();
+    ...
+
+Score 5.0 secs:
+    At 0 secs for 0.1 msecs:
+        s1(0.05).applyForce(1.0);
+	...
+
+    Every 0.1 secs:
+        Print Time, " ", l, " ", r,  newline;
+	...
+
+    out.chL: l;
+    out.chR: r;
+    ...
+

@@ -1,0 +1,74 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<!-- HTML file produced from file: UserManual.tex --
+ -- using Hyperlatex v 2.3.1 (c) Otfried Cheong--
+ -- on Emacs 21.1 (patch 4) "Arches" XEmacs Lucid, Sun Apr 30 20:49:52 2000 -->
+<HEAD>
+<TITLE>Tao User Manual -- Continuing with the build process</TITLE>
+
+    <link rel=stylesheet href="../../taomanual.css" type="text/css">
+    
+</HEAD><BODY BACKGROUND="bg.gif">
+
+    <table width="500" border="0" align="left" cellspacing="2" cellpadding="2"><tr><td class="nav" valign="top"><!-- top panel --><A HREF="UserManual_9.html"><IMG ALT="Up" ALIGN=BOTTOM BORDER=0 SRC="up.gif"></A>
+    <BR><A HREF="UserManual_9.html">Configuring, making and installing <B>Tao</B></A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" valign="top"><A HREF="UserManual_11.html"><IMG ALT="Back" ALIGN=BOTTOM BORDER=0 SRC="back.gif"></A>
+    <BR><A HREF="UserManual_11.html">If you are still stuck with configuration problems</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" valign="top"><A HREF="UserManual_13.html"><IMG ALT="Forward" ALIGN=BOTTOM BORDER=0 SRC="forward.gif"></A>
+    <BR><A HREF="UserManual_13.html">Setting PATH and LD_LIBRARY_PATH for the bash shell</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td></tr><!-- end top panel --><tr><td colspan="3" class="main"><!-- main text --><br><br>
+<H3>Continuing with the build process</H3>
+Assuming the configuration part worked you can continue with the
+build process, i.e. <CODE>make</CODE> and <CODE>make install</CODE>. After
+this you should have the following files installed (assuming that
+<CODE>prefix=/usr/local</CODE>):
+<P><PRE>
+    /usr/local/  
+        lib/
+            libtao.so*
+            libtao.a
+        bin/
+            tao
+            tao-config
+            taosf
+            taoparse
+            tao2wav
+</PRE>
+<P>The install process leaves <B>Tao</B>'s header files where they are but
+provides a shell script <CODE>tao-config</CODE> which can be used to find out
+where both these headers and the various libraries are installed.
+This is particularly useful if you want to write your own C++ programs
+and link them against the <B>Tao</B> library. It is used in the following
+way:
+<P><PRE>
+    tao-config --prefix     =&gt;  location for installed files
+    tao-config --cflags     =&gt;  command line flags for the compiler
+                                to find Tao's header files
+    tao-config --libs       =&gt;  command line flags for the compiler
+                                to find Tao's libraries
+</PRE>
+<P>The next step is important. In order for your system to locate
+the binary executables, shell scripts and libraries you have to set
+two environment variables: <CODE>PATH</CODE> and <CODE>LD_LIBRARY_PATH</CODE>.
+This process is described step by step in the following sections. The
+first thing you need to do though is find out which UNIX shell you use.
+To do this type:
+<P><PRE>
+    echo $SHELL
+</PRE>
+<P><MENU>
+<LI><A HREF="UserManual_13.html">Setting PATH and LD_LIBRARY_PATH for the bash shell</A>
+<LI><A HREF="UserManual_14.html">Setting PATH and LD_LIBRARY_PATH for the tcsh shell</A>
+</MENU>
+
+    <BR></td></tr><!-- end main text --><tr><td class="nav" align="left" valign="top"><!-- bottom matter --><A HREF="UserManual_9.html"><IMG ALT="Up" ALIGN=BOTTOM BORDER=0 SRC="up.gif"></A>
+    <BR><A HREF="UserManual_9.html">Configuring, making and installing <B>Tao</B></A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" align="left" valign="top"><A HREF="UserManual_11.html"><IMG ALT="Back" ALIGN=BOTTOM BORDER=0 SRC="back.gif"></A>
+    <BR><A HREF="UserManual_11.html">If you are still stuck with configuration problems</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" align="left" valign="top"><!-- bottom matter --><A HREF="UserManual_13.html"><IMG ALT="Forward" ALIGN=BOTTOM BORDER=0 SRC="forward.gif"></A>
+    <BR><A HREF="UserManual_13.html">Setting PATH and LD_LIBRARY_PATH for the bash shell</A>
+    <IMG width="167" height="1" SRC="trans1x1.gif">
+    </td></tr><!-- end bottom matter -->
+
+    <tr><td colspan="3" class="addr"><!-- bottom panel --><ADDRESS><FONT SIZE=-1>&#169;1999,2000 Mark Pearson
+<A HREF="mailto:m.pearson@ukonline.co.uk">m.pearson@ukonline.co.uk</A> April 30, 2000</ADDRESS><BR></td></tr><!-- end bottom panel --></table></BODY></HTML>

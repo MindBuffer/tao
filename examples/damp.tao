@@ -1,0 +1,42 @@
+Audio rate: 44100;
+
+String string1(300 Hz, 20 secs);
+String string2(300 Hz, 20 secs);
+String string3(300 Hz, 20 secs);
+String string4(300 Hz, 20 secs);
+String string5(300 Hz, 20 secs);
+String string6(300 Hz, 20 secs);
+String string7(300 Hz, 20 secs);
+String string8(300 Hz, 20 secs);
+String string9(300 Hz, 20 secs);
+String string10(300 Hz, 20 secs);
+
+Init:
+    string1.lockEnds().setDamping(left,1/20,0.0);
+    string2.lockEnds().setDamping(left,1/20,0.1);
+    string3.lockEnds().setDamping(left,1/20,0.2);
+    string4.lockEnds().setDamping(left,1/20,0.3);
+    string5.lockEnds().setDamping(left,1/20,0.4);
+    string6.lockEnds().setDamping(left,1/20,0.5);
+    string7.lockEnds().setDamping(left,1/20,0.6);
+    string8.lockEnds().setDamping(left,1/20,0.7);
+    string9.lockEnds().setDamping(left,1/20,0.8);
+    string10.lockEnds().setDamping(left,1/20,0.8);
+    ...
+
+Score 5 secs:
+    At 0 secs for 0.1 msecs:
+        string1(0.1).applyForce(10);
+        string2(0.1).applyForce(10);
+	string3(0.1).applyForce(10);
+        string4(0.1).applyForce(10);
+        string5(0.1).applyForce(10);
+        string6(0.1).applyForce(10);
+        string7(0.1).applyForce(10);
+        string8(0.1).applyForce(10);
+        string9(0.1).applyForce(10);
+        string10(0.1).applyForce(10);
+	...
+
+    Every 0.1 secs: Print Time, newline; ...
+    ...    

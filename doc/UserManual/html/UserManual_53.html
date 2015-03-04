@@ -1,0 +1,58 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<!-- HTML file produced from file: UserManual.tex --
+ -- using Hyperlatex v 2.3.1 (c) Otfried Cheong--
+ -- on Emacs 21.1 (patch 4) "Arches" XEmacs Lucid, Sun Apr 30 20:49:58 2000 -->
+<HEAD>
+<TITLE>Tao User Manual -- Parameter Declarations</TITLE>
+
+    <link rel=stylesheet href="../../taomanual.css" type="text/css">
+    
+</HEAD><BODY BACKGROUND="bg.gif">
+
+    <table width="500" border="0" align="left" cellspacing="2" cellpadding="2"><tr><td class="nav" valign="top"><!-- top panel --><A HREF="UserManual_48.html"><IMG ALT="Up" ALIGN=BOTTOM BORDER=0 SRC="up.gif"></A>
+    <BR><A HREF="UserManual_48.html">The Declarations Section</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" valign="top"><A HREF="UserManual_52.html"><IMG ALT="Back" ALIGN=BOTTOM BORDER=0 SRC="back.gif"></A>
+    <BR><A HREF="UserManual_52.html">Pitch Declarations</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" valign="top"><A HREF="UserManual_54.html"><IMG ALT="Forward" ALIGN=BOTTOM BORDER=0 SRC="forward.gif"></A>
+    <BR><A HREF="UserManual_54.html">The Init Section</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td></tr><!-- end top panel --><tr><td colspan="3" class="main"><!-- main text --><br><br>
+<H3>Parameter Declarations</H3>
+
+The term <EM>parameter</EM><A NAME="1"> is</A> a blanket term which is applied to both
+floating point and integer variables. There are four keywords available
+for denoting different types of parameters: <CODE>Param</CODE><A NAME="2">,</A> <CODE>Integer</CODE><A NAME="3">,</A>
+<CODE>Counter</CODE><A NAME="4"> and</A> <CODE>Flag</CODE><A NAME="5">.</A> The latter three all lead to the creation
+of integer variables and the only reason for having three different keywords
+for the same parameter type is so that the semantic function of a 
+particular integer variable is made more clear in a script.
+<P>The following are examples of valid parameter declarations:
+<P><PRE>
+    Param p1, p2, p3=10.0;
+    Integer i1=10, i2=30;
+    Counter count=0;
+    Flag flag1=false, flag2=true;
+</PRE>
+<P>As with instruments and devices it is also possible to create (one-dimensional)
+arrays of parameters in the following ways:
+<P><PRE>
+    Param array1[10], array2[20], array3[]={0.1,0.2,0.3,0.4,0.5};
+    Integer intArray[5]={1,3,5,7,9};
+    Flag flagArray[]={true, false, true, true, false};
+</PRE>
+<P>Note that in the case of an initialised array (one with initial values
+in curly brackets) giving the size of the array is optional. However
+if the size is specified then it must match up with the number of
+intial values given.
+<P>
+    <BR></td></tr><!-- end main text --><tr><td class="nav" align="left" valign="top"><!-- bottom matter --><A HREF="UserManual_48.html"><IMG ALT="Up" ALIGN=BOTTOM BORDER=0 SRC="up.gif"></A>
+    <BR><A HREF="UserManual_48.html">The Declarations Section</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" align="left" valign="top"><A HREF="UserManual_52.html"><IMG ALT="Back" ALIGN=BOTTOM BORDER=0 SRC="back.gif"></A>
+    <BR><A HREF="UserManual_52.html">Pitch Declarations</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" align="left" valign="top"><!-- bottom matter --><A HREF="UserManual_54.html"><IMG ALT="Forward" ALIGN=BOTTOM BORDER=0 SRC="forward.gif"></A>
+    <BR><A HREF="UserManual_54.html">The Init Section</A>
+    <IMG width="167" height="1" SRC="trans1x1.gif">
+    </td></tr><!-- end bottom matter -->
+
+    <tr><td colspan="3" class="addr"><!-- bottom panel --><ADDRESS><FONT SIZE=-1>&#169;1999,2000 Mark Pearson
+<A HREF="mailto:m.pearson@ukonline.co.uk">m.pearson@ukonline.co.uk</A> April 30, 2000</ADDRESS><BR></td></tr><!-- end bottom panel --></table></BODY></HTML>

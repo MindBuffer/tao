@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<!-- HTML file produced from file: UserManual.tex --
+ -- using Hyperlatex v 2.3.1 (c) Otfried Cheong--
+ -- on Emacs 21.1 (patch 4) "Arches" XEmacs Lucid, Sun Apr 30 20:49:53 2000 -->
+<HEAD>
+<TITLE>Tao User Manual -- <B>Tao</B>'s Cellular Material</TITLE>
+
+    <link rel=stylesheet href="../../taomanual.css" type="text/css">
+    
+</HEAD><BODY BACKGROUND="bg.gif">
+
+    <table width="500" border="0" align="left" cellspacing="2" cellpadding="2"><tr><td class="nav" valign="top"><!-- top panel --><A HREF="UserManual_19.html"><IMG ALT="Up" ALIGN=BOTTOM BORDER=0 SRC="up.gif"></A>
+    <BR><A HREF="UserManual_19.html">Conceptual Overview</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" valign="top"><A HREF="UserManual_19.html"><IMG ALT="Back" ALIGN=BOTTOM BORDER=0 SRC="back.gif"></A>
+    <BR><A HREF="UserManual_19.html">Conceptual Overview</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" valign="top"><A HREF="UserManual_21.html"><IMG ALT="Forward" ALIGN=BOTTOM BORDER=0 SRC="forward.gif"></A>
+    <BR><A HREF="UserManual_21.html">Cell Attributes</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td></tr><!-- end top panel --><tr><td colspan="3" class="main"><!-- main text --><br><br>
+<H2><B>Tao</B>'s Cellular Material</H2>
+
+<P><B>Tao</B> is based around the notion of building complex vibrating structures
+from simpler acoustic building blocks. In order to realise this goal 
+a general purpose adaptable acoustic material is provided. The material
+consists of point masses arranged in a regular grid pattern and connected
+together with springs. The overall structure of the material is shown in
+figure <A HREF="#1">*</A>. 
+<P><P>  <A NAME="1">
+    <BLOCKQUOTE><CENTER>
+    
+    
+    <IMG  SRC="cells.gif">
+    
+    </CENTER></BLOCKQUOTE>
+    <CENTER>A small portion of <B>Tao</B>'s cellular acoustic material</CENTER>
+  </A>
+<P><P>Each point mass or <EM>cell</EM><A NAME="2"> maintains</A> a set of state variables for
+its position, velocity, mass, etc., and the overall state is updated in
+discrete time steps or <EM>ticks</EM><A NAME="3"> according</A> to rules which take into
+account a cell's own state and the states of its immediate neighbours.
+More specifically a cell's spring connections to its neighbours exert
+forces on the cell and from these forces Newton's laws of motion can
+be used to calculate the acceleration and velocity of the cell.
+<P>Note that the cells are constrained to have one degree of freedom (in the
+direction of the <I>z</I> axis). This has two practical advantages:
+<P><UL><LI>It makes the calculations involved in animating the material simpler.
+<LI>It also makes it a simple matter to generate time varying waveforms
+from the vibrations in the material since all cells will vibrate about a
+fixed zero reference point at <I>z=0</I> so long as at least one cell
+is fixed at that position.
+</UL>
+<P>One question which has often been asked in relation to <B>Tao</B>'s cellular
+material is: `have you experimented with 3D blocks of material?'. The answer
+to this question is no, for the following reasons. Firstly, the computational
+expense of such instruments would be prohibitive, and secondly, although the
+restriction of working with 2D instruments may at first seem like a limitation,
+in practice it doesn't significantly affect <B>Tao</B>'s ability to produce an
+wide variety of interesting sounds.
+<P><MENU>
+<LI><A HREF="UserManual_21.html">Cell Attributes</A>
+<LI><A HREF="UserManual_22.html">The Emergent Behaviour of the Material</A>
+<LI><A HREF="UserManual_23.html">Generating Sound Output from the Material</A>
+</MENU>
+
+    <BR></td></tr><!-- end main text --><tr><td class="nav" align="left" valign="top"><!-- bottom matter --><A HREF="UserManual_19.html"><IMG ALT="Up" ALIGN=BOTTOM BORDER=0 SRC="up.gif"></A>
+    <BR><A HREF="UserManual_19.html">Conceptual Overview</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" align="left" valign="top"><A HREF="UserManual_19.html"><IMG ALT="Back" ALIGN=BOTTOM BORDER=0 SRC="back.gif"></A>
+    <BR><A HREF="UserManual_19.html">Conceptual Overview</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" align="left" valign="top"><!-- bottom matter --><A HREF="UserManual_21.html"><IMG ALT="Forward" ALIGN=BOTTOM BORDER=0 SRC="forward.gif"></A>
+    <BR><A HREF="UserManual_21.html">Cell Attributes</A>
+    <IMG width="167" height="1" SRC="trans1x1.gif">
+    </td></tr><!-- end bottom matter -->
+
+    <tr><td colspan="3" class="addr"><!-- bottom panel --><ADDRESS><FONT SIZE=-1>&#169;1999,2000 Mark Pearson
+<A HREF="mailto:m.pearson@ukonline.co.uk">m.pearson@ukonline.co.uk</A> April 30, 2000</ADDRESS><BR></td></tr><!-- end bottom panel --></table></BODY></HTML>

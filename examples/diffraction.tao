@@ -1,0 +1,35 @@
+Audio rate: 44100;
+
+Rectangle source(150 Hz, 300 Hz, 20 secs);
+Rectangle dest(150 Hz, 300 Hz, 20 secs);
+
+Init:
+    source.lockCorners();
+    dest.lockCorners();
+
+    source.lock(0.000000, 0.050000, top, top);
+    source.lock(0.070000, 0.120000, top, top);
+    source.lock(0.140000, 0.190000, top, top);
+    source.lock(0.210000, 0.260000, top, top);
+    source.lock(0.280000, 0.330000, top, top);
+    source.lock(0.350000, 0.400000, top, top);
+    source.lock(0.420000, 0.470000, top, top);
+    source.lock(0.490000, 0.540000, top, top);
+    source.lock(0.560000, 0.610000, top, top);
+    source.lock(0.630000, 0.680000, top, top);
+    source.lock(0.700000, 0.750000, top, top);
+    source.lock(0.770000, 0.820000, top, top);
+    source.lock(0.840000, 0.890000, top, top);
+    source.lock(0.910000, 0.960000, top, top);
+    source.lock(0.980000, 1.000000, top, top);
+
+    Join source(centre, top) to dest(centre, bottom);
+
+    dest.setMagnification(5.0);
+    ...
+
+Score 5 secs:
+    At 0 secs for 0.1 msecs:
+        source(0.5,bottom).applyForce(50);
+	...
+    ...    

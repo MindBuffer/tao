@@ -1,0 +1,807 @@
+\chapter{Tutorial}
+\label{section:tutorial}
+This section introduces the main concepts involved in creating
+interesting virtual instruments using \tao. It does so in a 
+`hands on' manner with the aid of practical script examples.
+All of the examples presented in this section are available in the
+\verb|examples| directory of the distribution. The examples start off with
+the most basic instrument possible -- a single string -- and work up to more
+and more complex instruments.
+
+The examples presented here are divided into two categories. The first set
+are designed to illustrate one by one the main techniques involved in 
+contructing \tao\ instruments. Each script covers one major technique. The
+second set are concerned with designing synthesis scenarios which produce
+interesting sounds. So don't be too surprised if the first
+set of scripts produce either no sound at all or rather uninteresting
+sounds!
+
+By the end of this tutorial you should have at your disposal a useful
+armoury of techniques which will hopefully whet your appetite
+for creating your own instruments.
+
+\section{Learning the Basics}
+\subsection{A simple string instrument}
+The simplest possible instrument consists of a single string. The
+following script illustrates how to create such an instrument,
+`pluck' it and generate an output file. 
+
+\begin{verbatim}
+    Audio rate: 44100;
+
+    String string(100 Hz, 20 secs);
+    Output output(stereo);
+
+    Init:
+        string.lockEnds();
+        ...
+
+    Score 20 secs:
+        At 0 secs for 1 msecs:
+            string(0.1).applyForce(1.0);
+            ...
+        output.chL: string(0.1);
+        output.chR: string(0.9);
+
+	Every 0.1 secs: Print Time, newline; ...
+        ...
+\end{verbatim}
+
+The first line of this script declares the audio sampling rate of
+any output files generated (which in the current version has to be
+44100). A single string with a fundamental frequency of 100Hz is
+created, followed by a single two-channel output device which will
+be used to write the movements of the string to a soundfile.
+
+The statement \verb|string.lockEnds()| is contained within the \emph{Init}
+block of the script. This block of statements is executed once just prior
+to the performance and is delimited (as with any block of statements in
+\tao\ with a \verb|:| just after the keyword \Kwd|Init| and a \verb|...|
+just after the last statement.
+
+The score is fairly self-explanatory. It has a duration of 20 seconds
+and for a short time interval at the beginning of the performance a
+fixed force of magnitude 1 is applied to a point on the string one tenth
+of the way along its length. The movements of two points on the string
+are traced throughout the performance and
+
+\subsection{Damping the ends of the string}
+Damping local regions of an instrument more highly than the rest of
+the instrument leads to the vibrations in that part of the instrument
+dying away more quickly. This is one of \tao's most important
+features as it is probably the single most significant factor in
+determining the character of an instrument after its basic shape
+and structure.
+
+For strings damping can be used to produce a more natural spectral
+decay by choosing to damp small regions near the ends of the string.
+By \emph{small regions} I mean in the order of $1/10$ to $1/20$ of
+the length of the string.
+
+The exact value chosen for the amount of damping depends on how
+quickly you want the harmonics to die away. For example:
+
+\begin{verbatim}
+    Audio rate: 44100;
+
+    String string(100 Hz, 20 secs);
+    Output output(stereo);
+
+    Init:
+        string.lockEnds();
+	string.setDamping(left, 0.1, 0.1);
+	string.setDamping(right, 0.9, 0.1);
+        ...
+
+    Score 20 secs:
+        At 0 secs for 1 msecs:
+            string(0.1).applyForce(1.0);
+            ...
+        output.chL: string(0.1);
+        output.chR: string(0.9);
+
+	Every 0.1 secs: Print Time, newline; ...
+        ...
+\end{verbatim}
+
+
+\subsection{Producing harmonics from the string}
+\subsection{Coupling two strings together}
+\subsection{An instrument with an array of pitched strings}
+\subsection{Coupling the strings together}
+\subsection{A rectangular sheet with locked corners and local damping}
+\subsection{Bowed and stopped strings}
+\subsection{Moving access points}
+\subsection{Using the Connector device}
+\subsection{Using the Hammer device}
+\subsection{Using the Output device}
+\subsection{Output Expressions}
+\subsection{Controlling the graphical layout of instruments}
+
+\section{Combining the techniques to make interesting sounds}
+\subsection{Tips for bowing strings}
+\subsection{Effective uses of damping}
+\subsection{Using Connector devices and anchor points}
+\subsection{Rules of thumb for effective instrument design}
+\begin{itemize}
+\item Try to make everything dynamically evolve. It will not
+cost you any more computationally but will sound more 
+interesting.
+\item Always damp parts of an instrument so that its spectral
+profile will change as the sound decays away. Instruments
+with uniform damping often sound the most clinical and
+synthetic.
+\item Generate lots of output file from each performance. 
+Whether or not you generate any output, \tao\ will still
+have to churn its way through the intensive calculations
+needed to realise a performance. It will not cost you any more
+to see how ten different points on an instrument sound, rather
+than just one.
+\item Use lots of Connector devices. The more highly coupled
+an instrument is the more complex the resulting vibrations will
+be. Once again using lots of Connectors will not make the 
+performance significantly more computationally expensive than
+using none, but it will make the resulting sounds more
+interesting.
+\item Experiment with small parts of a large instrument in isolation
+before coupling them together. If one of your strings goes ``clunk''
+instead or ringing beautifully when you pluck it, there is not much
+sense in connecting 100 such strings to a resonator and coming
+back later only to find that the whole instrument goes ``clunk''!
+\end{itemize}
+
+
+
+\section{Using access points}
+\subsection{Example 1 - accesspoint1.tao}
+This example illustrates how to use access points\index{access points}
+to generate output from an instrument and send the resulting data via an
+Output device to a output file.
+
+\begin{verbatim}
+    Audio rate: 44100;
+        
+    String s1(100 Hz, 20 secs);    
+    AccessPoint l=s1(0.1), r=s1(0.9);
+    Output out(2);
+        
+    Init:
+        s1.lockEnds();
+        ...
+        
+    Score 5.0 secs:
+        At 0 secs for 0.1 msecs:
+            s1(0.05).applyForce(1.0);
+            ...
+        
+        Every 0.1 secs:
+            Print Time, " ", l, " ", r,  newline;
+            ...
+        
+        out.chL: l;
+        out.chR: r;
+    ...    
+\end{verbatim}
+
+\subsection{Example 2 - accesspoint2.tao}
+This example illustrates the use of access points\index{access points}
+to connect together two components to form a more interesting compound
+instrument. It does so by creating two strings and applying a short
+impulse to one of them. A Connector device is used to connect together
+two access points, one on each string. The access points are not fixed
+but move along their respective strings as the performance progresses. 
+
+\begin{verbatim}
+    // accesspoint2.tao
+    //
+    // Create two strings and implement a connection between them using
+    // two moving access points.
+        
+    Audio rate: 44100;
+        
+    String string1(200 Hz, 20 secs);
+    String string2(200 Hz, 20 secs);
+        
+    AccessPoint point1, point2;
+        
+    Connector connector;
+        
+    Init:
+        string1.lockEnds();
+        string2.lockEnds();
+        ...
+        
+    Score 5.0 secs:
+        At 0 secs for 0.1 msecs:
+            string1(0.05).applyForce(1.0);
+            ...
+        
+        ControlRate 100:
+            point1=string1(linear(0,1));
+            point2=string2(linear(1,0));
+            ...
+            
+        point1 -- connector -- point2;
+        ...
+\end{verbatim}
+
+\section{An instrument with a single string}
+This script creates an instrument with a single string and then applies
+a force to one end of it for a short time interval.
+
+\begin{verbatim}
+    // string.tao
+    //
+    // Create a single string and apply a very short impulse to one
+    // end. 
+    
+    Audio rate: 44100;
+    
+    String string(200 Hz, 20 secs);
+    
+    Init:
+        string.lockEnds();
+        ...
+    
+    Score 5 secs:
+        At 0 secs for 1 msecs:
+            string(0.1).applyForce(linear(1,0));
+            ...
+        ...    
+\end{verbatim}
+ 
+\section{Using the Bow device - bow.tao}
+\begin{verbatim}
+\end{verbatim}
+     
+\section{Creating a circular sheet}
+\subsection{Example 1 - circle.tao}
+This script creates a single circular sheet, locks its entire
+perimeter, and then applies a linearly changing force at a point
+$(x=0.3,y=0.3)$ for an interval of 1 millisecond.
+
+\begin{verbatim}
+    Audio rate: 44100;
+        
+    Circle circle(300 Hz, 20 secs);
+        
+    Init:
+        circle.lockPerimeter();
+        ...
+        
+    Score 5 secs:
+        At 0 secs for 1 msecs:
+            circle(0.3,0.3).applyForce(linear(40,0));
+            ...
+        ...
+\end{verbatim}
+ 
+\subsection{Example 2 - circle2.tao}
+This script is similar to the previous one except that the circle has
+its left and right edges locked instead of the whole perimeter.
+
+\begin{verbatim}
+    Audio rate: 44100;
+        
+    Circle circle(300 Hz, 20 secs);
+        
+    Init:
+        circle.lockLeft().lockRight();
+        ...
+        
+    Score 5 secs:
+        At 0 secs for 1 msecs:
+            circle(0.3,0.3).applyForce(linear(30,0));
+            ...
+        ...        
+\end{verbatim}
+ 
+\section{Using the Connector device - connector.tao}
+This script creates two strings and a Connector device. The
+Connector device is used to couple the two strings together. The
+access points representing the end points of the connector move during
+the performance. One migrates from one end of one of the strings to the
+other, whilst the second migrates in the opposite direction on the other
+string. This script also involves the \Type{Param} keyword.
+
+\begin{verbatim}
+    Audio rate: 44100;
+        
+    String string1(200 Hz, 30 secs);
+    String string2(200 Hz, 30 secs);
+        
+    Connector conn;
+        
+    Param x1,x2;
+        
+    Init:
+        string1.lockEnds();
+        string2.lockEnds();
+        ...
+        
+    Score 1 secs:
+        At start for 1 msecs:
+            string1(0.1).applyForce(1.0);
+            ...
+        
+        x1 = linear(0,1);
+        x2 = linear(1,0);
+        
+        string1(x1) -- conn -- string2(x2);
+        ...    
+\end{verbatim}
+ 
+\section{Damping parts of an instrument - damp.tao}
+This script creates a set of strings and damps the same region at the
+left hand end of each string but to different degrees. The strings
+are then all plucked in unison and the subsequent wave patterns give
+a side by side comparison of the effects of different damping values.
+
+\begin{verbatim}
+    Audio rate: 44100;
+        
+    String string1(300 Hz, 20 secs);
+    String string2(300 Hz, 20 secs);
+    String string3(300 Hz, 20 secs);
+    String string4(300 Hz, 20 secs);
+    String string5(300 Hz, 20 secs);
+    String string6(300 Hz, 20 secs);
+    String string7(300 Hz, 20 secs);
+    String string8(300 Hz, 20 secs);
+    String string9(300 Hz, 20 secs);
+    String string10(300 Hz, 20 secs);
+        
+    Init:
+        string1.lockEnds().setDamping(left,1/20,0.0);
+        string2.lockEnds().setDamping(left,1/20,0.1);
+        string3.lockEnds().setDamping(left,1/20,0.2);
+        string4.lockEnds().setDamping(left,1/20,0.3);
+        string5.lockEnds().setDamping(left,1/20,0.4);
+        string6.lockEnds().setDamping(left,1/20,0.5);
+        string7.lockEnds().setDamping(left,1/20,0.6);
+        string8.lockEnds().setDamping(left,1/20,0.7);
+        string9.lockEnds().setDamping(left,1/20,0.8);
+        string10.lockEnds().setDamping(left,1/20,0.8);
+        ...
+        
+    Score 5 secs:
+        At 0 secs for 0.1 msecs:
+            string1(0.1).applyForce(10);
+            string2(0.1).applyForce(10);
+            string3(0.1).applyForce(10);
+            string4(0.1).applyForce(10);
+            string5(0.1).applyForce(10);
+            string6(0.1).applyForce(10);
+            string7(0.1).applyForce(10);
+            string8(0.1).applyForce(10);
+            string9(0.1).applyForce(10);
+            string10(0.1).applyForce(10);
+            ...
+        Every 0.1 secs: Print Time, newline; ...
+        ...
+\end{verbatim}
+ 
+\section{Emergent behaviour (diffraction) - diffraction.tao}
+This script creates two rectangular sheets and joins them together using
+the \Statement{Join} statement. The boundary between the two sheets is then
+locked in several places leaving a few `slots' where the waves can get through.
+A short impulse is applied to one of the sheets named verb|source|
+and the resulting wave fronts interfere after having passed through the
+slots to form diffraction patterns.
+
+\begin{verbatim}
+    Audio rate: 44100;
+        
+    Rectangle source(150 Hz, 300 Hz, 20 secs);
+    Rectangle dest(150 Hz, 300 Hz, 20 secs);
+        
+    Init:
+        source.lockCorners();
+        dest.lockCorners();
+        
+        source.lock(0.000000, 0.050000, top, top);
+        source.lock(0.070000, 0.120000, top, top);
+        source.lock(0.140000, 0.190000, top, top);
+        source.lock(0.210000, 0.260000, top, top);
+        source.lock(0.280000, 0.330000, top, top);
+        source.lock(0.350000, 0.400000, top, top);
+        source.lock(0.420000, 0.470000, top, top);
+        source.lock(0.490000, 0.540000, top, top);
+        source.lock(0.560000, 0.610000, top, top);
+        source.lock(0.630000, 0.680000, top, top);
+        source.lock(0.700000, 0.750000, top, top);
+        source.lock(0.770000, 0.820000, top, top);
+        source.lock(0.840000, 0.890000, top, top);
+        source.lock(0.910000, 0.960000, top, top);
+        source.lock(0.980000, 1.000000, top, top);
+        
+        Join source(centre, top) to dest(centre, bottom);
+        
+        dest.setMagnification(5.0);
+        ...
+        
+    Score 5 secs:
+        At 0 secs for 0.1 msecs:
+            source(0.5,bottom).applyForce(50);
+            ...
+        ...    
+\end{verbatim}
+
+\section{Creating an elliptical sheet}
+\subsection{Example 1 - ellipse.tao}
+This script creates an elliptical sheet, locks the whole perimeter
+and then applies a short impulse to the sheet at a point $(x=0.15,y=0.5)$.
+
+\begin{verbatim}
+    Audio rate: 44100;
+        
+    Ellipse ellipse(200 Hz, 400 Hz, 20 secs);
+        
+    Init:
+        ellipse.lockPerimeter();
+        ...
+        
+    Score 5 secs:
+        At 0 secs for 0.5 msecs:
+            ellipse(0.15,0.5).applyForce(linear(30,0));
+            ...
+        ...
+\end{verbatim}
+ 
+\subsection{Example 2 - ellipse2.tao}
+This script is similar to the previous one except that instead of
+locking the whole perimeter, a thin strip of the instrument is locked.
+
+\begin{verbatim}
+    Audio rate: 44100;
+        
+    Ellipse ellipse2(200 Hz, 400 Hz, 20 secs);
+        
+    Init:
+        ellipse2.lock(left, 0.8, centre, centre);
+        ...
+        
+    Score 5 secs:
+        At 0 secs for 0.5 msecs:
+            ellipse2(0.3,0.2).applyForce(linear(30,0));
+            ...
+        ...
+\end{verbatim}
+ 
+\section{Using the Hammer device - hammer.tao}
+This script illustrates the use of the Hammer device. It creates
+a single string and a single hammer. It then locks the ends of the string,
+applies the hammer to a point $x=0.7$ on the string, and sets some
+hammer attributes.
+
+Finally it drops the hammer at the beginning of the performance, leaving
+it to bounce naturally on the string.
+
+\begin{verbatim}
+    Audio rate: 44100;
+        
+    String string(200 Hz, 30 secs);
+        
+    Hammer hammer;
+        
+    Init:
+        string.lockEnds();
+        string(0.7) -- hammer;
+        hammer.setGravity(0.0001).setMass(200.0);
+        ...
+        
+    Score 10 secs:
+        At 0 secs:
+            hammer.drop();
+            ...
+        ...
+\end{verbatim}
+ 
+\section{Locking parts of an instrument - lock.tao}
+This script illustrates the use of the various \Term{locking}
+instrument methods. These include \Method{lockCorners},
+\Method{lockLeft}, \Method{lockRight}, \Method{lockTop},
+\Method{lockPerimeter}, and \Method{lock}. It creates six
+rectangular instruments and locks each one in a slightly different
+way. It then applies short impulse to each instrument so as to allow
+a side by side comparison of the effects on each.
+
+\begin{verbatim}
+    Audio rate: 44100;
+        
+    Rectangle rect1(500 Hz, 600 Hz, 20 secs);
+    Rectangle rect2(500 Hz, 600 Hz, 20 secs);
+    Rectangle rect3(500 Hz, 600 Hz, 20 secs);
+    Rectangle rect4(500 Hz, 600 Hz, 20 secs);
+    Rectangle rect5(500 Hz, 600 Hz, 20 secs);
+    Rectangle rect6(500 Hz, 600 Hz, 20 secs);
+        
+    Init:
+        rect1.lockCorners();
+        rect2.lockLeft().lockRight();
+        rect3.lockTop().lockBottom();
+        rect4.lockPerimeter();
+        rect5.lock(0.2,0.4);
+        rect6.lock(0.7, right, 0.7, top);
+        ...
+        
+    Score 5 secs:
+        At 0 secs for 1 msecs:
+            rect1(0.1,0.1).applyForce(linear(30,0));
+            rect2(0.1,0.1).applyForce(linear(50,0));
+            rect3(0.1,0.1).applyForce(linear(50,0));
+            rect4(0.1,0.1).applyForce(linear(50,0));
+            rect5(0.1,0.1).applyForce(linear(20,0));
+            rect6(0.1,0.1).applyForce(linear(30,0));
+            ...
+        ...
+\end{verbatim}
+ 
+\section{Arrays of Output devices - outputarray.tao}
+This script creates a string and an array of Output devices. It then
+applies a short impulse to the string and writes output to each Output
+device in the array from different positions on the string.
+
+\begin{verbatim}
+    Audio rate: 44100;
+        
+    String string(200 Hz, 30 secs);
+        
+    Output outputs(mono)[5];
+        
+    Init:
+        string.lockEnds();
+        ...
+        
+    Score 30 secs:
+        At start for 0.1 secs:
+            string(0.1).applyForce(1.0);
+            ...
+        
+        outputs[0].ch1: string(0.1);
+        outputs[1].ch1: string(0.3);
+        outputs[2].ch1: string(0.5);
+        outputs[3].ch1: string(0.7);
+        outputs[4].ch1: string(0.9);
+        ...
+\end{verbatim}
+ 
+\section{Using the Output device - outputs.tao}
+This script illustrates \Term{stereo} and \Term{mono} Output
+devices. It creates one of each and a single string and then writes output
+to each channel of each device from different positions on the string,
+after a short impulse has been applied to the string.
+
+\begin{verbatim}
+    Audio rate: 44100;
+        
+    String string(100 Hz, 30 secs);
+        
+    Output out1(stereo), out2(mono);
+        
+    Init:
+        string.lockEnds();
+        ...
+        
+    Score 30 secs:
+        At start for 0.1 msecs:
+            string(0.9).applyForce(1.0);
+            ...
+            
+        out1.chL: string(0.1);
+        out1.chR: string(0.9);
+        
+        out2.ch1: string(0.5);
+        
+        Every 0.1 secs: Print Time, newline; ...
+        ...
+\end{verbatim}
+     
+\section{Using pitches - pitches.tao}
+This script illustrates the various pitch formats which are supported
+by \tao. These include \Term{oct}, \Term{cps}, \Term{Hz} and
+\Term{note name} formats (see sections \ref{section:pitches_and_frequencies}
+and \ref{section:pitch_declarations}).
+
+\begin{verbatim}
+    Audio rate: 44100;
+        
+    String array1[]=
+        {
+        (200 Hz, 20 secs),
+        (220 Hz, 20 secs),
+        (240 Hz, 20 secs),
+        (260 Hz, 20 secs)
+        };
+        
+    String array2[]=
+        {
+        (8.00 pch, 20 secs),
+        (8.04 pch, 20 secs),
+        (8.06 pch, 20 secs),
+        (8.08 pch, 20 secs)
+        };
+        
+    String array3[]=
+        {
+        (8.0 oct, 20 secs),
+        (8.2 oct, 20 secs),
+        (8.4 oct, 20 secs),
+        (8.6 oct, 20 secs)
+        };
+        
+    Counter n;
+        
+    Init:
+        For n = 0 to 3:
+            array1[n].lockEnds();
+            array2[n].lockEnds();
+            array3[n].lockEnds();
+            ...
+        ...
+        
+    Score 5 secs:
+        Label(array1[0], 1.0, 0.0, 0.0, "LABEL", 0);
+        
+        At start for 0.1 msecs:
+            For n = 0 to 3:
+                array1[n](0.1).applyForce(1.0);
+                array2[n](0.1).applyForce(1.0);
+                array3[n](0.1).applyForce(1.0);
+                ...
+            ...
+        ...
+\end{verbatim}
+ 
+\section{Creating a rectangular sheet}
+\subsection{Example 1 - rectangle.tao} 
+This script creates a rectangular sheet, locks all four corners and
+then applies a short impulse at a point ($x$=0.1,$y$=0.1). This impulse
+consists of a force linearly changing from a value of 30 to 0 over a
+1ms interval.
+
+\begin{verbatim}
+    Audio rate: 44100;
+        
+    Rectangle rectangle(300 Hz, 400 Hz, 20 secs);
+        
+    Init:
+        rectangle.lockCorners();
+        ...
+        
+    Score 5 secs:
+        At 0 secs for 1 msecs:
+            rectangle(0.1,0.1).applyForce(linear(30,0));
+            ...
+        ...
+\end{verbatim}
+ 
+\subsection{Example 2 - rectangle2.tao}
+This script is similar to the previous one except that the left and
+right sides of the rectangle are locked instead of all four corners.
+
+\begin{verbatim}
+    Audio rate: 44100;
+        
+    Rectangle rectangle2(150 Hz, 800 Hz, 20 secs);
+        
+    Init:
+        rectangle2.lockLeft().lockRight();
+        ...
+        
+    Score 5 secs:
+        At 0 secs for 1 msecs:
+            rectangle2(0.1,0.1).applyForce(linear(30,0));
+            ...
+        ...
+\end{verbatim}
+ 
+\section{Using the Stop device - stop.tao}
+This script illustrates the use of the \Device{Stop} device.
+
+\begin{verbatim}
+    Audio rate: 44100;
+        
+    String string1(200 Hz, 40 secs);
+    Stop stop;    
+    Param position, amount=0.0;
+        
+    Init:
+        string1.lockEnds();
+        ...
+            
+    Score 0.3 secs:
+        At 0 secs for 0.1 msecs:
+            string1(0.9).applyForce(10.0);
+            ...
+        
+        position=linear(0.1, 0.9);
+        	
+        string1(position) -- stop;
+        
+        From 0.05 secs to 0.1 secs:
+            amount=linear(0,1);
+            stop.setAmount(linear(0,1));
+            ...
+        
+        From 0.20 to 0.25 secs:
+            amount=linear(1,0);
+            stop.setAmount(linear(1,0));
+            ...
+        
+        Every 0.005 secs:
+            Print Time, " ", amount, newline;
+            ...
+        ...
+\end{verbatim}
+ 
+\section{Creating an array of strings - stringarray.tao}
+
+\begin{verbatim}
+    Audio rate: 44100;
+        
+    String string[]=
+        {
+        (8.00 pch, 20 secs),
+        (8.01 pch, 20 secs),
+        (8.02 pch, 20 secs),
+        (8.03 pch, 20 secs),    
+        (8.04 pch, 20 secs),
+        (8.05 pch, 20 secs),
+        (8.06 pch, 20 secs),
+        (8.07 pch, 20 secs),    
+        (8.08 pch, 20 secs),
+        (8.09 pch, 20 secs),
+        (8.10 pch, 20 secs),
+        (8.11 pch, 20 secs)
+        };
+        
+    Counter n=0;
+    Param startPluck=0.0, pluckDuration=0.001;
+        
+    Init:
+        For n = 0 to 11:
+            string[n].lockEnds();
+            ...
+        ...
+        
+    Score 5 secs:
+        At start:
+            n=0;
+            ...
+        
+        At startPluck for pluckDuration:
+            At start:
+                Print "Plucking string ", n, " at ", startPluck, " seconds", newline;
+                ...
+        
+            string[n](0.1).applyForce(linear(1,0));
+        
+            At end:
+                n+=1;
+                If n <= 11:
+                    startPluck+=0.1;
+                    // pluck the next string in 0.1 seconds time
+    
+                    Print "Pluck string ", n, " at ", startPluck, " seconds", newline;
+                    ...
+                Else:
+                    startPluck=-1.0;
+                    // prevent any more plucks from occurring
+                    // by setting startPluck to a negative value.
+                    Print "No more strings to be plucked", newline;
+                    ...
+                ...
+            ...
+        ...
+\end{verbatim}
+
+
+
+
+
+
+
+
+
+

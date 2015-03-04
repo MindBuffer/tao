@@ -1,0 +1,121 @@
+\chapter{Introduction}
+Welcome to the \tao\ user manual. This manual is for version
+1.0-beta-04Mar2015 built on Wed Mar  4 16:16:25 AEDT 2015.
+
+\tao\ is a software package for sound synthesis
+using physical modelling techniques. It is written in C++ and provides
+a kind of virtual material consisting of masses and springs, which can be
+used to construct a wide variety of virtual musical instruments. New
+instruments are described using a text-based synthesis language (contained
+in what is referred to as a \tao\ \index{script} script). When a script is
+invoked \tao\ carries out the synthesis described and automatically
+produces 3-D animated visualisations of the instruments. The animations
+show the actual acoustic waves propagating through the instruments
+and play a central role in \tao's user interface. In particular they
+make it much easier to think of the instruments as tangible physical
+objects rather than abstract synthesis algorithms.
+
+\tao\ will eventually come with full documentation for the C++ class
+library API (application programming interface) so that it can also
+be used by those who wish to write their own C++ applications
+incorporating \tao's capabilities. This is not complete at the present
+time.
+
+\section{Where to find \tao}
+\tao\ is available from the download section of \TaoWebSite
+
+This user manual is also available for separate download either as a
+tar'd gzip'd archive of HTML files or a gzip'd postscript file.
+
+\section{Who was it designed for?}
+\tao\ was conceived as a compositional tool for electroacoustic and
+computer music. Therefore more emphasis has been placed on its ability
+to produce a wide range of interesting and complex sounds than on
+catering for traditional music based on scales, rhythms, harmony etc.
+From a personal perspective I wanted to design a synthesis program
+which would allow me to deal with tangible physical instruments
+rather than abstract synthesis algorithms. I wanted to be able to
+construct virtual musical instruments with very complex behaviours and
+experiment with them in an intuitive physical manner.
+
+\section{How \tao\ is structured}
+\tao\ consists of a library of C++ classes for building synthesis
+scenarios. The classes provide the means for creating
+primitive acoustic building blocks, coupling these building blocks together
+into more complex instruments, applying external excitations, and
+generating sound output from the instruments. \tao's synthesis language
+provides the same functionality as the C++ API but is easier to use. In
+addition to providing a language for creating virtual instruments it
+also provides an algorithmic score language for playing them. 
+
+From the user's perspective the synthesis language appears to be interpreted
+rather than compiled since a script may be invoked with a simple one-line
+command. In reality though this process involves translating the \tao\
+script into C++ first, linking it with the C++ \tao\ library
+\Filename{libtao.so} and then invoking the executable produced. You
+shouldn't have to worry about the details of this process when using the
+synthesis language interface though.
+
+\section{What this manual contains}
+This user manual is divided into eight chapters as follows:
+
+\begin{description}
+\item[1. Introduction] This introductory chapter.
+\item[2. Building and Installing \tao] Instructions on where
+to obtain the \tao\ distribution and how to build and install it.
+\item[3. Conceptual Overview] Introduces the main concepts which should
+be understood before attempting to use \tao.
+\item[4. Getting Started] Skips the details and goes straight to
+a practical example session using \tao.
+\item[5. Tao's User Interface] Self-explanatory.
+\item[5. \tao's Synthesis Language in Detail] Gives a detailed description
+of the synthesis language provided.
+\item[6. Object Method Reference] A detailed reference for all of \tao's
+classes which are available within the synthesis language. 
+\item[7. Tutorial] Gives lots of example scripts describing what they
+do and how.
+\item[8. Closing Comments] General comments about the current state
+of \tao\ and areas for future development. 
+\end{description}
+
+\section{Typographic conventions used}
+This manual adopts a number of typographic conventions
+\index{typographic conventions} which are described below.
+
+The \texttt{monospace} font indicates shell window output,
+filenames and names of environment variables; keywords, functions
+and operators in \tao's synthesis language; and finally verbatim
+examples which should be typed exactly as shown.
+
+The \textbf{\texttt{monospace bold}} font is used in the index to highlight
+entries for keywords, functions and operators in \tao's synthesis language.
+
+The \emph{italic} font indicates important terminology being introduced for
+the first time.
+
+In addition to the above conventions sometimes it is necessary to indicate
+where the user needs to supply some values in a \tao\ script. For example
+in the following script fragment \verb|<pitch>| and \verb|<decay time>| would
+need to be replaced with appropriate values by the user:
+
+\begin{verbatim}
+    String myString(<pitch>, <decay time>);
+\end{verbatim}
+
+Finally \tao\ refers to the entire software package whereas \verb|tao|
+refers to the name of the shell command used for executing a \tao\ script.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

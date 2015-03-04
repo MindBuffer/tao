@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<!-- HTML file produced from file: UserManual.tex --
+ -- using Hyperlatex v 2.3.1 (c) Otfried Cheong--
+ -- on Emacs 21.1 (patch 4) "Arches" XEmacs Lucid, Sun Apr 30 20:49:55 2000 -->
+<HEAD>
+<TITLE>Tao User Manual -- Pitches and Frequencies</TITLE>
+
+    <link rel=stylesheet href="../../taomanual.css" type="text/css">
+    
+</HEAD><BODY BACKGROUND="bg.gif">
+
+    <table width="500" border="0" align="left" cellspacing="2" cellpadding="2"><tr><td class="nav" valign="top"><!-- top panel --><A HREF="UserManual_19.html"><IMG ALT="Up" ALIGN=BOTTOM BORDER=0 SRC="up.gif"></A>
+    <BR><A HREF="UserManual_19.html">Conceptual Overview</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" valign="top"><A HREF="UserManual_33.html"><IMG ALT="Back" ALIGN=BOTTOM BORDER=0 SRC="back.gif"></A>
+    <BR><A HREF="UserManual_33.html">Parameters</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" valign="top"><A HREF="UserManual_35.html"><IMG ALT="Forward" ALIGN=BOTTOM BORDER=0 SRC="forward.gif"></A>
+    <BR><A HREF="UserManual_35.html">Getting Started</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td></tr><!-- end top panel --><tr><td colspan="3" class="main"><!-- main text --><br><br>
+<H2>Pitches and Frequencies</H2>
+
+The Pitch<A NAME="1"> object</A> provides a generalised mechanism for expressing and
+converting between various pitch and frequency formats. The formats
+supported are as follows:
+<P><UL><LI><CODE><EM>value</EM> Hz</CODE> (cycles per second, analogous to Csound's cps notation);
+<LI><CODE><EM>octave</EM>.<EM>semitone</EM></CODE> (analogous to Csound's pch notation);
+<LI><CODE><EM>octave</EM>.<EM>decimal</EM></CODE> (analogous to Csound's oct notation);
+<LI>note name notation (the pitch is represented as a character string).
+</UL>
+<P>In the last case the pitch names <CODE>C-G</CODE> can be used followed by an
+optional <CODE>b</CODE> for flat or <CODE>#</CODE> for sharp. The basic pitch
+name of the note is then followed by an octave number (whose value
+has the same meaning as the integer parts of the <CODE>pch</CODE> and
+<CODE>oct</CODE> notations).
+Finally an optional microtonal adjustment may be added in the form of a
+fraction <CODE>+&lt;x&gt;/&lt;y&gt;</CODE> or <CODE>-&lt;x&gt;/&lt;y&gt;</CODE>
+which adds/subtracts a fraction of a semitone to/from the pitch given.
+Some practical examples are given below:
+<P><PRE>
+    Pitch p1 = 110.5 Hz;
+    Pitch p2 = C#5+1/2;
+    Pitch p3 = 8.05 pch;
+    Pitch p4 = 6.1764 oct;
+</PRE>
+<P>Pitch methods include:
+<P><DL><DT><B>asPitch()</B><DD>
+returns a number representing the pitch converted to pch notation;
+<DT><B>asOctave()</B><DD>
+returns a number representing the pitch converted to oct notation;
+<DT><B>asFrequency()</B><DD>
+returns a number representing the pitch converted to a frequency;
+<DT><B>asName()</B><DD>
+returns a character string representing the name of the pitch.
+</DL>
+<P>
+    <BR></td></tr><!-- end main text --><tr><td class="nav" align="left" valign="top"><!-- bottom matter --><A HREF="UserManual_19.html"><IMG ALT="Up" ALIGN=BOTTOM BORDER=0 SRC="up.gif"></A>
+    <BR><A HREF="UserManual_19.html">Conceptual Overview</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" align="left" valign="top"><A HREF="UserManual_33.html"><IMG ALT="Back" ALIGN=BOTTOM BORDER=0 SRC="back.gif"></A>
+    <BR><A HREF="UserManual_33.html">Parameters</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" align="left" valign="top"><!-- bottom matter --><A HREF="UserManual_35.html"><IMG ALT="Forward" ALIGN=BOTTOM BORDER=0 SRC="forward.gif"></A>
+    <BR><A HREF="UserManual_35.html">Getting Started</A>
+    <IMG width="167" height="1" SRC="trans1x1.gif">
+    </td></tr><!-- end bottom matter -->
+
+    <tr><td colspan="3" class="addr"><!-- bottom panel --><ADDRESS><FONT SIZE=-1>&#169;1999,2000 Mark Pearson
+<A HREF="mailto:m.pearson@ukonline.co.uk">m.pearson@ukonline.co.uk</A> April 30, 2000</ADDRESS><BR></td></tr><!-- end bottom panel --></table></BODY></HTML>

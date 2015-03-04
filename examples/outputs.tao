@@ -1,0 +1,22 @@
+Audio rate: 44100;
+
+String string(100 Hz, 30 secs);
+
+Output out1(stereo), out2(mono);
+
+Init:
+    string.lockEnds();
+    ...
+
+Score 30 secs:
+    At start for 0.1 msecs:
+        string(0.9).applyForce(1.0);
+	...
+    
+    out1.chL: string(0.1);
+    out1.chR: string(0.9);
+
+    out2.ch1: string(0.5);
+
+    Every 0.1 secs: Print Time, newline; ...
+    ...

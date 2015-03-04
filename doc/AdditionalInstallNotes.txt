@@ -1,0 +1,98 @@
+Additional Install Notes
+------------------------
+
+This document represents a *very* basic, hand-holding walkthrough of how to
+install Tao.  It's aimed primarily at OSX users who are unfamiliar with the
+unix command line (it seems to me that linux and cygwin users are more
+likely to know this stuff already), but for the most part it should apply to
+all systems.
+
+Things to Know:
+---------------
+-	Tao is distributed as source code - this means that you'll first have to
+	compile it before you can use it, but don't worry, it's a relatively
+	simple process if you follow the below instructions.
+-	Tao uses a library called libaudiofile to write sound files.
+	Unfortunately this is not included by default with OSX, so you'll have
+	to install from the source code it yourself.  If you're running linux or
+	cygwin, you'll be able to install it via your package manager, as it's a
+	fairly common library.
+-	Wherever you see something surrounded by single quotes ('), type it into
+	the terminal minus the quotes.
+
+Installing libaudiofile (OSX only):
+-----------------------------------
+
+1.)	Download the latest version of libaudiofile from here:
+	http://www.68k.org/~michael/audiofile/
+2.)	Unpack it somewhere on your home directory.
+2.)	Open a terminal (/Applications/Utilities/Terminal on OSX).
+3.)	Navigate to the new audiofile-... folder (to change directories from
+	a terminal, use the 'cd' (Change Directory) command,
+	e.g. 'cd libaudiofile' if the libary was in the libaudiofile folder).
+4.)	Now we need to configure the build process so that it installs correctly
+	for our system (because OSX is different to linux, ppc is different to
+	intel etc.).  To do this we use the configure script included with
+	libaudiofile.  By default, libaudiofile will be installed in
+	/usr/local/lib (this is a standard unix directory, but you'll find that
+	it's hidden from the Finder on OSX.  It is possible to install it
+	elsewhere, but we won't be covering that here.
+5.)	To configure the build process, type './configure'.  This will run the
+	configure script.
+6.)	You will see various lines of text as the configure script sets
+	everything up.  When it's done (assuming it doesn't end in an error),
+	type 'make'.  This compiles the library from it's source code.
+7.)	Again, you'll see a fair bit of text output to the terminal as
+	libaudiofile is compiled.  When it's done (again, assuming it doesn't
+	end in an error message), you're ready to install it.
+8.)	You'll now have to become the administrator(root) user to install
+	libaudiofile.  To do this on OSX, type 'sudo su -' (on *nix, type 'su', on
+	cygwin this step isn't necessary).  You will be asked to enter the
+	administrator password, and then you will have administrator priviledges.
+	Before you continue, you will have to change directory again if you're
+	on OSX, so type (make sure you use the full path to libaudiofile this
+	time, i.e. '/Users/<your_name>/<path_to_libaudiofile>')
+	'cd <libaudiofile_path>'.
+9.)	Type 'make install'.  This will copy the various files you've just
+	compiled over to your destination directory.
+10.)Type 'exit' now, to return to your regular user priviledges.
+
+Installing Tao:
+---------------
+
+1.)	Unpack the Tao tarball somewhere (I'll assume you've already done this
+	if you're reading this file).
+2.)	In your terminal, change directory to the new tao directory.  If you're
+	still in the libaudiofile directory, you will have to move up at least
+	one directory - to do this, '..' represents the parent directory for the
+	cd command (e.g. if tao is in the same parent directory as libaudiofile:
+	'cd ../tao-1.0-beta-<date>').
+3.)	The next steps are the same as for libaudiofile, so first run the
+	configure script as shown in step 4 above.
+4.)	Run make as above.
+5.)	Run 'make install' as above, making sure to change to administrator
+	priviledges if necessary.
+6.)	On OSX, you'll have to update your PATH environment variable so that the
+	system knows where to find the Tao executable.  In a text editor, open the
+	.profile file in your home directory.  It'll be a bit complicated to do
+	this with TextEdit, so you might find it easier to use the terminal-based
+	editor, pico.  Run the command 'pico ~/.profile' in the Terminal, and
+	you'll see a basic text editor (for the shortcuts along the bottom, '^'
+	means the Ctrl key).
+7.)	Add the following line to the end of the file:
+	'export PATH=$PATH:/usr/local/bin'
+	This means that when you try to run a program from the terminal, it will
+	look in /usr/local/bin (as well as the other usual system paths) for the
+	command you entered, and run it if it can find it.
+8.)	Save the file and exit.
+
+Running Tao:
+------------
+-	cd to the examples subdirectory in the original tao directory, and type
+	'tao test' to build the test Tao script.  If everything has installed
+	correctly, you should see some messages on the command line, then a
+	window will open displaying 4 Tao instruments.
+-	See the documentation in the doc subdirectory for how to use Tao.
+
+
+- Niall Moody (9/5/06).

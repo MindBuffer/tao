@@ -1,0 +1,13 @@
+Audio rate: 44100;
+
+Circle circle(300 Hz, 20 secs);
+
+Init:
+    circle.lockPerimeter();
+    ...
+
+Score 5 secs:
+    At 0 secs for 1 msecs:
+        circle(0.3,0.3).applyForce(linear(40,0));
+	...
+    ...    

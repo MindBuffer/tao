@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<!-- HTML file produced from file: UserManual.tex --
+ -- using Hyperlatex v 2.3.1 (c) Otfried Cheong--
+ -- on Emacs 21.1 (patch 4) "Arches" XEmacs Lucid, Sun Apr 30 20:50:01 2000 -->
+<HEAD>
+<TITLE>Tao User Manual -- Describing Musical Events</TITLE>
+
+    <link rel=stylesheet href="../../taomanual.css" type="text/css">
+    
+</HEAD><BODY BACKGROUND="bg.gif">
+
+    <table width="500" border="0" align="left" cellspacing="2" cellpadding="2"><tr><td class="nav" valign="top"><!-- top panel --><A HREF="UserManual_46.html"><IMG ALT="Up" ALIGN=BOTTOM BORDER=0 SRC="up.gif"></A>
+    <BR><A HREF="UserManual_46.html"><B>Tao</B>'s Synthesis Language in Detail</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" valign="top"><A HREF="UserManual_74.html"><IMG ALT="Back" ALIGN=BOTTOM BORDER=0 SRC="back.gif"></A>
+    <BR><A HREF="UserManual_74.html">Apply Statement</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" valign="top"><A HREF="UserManual_76.html"><IMG ALT="Forward" ALIGN=BOTTOM BORDER=0 SRC="forward.gif"></A>
+    <BR><A HREF="UserManual_76.html">Nested control structures and the special variables start and end</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td></tr><!-- end top panel --><tr><td colspan="3" class="main"><!-- main text --><br><br>
+<H2>Describing Musical Events</H2>
+Having introduced the various elements which comprise <B>Tao</B>'s synthesis
+language we now take a look at how to describe musical <EM>events</EM><A NAME="1">
+using</A> the score language provided. The term
+<EM>event</EM> needs some clarification before we start though. In <B>Tao</B>
+the term is used to signify <EM>anything</EM>
+which occurs during a performance, either at a particular instant in time
+or over some time interval. Events come in all shapes and sizes from
+low-level events such as setting the value of a parameter, to high-level
+events such as playing a bowed note on a stringed instrument. 
+<P>Many events, especially the higher level musical events are hierarchical
+in nature. For example in order to describe an event such as bowing a
+note on a string the event will be broken down into sub-events such as
+the following:
+<P><UL><LI>Apply the bow to the string;
+<LI>Increase the velocity of the bow over some short time interval to
+create an attack, at the same time as controlling the downward
+force of the bow;
+<LI>Hold the velocity steady for some time interval;
+<LI>Decrease the velocity steadily for some time interval;
+<LI>Remove the bow from the instrument.
+</UL>
+<P>Such high-level events are referred to as <EM>compound events</EM><A NAME="2">.</A>
+All compound events no matter how complex eventually reduce down to
+low-level events, examples of which are given below:
+<P><UL><LI>Evaluating expressions and assigning values to parameters;
+<LI>Changing the attributes of an instrument;
+<LI>Changing the attributes of a device;
+<LI>Applying a device to an instrument or removing it again;
+<LI>Coupling instruments together;
+<LI>Displaying text output in the shell window to give feedback about how
+a performance is progressing;
+<LI>Specifying output sources;
+<LI>Writing audio samples to output files.
+</UL>
+<P>The rest of this section takes a closer look at the various techniques
+which are commonly used to implement compound events. 
+<P><MENU>
+<LI><A HREF="UserManual_76.html">Nested control structures and the special variables start and end</A>
+<LI><A HREF="UserManual_77.html">Streams of Events and Iteration</A>
+<LI><A HREF="UserManual_78.html">Comparison with Csound</A>
+</MENU>
+
+    <BR></td></tr><!-- end main text --><tr><td class="nav" align="left" valign="top"><!-- bottom matter --><A HREF="UserManual_46.html"><IMG ALT="Up" ALIGN=BOTTOM BORDER=0 SRC="up.gif"></A>
+    <BR><A HREF="UserManual_46.html"><B>Tao</B>'s Synthesis Language in Detail</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" align="left" valign="top"><A HREF="UserManual_74.html"><IMG ALT="Back" ALIGN=BOTTOM BORDER=0 SRC="back.gif"></A>
+    <BR><A HREF="UserManual_74.html">Apply Statement</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" align="left" valign="top"><!-- bottom matter --><A HREF="UserManual_76.html"><IMG ALT="Forward" ALIGN=BOTTOM BORDER=0 SRC="forward.gif"></A>
+    <BR><A HREF="UserManual_76.html">Nested control structures and the special variables start and end</A>
+    <IMG width="167" height="1" SRC="trans1x1.gif">
+    </td></tr><!-- end bottom matter -->
+
+    <tr><td colspan="3" class="addr"><!-- bottom panel --><ADDRESS><FONT SIZE=-1>&#169;1999,2000 Mark Pearson
+<A HREF="mailto:m.pearson@ukonline.co.uk">m.pearson@ukonline.co.uk</A> April 30, 2000</ADDRESS><BR></td></tr><!-- end bottom panel --></table></BODY></HTML>

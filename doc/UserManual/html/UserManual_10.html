@@ -1,0 +1,72 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<!-- HTML file produced from file: UserManual.tex --
+ -- using Hyperlatex v 2.3.1 (c) Otfried Cheong--
+ -- on Emacs 21.1 (patch 4) "Arches" XEmacs Lucid, Sun Apr 30 20:49:51 2000 -->
+<HEAD>
+<TITLE>Tao User Manual -- Troubleshooting the configuration process</TITLE>
+
+    <link rel=stylesheet href="../../taomanual.css" type="text/css">
+    
+</HEAD><BODY BACKGROUND="bg.gif">
+
+    <table width="500" border="0" align="left" cellspacing="2" cellpadding="2"><tr><td class="nav" valign="top"><!-- top panel --><A HREF="UserManual_9.html"><IMG ALT="Up" ALIGN=BOTTOM BORDER=0 SRC="up.gif"></A>
+    <BR><A HREF="UserManual_9.html">Configuring, making and installing <B>Tao</B></A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" valign="top"><A HREF="UserManual_9.html"><IMG ALT="Back" ALIGN=BOTTOM BORDER=0 SRC="back.gif"></A>
+    <BR><A HREF="UserManual_9.html">Configuring, making and installing <B>Tao</B></A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" valign="top"><A HREF="UserManual_11.html"><IMG ALT="Forward" ALIGN=BOTTOM BORDER=0 SRC="forward.gif"></A>
+    <BR><A HREF="UserManual_11.html">If you are still stuck with configuration problems</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td></tr><!-- end top panel --><tr><td colspan="3" class="main"><!-- main text --><br><br>
+<H3>Troubleshooting the configuration process</H3>
+If the configure script fails it should give you some feedback about
+what it can't find on your system. One of the most common problems
+is not being able to find library files.
+<P>Two common things to check for are: 
+<P><OL><LI>Check the value of the <CODE>LD_LIBRARY_PATH</CODE> environment variable. This
+is used to tell your system where to look for libraries which are
+not installed in <CODE>/usr/lib</CODE>. Quite often packages which you install
+yourself will put library files in <CODE>/usr/local/lib</CODE> by default. If 
+<CODE>LD_LIBRARY_PATH</CODE> doesn't point to this directory (or wherever else
+the library files are installed) then programs which depend on these
+libraries at run time will not be able to find them.
+<P>To find out the value type:
+<P><PRE>
+   echo $LD_LIBRARY_PATH
+</PRE>
+<P>If the value is empty or doesn't contain <CODE>/usr/local/lib</CODE> or any of
+the paths where your libraries are located in its colon separated list of paths
+then you must amend it so that it does. To do this first find out which shell you
+use by typing:
+<P><PRE>
+   echo $SHELL
+</PRE>
+<P>If you're using the <CODE>bash</CODE> shell see section <A HREF="UserManual_13.html">*</A>
+below for details of how to amend the value. If you're using the <CODE>tcsh</CODE>
+shell see section <A HREF="UserManual_14.html">*</A>.
+<P><LI>If you install Mesa, GLUT or audiofile via RPM binary distributions
+check that you have the appropriate <EM>development</EM> packages installed
+also. These include:
+<P><UL><LI><CODE>audiofile-devel-0.1.6-*</CODE>
+<LI><CODE>Mesa-devel-3.0.*</CODE>
+<LI><CODE>Mesa-glut-devel-3.0.*</CODE>
+</UL>
+<P>These packages provide header files and symbolic links to the libraries
+(e.g. <CODE>libaudiofile.so</CODE> linked to <CODE>libaudiofile.so.0.0</CODE>).
+Without these packages the libraries themselves may be installed
+but you still won't be able to compile and link programs with them.
+</OL>
+<P>If, after reading this section you are still baffled then take a look
+at the next section too, since there is a further tool you can use to
+help diagnose problems.
+<P>
+    <BR></td></tr><!-- end main text --><tr><td class="nav" align="left" valign="top"><!-- bottom matter --><A HREF="UserManual_9.html"><IMG ALT="Up" ALIGN=BOTTOM BORDER=0 SRC="up.gif"></A>
+    <BR><A HREF="UserManual_9.html">Configuring, making and installing <B>Tao</B></A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" align="left" valign="top"><A HREF="UserManual_9.html"><IMG ALT="Back" ALIGN=BOTTOM BORDER=0 SRC="back.gif"></A>
+    <BR><A HREF="UserManual_9.html">Configuring, making and installing <B>Tao</B></A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" align="left" valign="top"><!-- bottom matter --><A HREF="UserManual_11.html"><IMG ALT="Forward" ALIGN=BOTTOM BORDER=0 SRC="forward.gif"></A>
+    <BR><A HREF="UserManual_11.html">If you are still stuck with configuration problems</A>
+    <IMG width="167" height="1" SRC="trans1x1.gif">
+    </td></tr><!-- end bottom matter -->
+
+    <tr><td colspan="3" class="addr"><!-- bottom panel --><ADDRESS><FONT SIZE=-1>&#169;1999,2000 Mark Pearson
+<A HREF="mailto:m.pearson@ukonline.co.uk">m.pearson@ukonline.co.uk</A> April 30, 2000</ADDRESS><BR></td></tr><!-- end bottom panel --></table></BODY></HTML>

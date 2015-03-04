@@ -1,0 +1,551 @@
+\chapter{Object Method Reference}
+\label{section:object_method_reference}
+\index{methods}
+What follows in this section is a detailed description of all the
+methods which are provided by the various object classes. The syntax
+of each method is given, together with a description of its arguments,
+purpose and function. The vast majority of methods occur with the
+following generic syntax:
+
+\begin{verbatim}
+    object.method(<arg1>,<arg2> .. <argn>);
+\end{verbatim}
+
+where \verb|object| would be the name of an actual instrument, device or
+other object and \verb|method| the name of an actual method.
+
+However some of the most commonly accessed methods such as generating
+an access point from an instrument name and a pair of coordinates have
+a simpler syntax where the arguments are placed in parentheses immediately
+after the object name, i.e. there is no method name as such. For example:
+
+\begin{verbatim}
+    instrument(<x>,<y>)
+\end{verbatim}
+
+In the following reference to all the object methods such methods
+are described merely by the arguments which are placed in between
+the brackets, e.g.
+
+\begin{verbatim}
+    (<x>,<y>)
+\end{verbatim}
+
+\section{Instrument Methods grouped by Function}
+\hierindex{instrument!methods}
+All instrument methods are listed here grouped together by function.
+
+\subsection{Locking Parts of an Instrument}
+\index{locking}
+A number of instrument methods are available for locking parts of an
+instrument. These include:
+
+\begin{verbatim}
+    lock(<x>,<y>)
+    lockLeft()
+    lockRight()
+    lockTop()
+    lockBottom()
+    lockEnds()
+    lockCorners()
+    lockPerimeter()
+\end{verbatim}
+
+The \MethodIndex{lock} method locks the single cell which is nearest
+to the \verb|(<x>,<y>)| position specified in instrument coordinates
+(see section \ref{section:access_points}).
+
+The \MethodIndex{lockLeft}, \MethodIndex{lockRight}, \MethodIndex{lockTop}
+and \MethodIndex{lockBottom} methods each lock the cells at one extremity
+of an instrument. For rectangular sheets the behaviour is obvious, but
+for other instruments some clarification is needed. For strings, only the
+\Method{lockLeft} and \Method{lockright} methods are appropriate. For
+circular and elliptical sheets only a few cells at the edges of the sheet
+will be locked by each method.
+
+The \Method{lockEnds} method is equivalent to issuing a \Method{lockLeft}
+and \Method{lockRight} together and is used mostly with strings.
+
+Finally the \MethodIndex{lockCorners} is only appropriate for rectangular
+sheets and the \MethodIndex{lockPerimeter} is appropriate for all
+instruments except strings.
+
+\subsection{Damping Parts of an Instrument}
+\index{damping methods}
+\hierindex{methods!damping}
+A number of methods are provided for damping parts of an instrument.
+These include:
+
+\begin{verbatim}
+    setDamping(<d>)
+    setDamping(<x>,<d>)
+    setDamping(<x>,<y>,<d>)
+    setDamping(<x1>,<x2>,<y1>,<y2>,<d>)
+    resetDamping()
+    resetDamping(<x>)
+    resetDamping(<x>,<y>)
+    resetDamping(<x1>,<x2>,<y1>,<y2>)
+\end{verbatim}
+
+In each case the argument \verb|<d>| is a floating point value in
+the range [0..1], where 0 represents no damping at all and 1 means that
+the portion of material affected will be locked rigidly in a fixed
+position. The progression from the former state to the latter as
+\verb|<d>| changes from 0 to 1 is logarithmic rather than linear
+for reasons which are explained below.
+
+The damping value \verb|<d>| is converted via the following formula
+into the appropriate \Attr{velocityMultiplier} attribute (see section
+\ref{section:cell_attributes}):
+
+\[ v_{m} = 1 - \frac{10000^{d}}{10000} \]
+
+where $v_{m}$ and $d$ correspond to \Attr{velocityMultiplier} and
+\verb|<d>| respectively.
+
+You may remember that the \Attr{velocityMultiplier} value also lies in the
+range [0..1] and on each tick of the synthesis engine the velocity of
+each cell is multiplied by this value.
+
+The \MethodIndex{resetDamping} family of methods set the damping back to what
+it was when the instrument was created. This is useful for situations
+where it is desirable to temporarily damp a region. An example application
+might be playing a harmonic on a string. Any guitarist will know that
+in order to do so a finger is placed momentarily in contact with one of
+the strings, over a node, whilst (or after) the string is plucked. Once
+the harmonic begins to clearly ring out the players finger is removed
+again leaving the string to continue vibrating in its modified pattern.
+
+\subsection{Graphically Placing Instruments}
+\label{graphical_placement}
+\hierindex{instrument!graphical placement}
+\hierindex{methods!graphical placement of instruments}
+These methods allow the user to override \tao's default graphical placement
+scheme. The default scheme is not very intelligent in the current version
+and simply places each new instrument above the previous one (`above'
+meaning in the +ve $y$ direction). The \MethodIndex{placeAt} method
+allows the position of the bottom left hand corner of the bounding
+box surrounding the instrument to be set explicitly. The 
+\MethodIndex{placeAbove}, \MethodIndex{placeBelow}, \MethodIndex{placeRightOf}
+and \MethodIndex{placeLeftOf} methods allow an instrument to be 
+placed relative to another instrument.
+
+In the case of the methods which expect an additional argument
+\verb|<offset>|, this argument specifies an additional offset
+measured in world coordinates from the reference instrument (the default
+is to seperate each instrument by 5 units in world coordinates).
+This is somtimes necessary to prevent the instrument visualisation
+window from becoming too cluttered.
+
+\begin{verbatim}
+    placeAt(<x, y>)
+    placeAbove(<instrument>)
+    placeBelow(<instrument>)
+    placeRightOf(<instrument>)
+    placeLeftOf(<instrument>)
+    placeAbove(<instrument>, <offset>)
+    placeBelow(<instrument>, <offset>)
+    placeRightOf(<instrument>, <offset>)
+    placeLeftOf(<instrument>, <offset>)
+\end{verbatim}
+
+\subsection{Accessing the Internal Attributes of an Instrument}
+\hierindex{instrument!attributes!accessing}
+\hierindex{methods!instrument attribute}
+This set of methods allow the internal attributes of an instrument
+to be inspected. Please note that some of these methods are only listed
+for completeness. In practice they are not of much use in the
+average \tao\ script.
+
+\begin{verbatim}
+    getName()
+    getMagnification()
+    getWorldX()
+    getWorldY()
+    getXMax()
+    getYMax()
+    getXFrequency()
+    getYFrequency()
+\end{verbatim}
+
+The \MethodIndex{getName} method returns a string containing the name
+of the instrument. The \MethodIndex{getMagnification} method returns
+the current factor by which the visual amplitude of the waves in the
+instrument are being magnified. The two methods \MethodIndex{getWorldX}
+and \MethodIndex{getWorldY} return the world coordinates of the bottom
+left hand corner of the bounding box around the instrument (i.e. the
+position in the $xy$ plane). The \MethodIndex{getXMax} and
+\MethodIndex{getXMax} methods return the $N-1$ where $N$ is the
+width or height of the instrument in cells respectively.
+
+The only two methods which should be of any use in the average \tao\
+script are \MethodIndex{getXFrequency} and \MethodIndex{getYFrequency}.
+These return the pitch values which were passed in when the instrument
+was created, but converted to Hertz, regardless of the initial pitch
+format used.
+
+\subsection{Setting the Internal Attributes of an Instrument}
+\hierindex{instrument!attributes!setting}
+The only instrument attribute which can be set by a user is the
+factor by which the amplitude of vibrations in the component are
+exaggerated in the visualisation window. This is useful
+for evening out differences between components within an instrument,
+for the purposes of visualisation only. This attribute has no effect
+on sound output.
+
+\begin{verbatim}
+    setMagnification(<m>)
+\end{verbatim}
+
+\subsection{Automatically Generating Access Points}
+\hierindex{access points!generating}
+\hierindex{methods!access point generation}
+Each of the following set of methods generates a single access point
+on an instrument given $x$ and $y$ coordinates. The \MethodIndex{point(...)}
+methods only differ from the other two in that they do not lead to the
+automatic generation of graphical markers in the instrument
+visualisation window.
+
+\begin{verbatim}
+    (<x>, <y>)
+    (<x>)
+    point(<x>, <y>)
+    point(<x>)
+
+    e.g.
+
+    rect(left,0.5)
+    string(0.7)
+    ellipse.point(0.1,centre)
+\end{verbatim}
+
+\subsection{Accessing Individual Cells}
+\hierindex{methods!accessing cells}
+The following method allows access to the nearest cell to the
+position on the instrument specified. Once the cell has been
+selected its internal attributes can be examined. You should
+never really need to use this method as it was really designed
+for \tao's internal use. Also access points provide a much
+more flexible mechanism for interacting with instruments.
+
+\begin{verbatim}
+    at(<x>, <y>)
+\end{verbatim}
+
+\section{Device Methods}
+\hierindex{Device methods}
+\hierindex{methods!Device}
+This section describes all the methods available to the different
+devices. It begins by listing generic methods which are applicable
+to any device.
+
+\subsection{Generic Device Methods}
+The following methods are available with any device.
+
+\begin{verbatim}
+    getName()
+    getX()
+    getY()
+    apply(<accessPoint>)
+    remove()
+\end{verbatim}
+
+The \MethodIndex{getName} method returns a string containing the
+name of the device. The \MethodIndex{getX} and \MethodIndex{getY}
+methods return the current position in instrument coordinates of
+the device if it has actually been applied to an instrument.
+Otherwise they return zero. The return values are also zero
+if the device has been applied to an instrument and removed
+again.
+
+\subsection{Bow Methods}
+\index{Bow methods}
+\hierindex{methods!Bow}
+The main attributes of a Bow device are the force with which
+it is applied to the instrument (which has a marked effect on the bow's
+ability to sustain the frictional forces needed to move the instrument),
+and its velocity. The following methods are available with a bow.
+
+\begin{verbatim}
+    setForce(<force>)
+    setVelocity(<velocity>)
+    getForce()
+    getVelocity()
+    (<accessPoint>)
+    (<instr>, <x>)
+    (<instr>, <x>, <y>)
+\end{verbatim}
+
+The last three methods provide three different ways to apply
+a bow to an instrument. The first specifies an access point, the second
+an instrument and a single $x$ coordinate (for a string), and 
+the third an instrument and both $x$ \& $y$ coordinates.
+
+Although these methods are available in a script an alternative
+syntax is usually used for applying a bow to an instrument at a specific
+point. This consists of the access point specification (the instrument
+name followed by the instrument coordinates enclosed in parentheses)
+followed by the \emph{apply} operator: \verb|--|, followed by the
+name of the bow. For example in the following code fragments the left
+and right hand sides are exactly equivalent:
+
+\begin{verbatim}
+    Bow bow;
+    
+    Init:
+        bow(string(0.1));    <==>    string(0.1) -- bow;
+        bow(rect(0.5,0.7));  <==>    rect(0.5,0.7) -- bow;
+        ...
+\end{verbatim}
+
+\subsection{Hammer Methods}
+\index{Hammer methods}
+\hierindex{methods!Hammer}
+For a description of the Hammer device see section \ref{section:hammer_device}.
+The following methods are available with a hammer.
+
+\begin{verbatim}
+    reset()
+    drop()
+    (<accessPoint>)
+    (<instr>, <x>)
+    (<instr>, <x>, <y>)
+    setMass(<m>)
+    setPosition(<p>)
+    setInitVelocity(<v>)
+    setGravity(<g>)
+    setHeight(<h>)
+    setDamping(<d>)
+    setHardness(<h>)
+    setMaxImpacts(<maxImpacts>)
+    getMass()
+    getPosition()
+    getVelocity()
+    getInitVelocity()
+    getGravity()
+    getHeight()
+    getDamping()
+    getHardness()
+    numberOfImpacts()
+    getMaxImpacts()
+\end{verbatim}
+
+The \MethodIndex{reset} method resets the hammer to its initial height and
+causes it to wait for a subsequent call to the \MethodIndex{drop} method
+before the hammer will start falling and interacting with the instrument.
+As with the bow device there are three unnamed methods for specifying
+the access point with which the hammer will interact. The first expects
+an access point, the second an instrument name and a single $x$ coordinate
+and the third an instrument name followed by an $x$ and $y$ coordinate.
+
+The \verb|set...| family of methods are used to set the various attributes
+of the hammer. Note that the \verb|setHeight| method sets the height from
+which the hammer is dropped whereas the \verb|setPosition| method sets
+the instantaneous height of the hammer. The \verb|setInitVelocity| method
+sets the initial velocity of the hammer immediately after the \verb|drop|
+method has been called. The \verb|setHardness| method sets the strength
+of the spring which is used to simulate the elastic connection with the
+instrument. This is usually a value in the range [0..1] where 0 means
+the spring has no effect and 1 means that the spring has the same strength
+as the springs used in \tao's material. Values greater than 1 can also
+be used although this can lead to the model becoming unstable, due to
+the inherent limitations in modeling a continuous physical system using
+discrete time steps or ticks. 
+
+\subsection{Connector Methods}
+\index{Connector methods}
+\hierindex{methods!Connector}
+The Connector methods listed below allow any combination of access
+and anchor points to be coupled together. To recap, an \Term{anchor point}
+is a fixed numerical value (usually 0.0) and a spring is connected
+between the access point specified and this anchor point, effectively
+restricting the vibrations of the instrument at that point.
+
+\begin{verbatim}
+    (<access point 1>, <access point 2>)
+    (<access point 1>, <access point 2>, <strength>)
+    (<access point>, <anchor>)
+    (<access point>, <anchor>, <strength>)
+    (<anchor>, <access point>)
+    (<anchor>, <access point>, <strength>)
+\end{verbatim}
+
+The \verb|<strength>|\index{spring strength} argument expected by
+some of the methods sets the strength of the spring used to connect
+the two points. It is usually a value in the range [0..1] but higher
+values may sometimes work. You should be aware though that if you
+use a value higher than 1 \tao's cellular model may become unstable,
+leading to exponentially increasing noisy vibrations. This is limitation
+inherent the kind of discrete time step modelling used by \tao.
+
+\subsection{Stop Methods}
+\index{Stop methods}
+\hierindex{methods!Stop}
+The following stop device methods are available:
+
+\begin{verbatim}
+    dampModeOn()
+    dampModeOff()
+    setAmount(<amount>)
+    setDamping(<damping>)
+    (<access point>)
+    (<instr>, <x>)
+    (<instr>, <x>, <y>)
+    (<string>, <pitch>)
+\end{verbatim}
+
+To briefly recap, the Stop device provides a rudimentary
+mechanism for stopping strings in order to obtain specific pitches
+from them. The \verb|<amount>| attribute is a value in the
+range [0..1], with 0 meaning that the string is not stopped at all
+and 1 meaning that it is fully stopped. The \verb|<damping>|
+attribute determines how highly damped the left hand side of the string
+will be (the right hand side is given the appropriate length to achieve
+the specified pitch).
+
+The unnamed \verb|(...)| methods are used to apply the stop to an
+instrument. Much like the bow and hammer devices there are three standard
+versions available, expecting either an access point, an instrument and
+single $x$ coordinate, or an instrument and both $x$ and $y$ coordinates.
+However for the Stop device there is a fourth method
+\verb|(<string>, <pitch>)| available. This method, given a string
+instrument and a pitch as arguments will automatically calculate at what
+point the Stop device should be applied to the string in order to produce
+the desired pitch.
+
+Note that it is always the portion of the string to the right of the
+applied Stop device which has the correct pitch. This should be borne
+in mind if connecting the string to other components. If you build your
+instrument with the left hand sides of each string attached to some sort
+of resonator you will get all the wrong pitches when you start to play
+the instrument!
+
+Note also that as with the Bow and Hammer devices the preferred
+syntax to use in a script when applying the device to an instrument
+is as follows:
+
+\begin{verbatim}
+    string(0.1) -- stop;
+\end{verbatim}
+
+which is exactly equivalent to:
+
+\begin{verbatim}
+    stop(string(0.1));
+\end{verbatim}
+
+The first format is more commonly used since it is more clearly
+legible when quickly scanning a script to see what it does. Wherever
+the \verb|--| operator appears in a script, you know that there is
+some kind of interfacing between access points and devices taking
+place.
+
+\subsection{Output Methods}
+\index{Output methods}
+\hierindex{methods!Output}
+The Output device provides methods for writing sound
+samples out to the various channels of its associated output file.
+The  \MethodIndex{ch1} and \MethodIndex{chL} methods are equivalent, as are the
+\MethodIndex{ch2} and \MethodIndex{chR} methods. Obviously \Method{chL}
+and \Method{chR} are designed for use with two channel stereo
+output. In each case \verb|<value>| is an arbitrary mathematical
+expression yielding a floating point value. There is no need to
+ensure that the output samples stay within a predefined range, since
+all \tao\ output files are normalised as a post-processing stage 
+before conversion into a more conventional integer-based format
+such as WAV. This is achieved with the \Prog{taosf}
+shell command (see section \ref{section:output_files}).
+
+\begin{verbatim}
+    ch1(<value>)
+    ch2(<value>)
+    ch3(<value>)
+    ch4(<value>)
+    chL(<value>)
+    chR(<value>)
+\end{verbatim}
+
+\section{Access Point Methods}
+These methods are some of the most important since they are the
+ones which allow simulated physical interaction with \tao's
+cellular material.
+
+\begin{verbatim}
+    getPosition()
+    getVelocity()
+    getForce()
+    getInstrument()
+    applyForce(<force>)
+    clear()   
+\end{verbatim}
+
+The \MethodIndex{getPosition}, \MethodIndex{getForce} and \MethodIndex{getVelocity}
+methods return the physical attributes of the material at the access point.
+All three values returned are with respect to the $z$ axis of the material.
+
+The \MethodIndex{getInstrument} method returns the instrument on which the
+access point is operating. 
+
+The \MethodIndex{applyForce} method applies the given force at the position
+of the access point, not surprisingly! Note that in the same way that an
+access point can be used to read the physical attributes of the material at
+any point, forces can be applied at any point too. This means that you
+could for example generate a moving access point whose instrument coordinates
+were governed by some time varying value generated by an arbitrary expression,
+and apply a time varying force at that moving point. 
+
+The following example illustrates the use of the access point methods 
+(although I don't know whether it would produce interesting sounds or not).
+
+\begin{verbatim}
+    Audio rate: 44100;
+    
+    String s(200 Hz, 20 secs);
+    AccessPoint p1, p2;
+    Param x1, x2;
+    
+    Init:
+        s.lockEnds();
+        ...
+    
+    Score 10 secs:
+        x1=0.5+0.5*cos(Time*1000.0);
+        x2=0.5+0.5*cos(Time*1100.0);
+        p1=s(x1);
+        p2=s(x2);
+        
+        Every 0.01 secs:
+            Print "At time ", Time, ", position=", p1.getPosition(), 
+                  " velocity=", p1.getVelocity(),  newline;
+            ...
+    
+        If p1.getForce() < 1:
+            p2.applyForce(1.0);
+            ...
+        If p2.getVelocity() > -1:
+            p1.applyForce(-1.0);
+            ...
+        ...
+\end{verbatim}
+
+Finally, the \MethodIndex{clear} method resets the access point to
+be null. Attempting to read any physical attributes off of the
+access point will result in zero being returned. In addition,
+attempting to apply a force to a null access point has no effect.
+
+\section{Pitch Methods}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

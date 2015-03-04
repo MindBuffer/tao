@@ -1,0 +1,70 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<!-- HTML file produced from file: UserManual.tex --
+ -- using Hyperlatex v 2.3.1 (c) Otfried Cheong--
+ -- on Emacs 21.1 (patch 4) "Arches" XEmacs Lucid, Sun Apr 30 20:50:06 2000 -->
+<HEAD>
+<TITLE>Tao User Manual -- A simple string instrument</TITLE>
+
+    <link rel=stylesheet href="../../taomanual.css" type="text/css">
+    
+</HEAD><BODY BACKGROUND="bg.gif">
+
+    <table width="500" border="0" align="left" cellspacing="2" cellpadding="2"><tr><td class="nav" valign="top"><!-- top panel --><A HREF="UserManual_103.html"><IMG ALT="Up" ALIGN=BOTTOM BORDER=0 SRC="up.gif"></A>
+    <BR><A HREF="UserManual_103.html">Learning the Basics</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" valign="top"><A HREF="UserManual_103.html"><IMG ALT="Back" ALIGN=BOTTOM BORDER=0 SRC="back.gif"></A>
+    <BR><A HREF="UserManual_103.html">Learning the Basics</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" valign="top"><A HREF="UserManual_105.html"><IMG ALT="Forward" ALIGN=BOTTOM BORDER=0 SRC="forward.gif"></A>
+    <BR><A HREF="UserManual_105.html">Damping the ends of the string</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td></tr><!-- end top panel --><tr><td colspan="3" class="main"><!-- main text --><br><br>
+<H3>A simple string instrument</H3>
+The simplest possible instrument consists of a single string. The
+following script illustrates how to create such an instrument,
+`pluck' it and generate an output file. 
+<P><PRE>
+    Audio rate: 44100;
+
+    String string(100 Hz, 20 secs);
+    Output output(stereo);
+
+    Init:
+        string.lockEnds();
+        ...
+
+    Score 20 secs:
+        At 0 secs for 1 msecs:
+            string(0.1).applyForce(1.0);
+            ...
+        output.chL: string(0.1);
+        output.chR: string(0.9);
+
+	Every 0.1 secs: Print Time, newline; ...
+        ...
+</PRE>
+<P>The first line of this script declares the audio sampling rate of
+any output files generated (which in the current version has to be
+44100). A single string with a fundamental frequency of 100Hz is
+created, followed by a single two-channel output device which will
+be used to write the movements of the string to a soundfile.
+<P>The statement <CODE>string.lockEnds()</CODE> is contained within the <EM>Init</EM>
+block of the script. This block of statements is executed once just prior
+to the performance and is delimited (as with any block of statements in
+<B>Tao</B> with a <CODE>:</CODE> just after the keyword <CODE>|</CODE>Init| and a <CODE>...</CODE>
+just after the last statement.
+<P>The score is fairly self-explanatory. It has a duration of 20 seconds
+and for a short time interval at the beginning of the performance a
+fixed force of magnitude 1 is applied to a point on the string one tenth
+of the way along its length. The movements of two points on the string
+are traced throughout the performance and
+<P>
+    <BR></td></tr><!-- end main text --><tr><td class="nav" align="left" valign="top"><!-- bottom matter --><A HREF="UserManual_103.html"><IMG ALT="Up" ALIGN=BOTTOM BORDER=0 SRC="up.gif"></A>
+    <BR><A HREF="UserManual_103.html">Learning the Basics</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" align="left" valign="top"><A HREF="UserManual_103.html"><IMG ALT="Back" ALIGN=BOTTOM BORDER=0 SRC="back.gif"></A>
+    <BR><A HREF="UserManual_103.html">Learning the Basics</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" align="left" valign="top"><!-- bottom matter --><A HREF="UserManual_105.html"><IMG ALT="Forward" ALIGN=BOTTOM BORDER=0 SRC="forward.gif"></A>
+    <BR><A HREF="UserManual_105.html">Damping the ends of the string</A>
+    <IMG width="167" height="1" SRC="trans1x1.gif">
+    </td></tr><!-- end bottom matter -->
+
+    <tr><td colspan="3" class="addr"><!-- bottom panel --><ADDRESS><FONT SIZE=-1>&#169;1999,2000 Mark Pearson
+<A HREF="mailto:m.pearson@ukonline.co.uk">m.pearson@ukonline.co.uk</A> April 30, 2000</ADDRESS><BR></td></tr><!-- end bottom panel --></table></BODY></HTML>

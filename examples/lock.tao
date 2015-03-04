@@ -1,0 +1,28 @@
+Audio rate: 44100;
+
+Rectangle rect1(500 Hz, 600 Hz, 20 secs);
+Rectangle rect2(500 Hz, 600 Hz, 20 secs);
+Rectangle rect3(500 Hz, 600 Hz, 20 secs);
+Rectangle rect4(500 Hz, 600 Hz, 20 secs);
+Rectangle rect5(500 Hz, 600 Hz, 20 secs);
+Rectangle rect6(500 Hz, 600 Hz, 20 secs);
+
+Init:
+    rect1.lockCorners();
+    rect2.lockLeft().lockRight();
+    rect3.lockTop().lockBottom();
+    rect4.lockPerimeter();
+    rect5.lock(0.2,0.4);
+    rect6.lock(0.7, right, 0.7, top);
+    ...
+
+Score 5 secs:
+    At 0 secs for 1 msecs:
+        rect1(0.1,0.1).applyForce(linear(30,0));
+        rect2(0.1,0.1).applyForce(linear(50,0));
+	rect3(0.1,0.1).applyForce(linear(50,0));
+        rect4(0.1,0.1).applyForce(linear(50,0));
+        rect5(0.1,0.1).applyForce(linear(20,0));
+        rect6(0.1,0.1).applyForce(linear(30,0));
+	...
+    ...    

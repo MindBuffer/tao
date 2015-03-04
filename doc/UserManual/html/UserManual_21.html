@@ -1,0 +1,72 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<!-- HTML file produced from file: UserManual.tex --
+ -- using Hyperlatex v 2.3.1 (c) Otfried Cheong--
+ -- on Emacs 21.1 (patch 4) "Arches" XEmacs Lucid, Sun Apr 30 20:49:53 2000 -->
+<HEAD>
+<TITLE>Tao User Manual -- Cell Attributes</TITLE>
+
+    <link rel=stylesheet href="../../taomanual.css" type="text/css">
+    
+</HEAD><BODY BACKGROUND="bg.gif">
+
+    <table width="500" border="0" align="left" cellspacing="2" cellpadding="2"><tr><td class="nav" valign="top"><!-- top panel --><A HREF="UserManual_20.html"><IMG ALT="Up" ALIGN=BOTTOM BORDER=0 SRC="up.gif"></A>
+    <BR><A HREF="UserManual_20.html"><B>Tao</B>'s Cellular Material</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" valign="top"><A HREF="UserManual_20.html"><IMG ALT="Back" ALIGN=BOTTOM BORDER=0 SRC="back.gif"></A>
+    <BR><A HREF="UserManual_20.html"><B>Tao</B>'s Cellular Material</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" valign="top"><A HREF="UserManual_22.html"><IMG ALT="Forward" ALIGN=BOTTOM BORDER=0 SRC="forward.gif"></A>
+    <BR><A HREF="UserManual_22.html">The Emergent Behaviour of the Material</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td></tr><!-- end top panel --><tr><td colspan="3" class="main"><!-- main text --><br><br>
+<H3>Cell Attributes</H3>
+
+The most important <EM>attributes</EM><A NAME="1"> maintained</A> by each cell are its
+<CODE>mass</CODE>, <CODE>position</CODE>, <CODE>velocity</CODE>, 
+<CODE>force</CODE> and lastly <CODE>velocityMultiplier</CODE>. Not
+surprisingly these are used to keep track of the cell's state of motion
+and the forces acting upon it. The <CODE><CODE>Cell</CODE></CODE> class is unusual in
+that it is seldom dealt with directly. However we will see that many
+of <B>Tao</B>'s other classes have attributes which are often accessed
+and set via <EM>methods</EM><A NAME="2">&nbsp;</A>
+<P>The <CODE>velocityMultiplier</CODE> attribute is quite important. It holds
+a value in the range [0..1] and the velocity of the cell is multiplied
+by this value on each tick. This has the effect of dissipating energy (if the
+value is <I>&lt;</I> 1) and thus damping the vibrations of the cell. Each cell
+can have a different value for this attribute leading to non-uniform
+damping of the material and this feature is a very important tool for
+controlling the vibrational characteristics of the material as we will
+see later on in this manual. 
+<P>For example with a simple string-like instrument consisting of a single row
+of cells linked together with springs, damping small regions at either end
+of the string more highly than the rest of the cells
+causes the higher frequency vibrations to die away more quickly than the
+lower ones. This leads to a more natural string-like spectral decay in the
+sounds produced by the instrument, whereas a string with uniform damping
+exhibits no significant change in the distribution of spectral energy as
+the sound evolves. 
+<P>It is probably safe to say that all physically produced sounds
+exhibit some kind of spectral evolution, and as a general rule
+non-uniform damping always produces more interesting sounds from
+<B>Tao</B> instruments than uniform damping.
+<P>The other main attributes that each cell maintains are pointers to its
+neighbours <CODE>north</CODE>, <CODE>east</CODE>, <CODE>south</CODE>,
+<CODE>west</CODE>, <CODE>neast</CODE>, <CODE>nwest</CODE>, <CODE>seast</CODE>
+and <CODE>swest</CODE>. Each pointer indicates to a particular cell that
+it is connected to a neighbouring cell via a virtual spring. Similarly the
+neighbouring cell will reciprocate by keeping a pointer to the first. You do
+not need to deal with these pointers directly as an end-user <B>Tao</B> but it
+is worth knowing that they are there. 
+<P>The final attribute is used to store other aspects of the cell's state,
+such as whether it is locked or free to move. This attribute is called
+<CODE>mode</CODE>.
+<P>
+    <BR></td></tr><!-- end main text --><tr><td class="nav" align="left" valign="top"><!-- bottom matter --><A HREF="UserManual_20.html"><IMG ALT="Up" ALIGN=BOTTOM BORDER=0 SRC="up.gif"></A>
+    <BR><A HREF="UserManual_20.html"><B>Tao</B>'s Cellular Material</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" align="left" valign="top"><A HREF="UserManual_20.html"><IMG ALT="Back" ALIGN=BOTTOM BORDER=0 SRC="back.gif"></A>
+    <BR><A HREF="UserManual_20.html"><B>Tao</B>'s Cellular Material</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" align="left" valign="top"><!-- bottom matter --><A HREF="UserManual_22.html"><IMG ALT="Forward" ALIGN=BOTTOM BORDER=0 SRC="forward.gif"></A>
+    <BR><A HREF="UserManual_22.html">The Emergent Behaviour of the Material</A>
+    <IMG width="167" height="1" SRC="trans1x1.gif">
+    </td></tr><!-- end bottom matter -->
+
+    <tr><td colspan="3" class="addr"><!-- bottom panel --><ADDRESS><FONT SIZE=-1>&#169;1999,2000 Mark Pearson
+<A HREF="mailto:m.pearson@ukonline.co.uk">m.pearson@ukonline.co.uk</A> April 30, 2000</ADDRESS><BR></td></tr><!-- end bottom panel --></table></BODY></HTML>

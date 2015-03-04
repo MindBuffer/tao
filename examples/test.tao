@@ -1,0 +1,46 @@
+Audio rate: 44100;
+
+Circle c(800 Hz, 20 secs);
+String strings[4]=
+    {
+    (800 Hz, 20 secs),
+    (810 Hz, 20 secs),
+    (820 Hz, 20 secs),
+    (830 Hz, 20 secs)
+    };
+Rectangle r(800 Hz, 900 Hz, 20 secs);
+Triangle t(800 Hz, 900 Hz, 20 secs);
+Connector conn1, conn2, conn3, conn4;
+Counter s;
+
+Init:
+    For s = 0 to 3:
+        strings[s].lockEnds();
+        ...
+
+    c.lockPerimeter();
+    r.lockCorners();
+    t.lockLeft().lockRight();
+
+    strings[0](0.1) -- conn1 -- strings[1](0.1);
+    strings[1](0.9) -- conn2 -- strings[2](0.9);
+    strings[2](0.1) -- conn3 -- strings[3](0.1);
+
+    r(0.6,0.2) -- conn4 -- 0.0;
+
+    r.placeRightOf(c,20);
+    t.placeAbove(r);
+    ...
+
+Score 20 secs:
+    At start for 0.1 msecs:
+        strings[0](0.1).applyForce(1.0);
+        strings[1](0.1).applyForce(1.0);
+        strings[2](0.1).applyForce(1.0);
+        strings[3](0.1).applyForce(1.0);
+
+        c(0.1,0.5).applyForce(10.0);
+        r(0.7,0.8).applyForce(10.0);
+        t(0.8,0.6).applyForce(10.0);
+        ...
+    ...

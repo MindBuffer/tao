@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<!-- HTML file produced from file: UserManual.tex --
+ -- using Hyperlatex v 2.3.1 (c) Otfried Cheong--
+ -- on Emacs 21.1 (patch 4) "Arches" XEmacs Lucid, Sun Apr 30 20:50:05 2000 -->
+<HEAD>
+<TITLE>Tao User Manual -- Hammer Methods</TITLE>
+
+    <link rel=stylesheet href="../../taomanual.css" type="text/css">
+    
+</HEAD><BODY BACKGROUND="bg.gif">
+
+    <table width="500" border="0" align="left" cellspacing="2" cellpadding="2"><tr><td class="nav" valign="top"><!-- top panel --><A HREF="UserManual_93.html"><IMG ALT="Up" ALIGN=BOTTOM BORDER=0 SRC="up.gif"></A>
+    <BR><A HREF="UserManual_93.html">Device Methods</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" valign="top"><A HREF="UserManual_95.html"><IMG ALT="Back" ALIGN=BOTTOM BORDER=0 SRC="back.gif"></A>
+    <BR><A HREF="UserManual_95.html">Bow Methods</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" valign="top"><A HREF="UserManual_97.html"><IMG ALT="Forward" ALIGN=BOTTOM BORDER=0 SRC="forward.gif"></A>
+    <BR><A HREF="UserManual_97.html">Connector Methods</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td></tr><!-- end top panel --><tr><td colspan="3" class="main"><!-- main text --><br><br>
+<H3>Hammer Methods</H3>
+
+
+For a description of the Hammer device see section <A HREF="UserManual_26.html">*</A>.
+The following methods are available with a hammer.
+<P><PRE>
+    reset()
+    drop()
+    (&lt;accessPoint&gt;)
+    (&lt;instr&gt;, &lt;x&gt;)
+    (&lt;instr&gt;, &lt;x&gt;, &lt;y&gt;)
+    setMass(&lt;m&gt;)
+    setPosition(&lt;p&gt;)
+    setInitVelocity(&lt;v&gt;)
+    setGravity(&lt;g&gt;)
+    setHeight(&lt;h&gt;)
+    setDamping(&lt;d&gt;)
+    setHardness(&lt;h&gt;)
+    setMaxImpacts(&lt;maxImpacts&gt;)
+    getMass()
+    getPosition()
+    getVelocity()
+    getInitVelocity()
+    getGravity()
+    getHeight()
+    getDamping()
+    getHardness()
+    numberOfImpacts()
+    getMaxImpacts()
+</PRE>
+<P>The <CODE>reset</CODE><A NAME="1"> method</A> resets the hammer to its initial height and
+causes it to wait for a subsequent call to the <CODE>drop</CODE><A NAME="2"> method</A>
+before the hammer will start falling and interacting with the instrument.
+As with the bow device there are three unnamed methods for specifying
+the access point with which the hammer will interact. The first expects
+an access point, the second an instrument name and a single <I>x</I> coordinate
+and the third an instrument name followed by an <I>x</I> and <I>y</I> coordinate.
+<P>The <CODE>set...</CODE> family of methods are used to set the various attributes
+of the hammer. Note that the <CODE>setHeight</CODE> method sets the height from
+which the hammer is dropped whereas the <CODE>setPosition</CODE> method sets
+the instantaneous height of the hammer. The <CODE>setInitVelocity</CODE> method
+sets the initial velocity of the hammer immediately after the <CODE>drop</CODE>
+method has been called. The <CODE>setHardness</CODE> method sets the strength
+of the spring which is used to simulate the elastic connection with the
+instrument. This is usually a value in the range [0..1] where 0 means
+the spring has no effect and 1 means that the spring has the same strength
+as the springs used in <B>Tao</B>'s material. Values greater than 1 can also
+be used although this can lead to the model becoming unstable, due to
+the inherent limitations in modeling a continuous physical system using
+discrete time steps or ticks. 
+<P>
+    <BR></td></tr><!-- end main text --><tr><td class="nav" align="left" valign="top"><!-- bottom matter --><A HREF="UserManual_93.html"><IMG ALT="Up" ALIGN=BOTTOM BORDER=0 SRC="up.gif"></A>
+    <BR><A HREF="UserManual_93.html">Device Methods</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" align="left" valign="top"><A HREF="UserManual_95.html"><IMG ALT="Back" ALIGN=BOTTOM BORDER=0 SRC="back.gif"></A>
+    <BR><A HREF="UserManual_95.html">Bow Methods</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" align="left" valign="top"><!-- bottom matter --><A HREF="UserManual_97.html"><IMG ALT="Forward" ALIGN=BOTTOM BORDER=0 SRC="forward.gif"></A>
+    <BR><A HREF="UserManual_97.html">Connector Methods</A>
+    <IMG width="167" height="1" SRC="trans1x1.gif">
+    </td></tr><!-- end bottom matter -->
+
+    <tr><td colspan="3" class="addr"><!-- bottom panel --><ADDRESS><FONT SIZE=-1>&#169;1999,2000 Mark Pearson
+<A HREF="mailto:m.pearson@ukonline.co.uk">m.pearson@ukonline.co.uk</A> April 30, 2000</ADDRESS><BR></td></tr><!-- end bottom panel --></table></BODY></HTML>

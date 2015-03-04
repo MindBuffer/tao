@@ -1,0 +1,199 @@
+dnl Process this file with autoconf to produce a configure script.
+
+AC_INIT(libtao/TaoInstrument.cc)
+
+SHELL=/bin/sh
+
+AC_SUBST(SHELL)
+
+dnl are available for $ac_help expansion (don't we all *love* autoconf?)
+ifdef([AC_DIVERSION_NOTICE],
+      [AC_DIVERT_PUSH(AC_DIVERSION_NOTICE)],
+      [AC_DIVERT_PUSH(NOTICE)])dnl
+#
+# Making releases:
+#   TAO_MICRO_VERSION += 1;
+#   TAO_INTERFACE_AGE += 1;
+#   TAO_BINARY_AGE += 1;
+# if any functions have been added, set TAO_INTERFACE_AGE to 0.
+# if backwards compatibility has been broken,
+# set TAO_BINARY_AGE and TAO_INTERFACE_AGE to 0.
+
+TAODIR=`pwd`
+DATE=`date`
+TAO_MAJOR_VERSION=1
+TAO_MINOR_VERSION=0
+TAO_MICRO_VERSION=4
+TAO_RELEASE=-beta-`date +%d%b%Y`
+TAO_INTERFACE_AGE=1
+TAO_BINARY_AGE=1
+TAO_VERSION=$TAO_MAJOR_VERSION.$TAO_MINOR_VERSION$TAO_RELEASE
+dnl
+AC_DIVERT_POP()dnl
+
+AC_SUBST(TAODIR)
+AC_SUBST(DATE)
+AC_SUBST(TAO_MAJOR_VERSION)
+AC_SUBST(TAO_MINOR_VERSION)
+AC_SUBST(TAO_MICRO_VERSION)
+AC_SUBST(TAO_INTERFACE_AGE)
+AC_SUBST(TAO_BINARY_AGE)
+AC_SUBST(TAO_VERSION)
+
+# libtool versioning
+LT_RELEASE=$TAO_MAJOR_VERSION.$TAO_MINOR_VERSION
+LT_CURRENT=`expr $TAO_MICRO_VERSION - $TAO_INTERFACE_AGE`
+LT_REVISION=$TAO_INTERFACE_AGE
+LT_AGE=`expr $TAO_BINARY_AGE - $TAO_INTERFACE_AGE`
+AC_SUBST(LT_RELEASE)
+AC_SUBST(LT_CURRENT)
+AC_SUBST(LT_REVISION)
+AC_SUBST(LT_AGE)
+
+# For automake.
+VERSION=$TAO_VERSION
+PACKAGE=tao
+
+dnl Initialize automake stuff
+AM_INIT_AUTOMAKE($PACKAGE, $VERSION, no-define)
+
+# Specify a configuration file
+AM_CONFIG_HEADER(config.h)
+
+dnl Initialize libtool
+AM_PROG_LIBTOOL
+
+dnl Initialize maintainer mode
+AM_MAINTAINER_MODE
+
+#AC_CANONICAL_HOST
+
+# Build time sanity check...
+AM_SANITY_CHECK
+
+dnl Checks for programs.
+AC_PROG_CXX
+AC_PROG_CXXCPP
+AC_LANG_CPLUSPLUS
+AC_PROG_INSTALL
+AM_PROG_LEX
+AC_PROG_YACC
+AC_PROG_MAKE_SET
+AC_PROG_RANLIB
+AC_PROG_LN_S
+
+dnl Checks for X libraries and headers
+
+AC_PATH_X
+AC_PATH_XTRA
+
+dnl X_LIBS="$X_LIBS -lX11 -lXmu -lXi"
+
+dnl Checks for library functions.
+AC_CHECK_LIB(audiofile, afInitFileFormat,
+	,
+	AC_ERROR(No audiofile library found (see User Manual for suggestions)))
+
+
+AC_CHECK_LIB(m, sin,
+	,
+ 	AC_ERROR(No math library found))
+
+AC_CHECK_LIB(pthread, pthread_create,
+	PTLIB=-lpthread,
+	AC_MSG_WARN(No pthread library found.
+	This may be needed by Mesa graphics libraries,
+	if you have Mesa installed))
+
+dnl If we're on OS X, we'll be using the OpenGL framework, rather than libGL as on other systems.
+AC_CHECK_LIB(MesaGL, glBegin,
+	[GLLIB=-lMesaGL],
+	[AC_CHECK_LIB(GL, glBegin,
+		[GLLIB=-lGL],
+		[AC_CHECK_HEADER([OpenGL/gl.h],
+			[GLLIB="-framework OpenGL"],
+			[AC_MSG_ERROR(No OpenGL or Mesa GL library found (see User Manual for suggestions))])],
+		$X_LIBS $PTLIB)],
+	[$X_LIBS $PTLIB])
+
+dnl On OS X, glu is included in the OpenGL framework, so we dont have to include anything extra here.
+AC_CHECK_LIB(MesaGLU, gluNewQuadric,
+	[GLULIB=-lMesaGLU],
+	[AC_CHECK_LIB(GLU, gluNewQuadric,
+		[GLULIB=-lGLU],
+		[AC_CHECK_HEADER([OpenGL/glu.h],
+			,
+			[AC_ERROR(No OpenGL or Mesa GLU library found (see User Manual for suggestions))])],
+		$X_LIBS $GLLIB $PTLIB)],
+	$X_LIBS $GLLIB $PTLIB)
+
+AC_SUBST(GLLIB)
+AC_SUBST(GLULIB)
+AC_SUBST(x_includes)
+
+dnl Check if we're running on OS X, set various glut bits and pieces
+AC_CHECK_HEADER([ApplicationServices/ApplicationServices.h],
+	[CXXFLAGS="$CXXFLAGS -DHAVE_OSX"
+	AC_CHECK_HEADER([GLUT/glut.h],
+		,
+		[AC_ERROR(OSX: Could not find GLUT framework)])
+	CPPFLAGS="-I$TAODIR/include -DHAVE_OSX"
+	LDFLAGS="$X_LIBS $GLLIB $GLULIB $PTLIB -framework GLUT -lm -lobjc"],
+	[AC_CHECK_LIB(glut, glutInitDisplayMode,
+		,
+		AC_ERROR(No GLUT library found (see README)),
+		$X_LIBS $GLLIB $GLULIB $PTLIB)
+	CPPFLAGS="-I$TAODIR/include"
+	X_LIBS="$X_LIBS -lX11 -lXmu -lXi"
+	LDFLAGS="$X_LIBS $GLLIB $GLULIB $PTLIB -lglut -lm"])
+
+dnl Check if we're running on Windows/cygwin, point to the correct libs if so
+dnl AC_CANONICAL_HOST
+case "$host" in
+  *-cygwin* | *-mingw*)
+	LDFLAGS="-L/usr/X11R6/lib -L/lib/w32api -lX11 -lXmu -lXi -lopengl32 -lglu32 -lpthread -lglut32 -lm"
+	echo checking if host is cygwin/mingw... yes
+    ;;
+  *)
+	echo checking if host is cygwin/mingw... no
+	# Because cygwin doesn't have /dev/null, we can only put it in on other systems
+	HAVENULL=">& /dev/null"
+  ;;
+esac
+AC_SUBST(HAVENULL)
+
+dnl ifdef([HAVE_OSX],
+dnl	[AC_CHECK_LIB(glut, glutInitDisplayMode,
+dnl		,
+dnl		AC_ERROR(No GLUT library found (see README)),
+dnl		$X_LIBS $GLLIB $GLULIB $PTLIB)],
+dnl	[AC_CHECK_HEADER([GLUT/glut.h],
+dnl		,
+dnl		[AC_ERROR(OSX: Could not find GLUT framework)])])
+
+dnl ifdef([HAVE_OSX],
+dnl	[CPPFLAGS="-I$TAODIR/include" LDFLAGS="$X_LIBS $GLLIB $GLULIB $PTLIB -lglut -lm"],
+dnl	[CPPFLAGS="-I$TAODIR/include -DHAVE_OSX" LDFLAGS="$X_LIBS $GLLIB $GLULIB $PTLIB -framework GLUT -lm -lobjc"])
+
+AC_SUBST(CPPFLAGS)
+AC_SUBST(LDFLAGS)
+
+AC_OUTPUT(\
+	Makefile \
+	include/Makefile \
+	libtao/Makefile \
+	taoparse/Makefile \
+	tao2aiff/Makefile \
+	tao2wav/Makefile \
+	examples/Makefile \
+	doc/Makefile \
+	doc/UserManual/Makefile \
+	doc/UserManual/introduction.tex \
+	doc/UserManual/html/Makefile \
+	doc/Dependencies/Makefile \
+	doc/Dependencies/html/Makefile \
+	doc/ClassReference/Makefile \
+	doc/ClassReference/tao.doxy.cnf \
+	user-scripts/Makefile \
+	user-scripts/tao \
+	user-scripts/tao-config)

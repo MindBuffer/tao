@@ -1,0 +1,226 @@
+#!/bin/bash
+#
+# (c) 2000 Mark Pearson.
+#
+# This shell script searches for the existence of the given
+# dynamic link library and checks to see whether the system
+# is configured to find the library at run time. It uses the
+# following algorithm:
+#
+# 1) Check all system lib directories for the existence of
+#    the library.
+# 2) Do a 'find' starting in the user's home directory.
+# 3) Collect the results.
+# 4) If no suitable candidate is found abort with a message
+#    to the user.
+# 5) Extract the paths of all suitable files found.
+# 6) Check /etc/ld.so.conf and LD_LIBRARY_PATH to see
+#    if the system is configured to search these paths
+#    at run time for dynamic link libraries. If it is
+#    not, print a message to the user with advice on what
+#    to do to remedy this situation.
+
+if [ -z $1 ]; 
+then
+    cat <<EOF
+
+Usage: diagnose <libname>
+Diagnose problems in finding shared libraries during
+configuration of Tao
+
+<libname> can be one of the following:
+'gl', 'GL', 'glu', 'GLU', 'glut' or 'audiofile'.
+EOF
+
+    exit 0
+fi
+
+case $1
+in
+    gl|GL )
+	libname='lib*GL.so' ;;
+    glu|GLU )
+	libname='lib*GLU.so' ;;
+    glut|GLUT )
+        libname='libglut.so' ;;
+    audiofile )
+        libname='libaudiofile.so' ;;
+    * )
+	libname="lib$1.so" ;;
+esac
+
+echo
+echo "*********************************************************************"
+printf "Searching for library '$libname'... "
+ls -1 /*/lib/$libname /*/*/lib/$libname 2>&1 | grep -v ls: > /tmp/tao-lib-search
+find $HOME -name $libname -print >> /tmp/tao-lib-search
+if [ -s /tmp/tao-lib-search ]
+then
+    {
+    libfound=yes
+    echo 'possible candidates are:'
+    cat /tmp/tao-lib-search
+    echo
+    }
+else
+    {
+    libfound=no
+    echo 'not found'
+    echo
+    cat <<EOF
+You do not seem to have the file '$libname' installed anywhere
+obvious on your system (e.g. '/usr/lib', '/usr/local/lib').
+
+If the package you expected to contain this library was an
+RPM binary package, check that you also have the corresponding
+development package installed. For example if you have the
+following RPM installed:
+
+    Mesa-3.1-*.rpm
+
+make sure that you also install:
+
+    Mesa-devel-3.1-*.rpm
+
+Alternatively if you have built the library from source check
+that you have done a 'make install' to install the libraries
+(which would be installed in '/usr/local/lib' in the majority
+of cases). 
+EOF
+    exit 1
+    }
+fi
+
+
+echo "Testing whether your system is configured correctly for"
+echo "executables to find any of the libraries listed..."
+
+# Get the paths of the library files found, sort them and then
+# remove duplicates so that we are left with a list of paths
+# to test /etc/ld.so.conf and LD_LIBRARY_PATH for.
+
+cat /tmp/tao-lib-search | sed 's/\(^.*\)\/.*$/\1/g' | \
+    sort | uniq > /tmp/tao-dll-paths
+echo
+
+# Test /etc/ld.so.conf to see whether it contains any of the
+# paths in which the libraries which have been found are
+# actually installed.
+
+echo "Testing /etc/ld.so.conf..."
+in_ld_so_conf=no
+for dllpath in `cat /tmp/tao-dll-paths` 
+do
+    {
+    if grep $dllpath `ls /etc/ld.so.conf` > /dev/null
+    then
+	in_ld_so_conf=yes
+	echo "Path '$dllpath' found in '/etc/ld.so.conf'"
+    else
+	echo "Path '$dllpath' not found in '/etc/ld.so.conf'"
+    fi
+    }
+done
+
+echo
+
+# Test LD_LIBRARY_PATH to see whether it contains any of the
+# paths in which the libraries which have been found are
+# actually installed.
+
+echo "Testing LD_LIBRARY_PATH environment variable..."
+in_ld_library_path=no
+for dllpath in `cat /tmp/tao-dll-paths`
+do
+    {
+    result=`echo $LD_LIBRARY_PATH | grep $dllpath`
+    if [ -n "$result" ]
+    then
+	in_ld_library_path=yes
+	echo "Path '$dllpath' found in 'LD_LIBRARY_PATH'"
+    else
+	echo "Path '$dllpath' not found in 'LD_LIBRARY_PATH'"
+    fi
+    }
+done
+
+# If none of the paths to the candidate library files can be
+# found in either /etc/ld.so.conf or LD_LIBRARY_PATH then print
+# a message explaining how to remedy this situation.
+
+if [ "$in_ld_so_conf" = "no" -a "$in_ld_library_path" = "no" ]
+then
+    {
+    for dllpath in `cat /tmp/tao-dll-paths`
+    do
+	pathstring=$pathstring:$dllpath
+    done
+    pathstring=`echo $pathstring | sed 's/^://'`
+
+    cat <<EOF1
+
+Neither the file '/etc/ld.so.conf' or the environment variable
+'LD_LIBRARY_PATH' contain the necessary paths to find the
+library '$libname'. The easiest way to solve this problem
+(unless you are a system administrator and want to effect the
+change for all users) is to edit the '.bash_profile' file in
+your home directory and add the following line at the bottom:
+
+EOF1
+    if [ -z $LD_LIBRARY_PATH ]
+    then
+	printf 'export LD_LIBRARY_PATH='
+	echo $pathstring
+    else
+	printf 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:'
+	echo $pathstring
+    fi
+    cat <<EOF2
+
+Then before doing anything else type 'source .bash_profile' to
+make the change take effect immediately.
+
+EOF2
+    cat <<EOF3
+Alternatively if '$libname' is to be made available to users
+other than yourself, become root and add the following line(s)
+to the file '/etc/ld.so.conf':
+
+EOF3
+    cat /tmp/tao-dll-paths
+    echo
+    echo "then save the file and run the 'ldconfig' command."
+    echo
+    echo "*********************************************************************"
+    exit 0
+    }
+fi
+
+if [ "$in_ld_so_conf" = "yes" ]
+then
+    {
+    cat <<EOF4
+
+The file '/etc/ld.so.conf' does contain the appropriate path
+to find the library '$libname'.
+*********************************************************************  
+
+EOF4
+    exit 0
+    }
+fi
+
+if [ "$in_ld_library_path" = "yes" ]
+then
+    {
+    cat <<EOF5
+
+The environment variable 'LD_LIBRARY_PATH' does contain the
+appropriate path to find the library '$libname'.
+*********************************************************************  
+
+EOF5
+    exit 0
+    }
+fi
+

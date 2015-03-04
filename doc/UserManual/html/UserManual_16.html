@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<!-- HTML file produced from file: UserManual.tex --
+ -- using Hyperlatex v 2.3.1 (c) Otfried Cheong--
+ -- on Emacs 21.1 (patch 4) "Arches" XEmacs Lucid, Sun Apr 30 20:49:53 2000 -->
+<HEAD>
+<TITLE>Tao User Manual -- Testing <B>Tao</B></TITLE>
+
+    <link rel=stylesheet href="../../taomanual.css" type="text/css">
+    
+</HEAD><BODY BACKGROUND="bg.gif">
+
+    <table width="500" border="0" align="left" cellspacing="2" cellpadding="2"><tr><td class="nav" valign="top"><!-- top panel --><A HREF="UserManual_7.html"><IMG ALT="Up" ALIGN=BOTTOM BORDER=0 SRC="up.gif"></A>
+    <BR><A HREF="UserManual_7.html">Building and Installing <B>Tao</B></A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" valign="top"><A HREF="UserManual_15.html"><IMG ALT="Back" ALIGN=BOTTOM BORDER=0 SRC="back.gif"></A>
+    <BR><A HREF="UserManual_15.html">What the distribution contains</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" valign="top"><A HREF="UserManual_17.html"><IMG ALT="Forward" ALIGN=BOTTOM BORDER=0 SRC="forward.gif"></A>
+    <BR><A HREF="UserManual_17.html">Key bindings</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td></tr><!-- end top panel --><tr><td colspan="3" class="main"><!-- main text --><br><br>
+<H2>Testing <B>Tao</B></H2>
+To test that everything is working once the installation is complete open
+a new shell window. Change to the top level directory in the <B>Tao</B>
+distribution copy the script <CODE>examples/test.tao</CODE> to your home
+directory. This test script contains the following text although you don't
+need to understand how it works for the moment.
+<P><PRE>
+    Audio rate: 44100;
+
+    Circle c(800 Hz, 20 secs);
+    String strings[4]=
+        {
+        (800 Hz, 20 secs),
+        (810 Hz, 20 secs),
+        (820 Hz, 20 secs),
+        (830 Hz, 20 secs)
+        };
+
+    Rectangle r(800 Hz, 900 Hz, 20 secs);
+    Triangle t(800 Hz, 900 Hz, 20 secs);
+    Connector conn1, conn2, conn3, conn4;
+    Counter s;
+
+    Init:
+        For s = 0 to 3:
+            strings[s].lockEnds();
+            ...
+
+        c.lockPerimeter();
+        r.lockCorners();
+        t.lockLeft().lockRight();
+
+        strings[0](0.1) -- conn1 -- strings[1](0.1);
+        strings[1](0.9) -- conn2 -- strings[2](0.9);
+        strings[2](0.1) -- conn3 -- strings[3](0.1);
+
+        r(0.6,0.2) -- conn4 -- 0.0;
+
+        r.placeRightOf(c,20);
+        t.placeAbove(r);
+        ...
+
+    Score 20 secs:
+        At start for 0.1 msecs:
+            strings[0](0.1).applyForce(1.0);
+            strings[1](0.1).applyForce(1.0);
+            strings[2](0.1).applyForce(1.0);
+            strings[3](0.1).applyForce(1.0);
+
+            c(0.1,0.5).applyForce(10.0);
+            r(0.7,0.8).applyForce(10.0);
+            t(0.8,0.6).applyForce(10.0);
+            ...
+        ...
+</PRE>
+<P>Change directory in the shell window to your home directory and type:
+<PRE>
+    tao test
+</PRE>
+<P>If everything is working OK <B>Tao</B> should respond firstly by printing
+the following messages in the shell window:
+<P><PRE>
+    ========================================
+    |     Tao (c) 1996-99 Mark Pearson     |
+    | Sound Synthesis with Physical Models |
+    ========================================
+
+    Processing test.tao
+    Making test.exe
+    Executing test.exe
+
+    Sample rate=44100 KHz
+    Score duration=1 seconds                
+</PRE>
+<P>It should then open a window like the one shown in figure <A HREF="#2">*</A>.
+This is <B>Tao</B>'s <EM>instrument visualisation window</EM><A NAME="1">,</A>
+which presents a 3-D animated representation of the instruments
+described in the script <CODE>test.tao</CODE>. In the current implementation this
+window is meant for visualisation only, it is not possible to edit the
+instruments graphically.
+<P><P>  <A NAME="2">
+    <BLOCKQUOTE><CENTER>
+    
+    
+    <IMG  SRC="instrvis.gif">
+    
+    </CENTER></BLOCKQUOTE>
+    <CENTER><B>Tao</B>'s instrument visualisation window</CENTER>
+  </A>
+<P><P>This is a good opportunity to try some of the key and mouse bindings which
+affect the behaviour of the instrument visualisation window. These are
+listed below but there is one thing you have to do first to set the synthesis
+engine in motion.
+<P><B>IMPORTANT:</B> When the visualisation window opens initially the
+instrument animation is paused. This gives you time to move/resize/rotate
+the image to get the view you want before setting everything in motion.
+So the first thing you need to do is press the <B>right-arrow</B> key.
+After doing this you should see the instruments spring to life, showing
+the propagating waves. You can now try out some of the key and mouse bindings.
+<P><MENU>
+<LI><A HREF="UserManual_17.html">Key bindings</A>
+<LI><A HREF="UserManual_18.html">Mouse bindings</A>
+</MENU>
+
+    <BR></td></tr><!-- end main text --><tr><td class="nav" align="left" valign="top"><!-- bottom matter --><A HREF="UserManual_7.html"><IMG ALT="Up" ALIGN=BOTTOM BORDER=0 SRC="up.gif"></A>
+    <BR><A HREF="UserManual_7.html">Building and Installing <B>Tao</B></A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" align="left" valign="top"><A HREF="UserManual_15.html"><IMG ALT="Back" ALIGN=BOTTOM BORDER=0 SRC="back.gif"></A>
+    <BR><A HREF="UserManual_15.html">What the distribution contains</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" align="left" valign="top"><!-- bottom matter --><A HREF="UserManual_17.html"><IMG ALT="Forward" ALIGN=BOTTOM BORDER=0 SRC="forward.gif"></A>
+    <BR><A HREF="UserManual_17.html">Key bindings</A>
+    <IMG width="167" height="1" SRC="trans1x1.gif">
+    </td></tr><!-- end bottom matter -->
+
+    <tr><td colspan="3" class="addr"><!-- bottom panel --><ADDRESS><FONT SIZE=-1>&#169;1999,2000 Mark Pearson
+<A HREF="mailto:m.pearson@ukonline.co.uk">m.pearson@ukonline.co.uk</A> April 30, 2000</ADDRESS><BR></td></tr><!-- end bottom panel --></table></BODY></HTML>

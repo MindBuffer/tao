@@ -1,0 +1,93 @@
+\chapter{\tao's User Interface}
+\index{user interface}
+
+This section describes \tao's user interface in detail and includes
+shell commands, and mouse and key bindings for the visualization
+window.
+
+\section{Shell commands}
+A number of shell commands\index{shell commands}
+are provided for executing scripts and converting
+the output files to WAV format. These are described below:
+
+\renewcommand{\descriptionlabel}[1]%
+	{\hspace{\labelsep}\texttt{#1}}
+
+\begin{description}
+\item[tao <script>]
+Takes the name of a script as its argument (minus the \verb|.tao|
+extension) and executes it, producing a file called \verb|<script>.exe|.
+This shell script calls upon the services of the binary executable
+\Prog{taoparse}, which is described below.
+
+\item[taoparse <script>.tao]
+Binary executable which parses a \tao\ script, translates it into a
+valid C++ program, and writes the results to standard output. This is
+called by the \Prog{tao} shell script.
+
+\item[taosf <outputfile>]
+Takes the name of a file produced by an Output device, minus the
+\verb|.dat| extension and normalises the audio samples, adding
+a WAV header and writing the results to a file called \verb|<outputfile>.wav|.
+This command actually calls the \verb|tao2wav| binary executable with
+the arguments \verb|tao2wav <outputfile>.dat <outputfile>.wav|.
+
+\item[tao2wav <outputfile>.dat <outputfile>.wav]
+Binary executable used to convert a file produced by an Output device
+(in raw floating point format) into a WAV file.
+\end{description}
+
+In addition to these commands, whenever a script is invoked with the
+\verb|tao| command a corresponding \verb|.exe| file is produced. This
+is the actual executable which carries out the synthesis described in
+the script. For example the command \verb|tao <file>| invokes the script
+\verb|<file>.tao| and as a by-product produces the executable file
+\verb|<file>.exe|. Each \verb|.exe| file has one command line option,
+\verb|[-g]|. This option causes the instrument visualisation window
+to be opened. If omitted the synthesis proceeds without any visualisations.
+
+If you want to replay a synthesis described in a script you can invoke
+this executable file directly rather than having to re-compile the original
+text file containing the script.
+
+\section{Mouse bindings in the visualisation window}
+\index{mouse bindings}
+Moving the mouse whilst holding one of the mouse buttons down in the
+instrument visualisation window causes the image to be zoomed, translated
+or rotated. The mouse bindings are as follows:
+
+\renewcommand{\descriptionlabel}[1]%
+	{\hspace{\labelsep}\textbf{#1}}
+\begin{description}
+\item[Left button] -- translate the image.
+\item[Middle button] -- zoom the image.
+\item[Right button] -- rotate the image.
+\end{description}
+
+\section{Key bindings in the visualisation window}
+\index{key bindings}
+The visualisation window also has some associated key bindings. These are
+as follows:
+
+\begin{description}
+\item[Left arrow key] -- increase the frequency with which the visualisation
+is updated relative to ticks of the synthesis engine. This causes the
+visual animation to become slower but smoother. If updating is already
+occurring on every tick of the synthesis engine then an additional
+press of this key pauses the whole synthesis engine until the right arrow key
+is pressed.
+\item[Right arrow key] -- decrease the frequency with which the visualisation
+is updated relative to ticks of the synthesis engine. This causes the
+visual animation to become faster but less smooth as more computational
+resources are given over to the synthesis engine itself. This key also takes
+the synthesis engine out of \emph{pause mode} if it has been paused.
+\item[Up arrow key] -- increase the amplitude of the waves depicted in the
+visualisation.
+\item[Down arrow key] -- decrease the amplitude of the waves depicted in the
+visualisation.
+\item[I key] -- toggle display of instrument names. This can be useful if
+the visualisation becomes too cluttered with information.
+\item[D key] -- toggle display of device names.
+\item[ESC key] -- exit the synthesis, closing the visualisation window.
+\end{description}
+

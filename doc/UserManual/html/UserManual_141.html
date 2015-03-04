@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<!-- HTML file produced from file: UserManual.tex --
+ -- using Hyperlatex v 2.3.1 (c) Otfried Cheong--
+ -- on Emacs 21.1 (patch 4) "Arches" XEmacs Lucid, Sun Apr 30 20:50:10 2000 -->
+<HEAD>
+<TITLE>Tao User Manual -- Using pitches - pitches.tao</TITLE>
+
+    <link rel=stylesheet href="../../taomanual.css" type="text/css">
+    
+</HEAD><BODY BACKGROUND="bg.gif">
+
+    <table width="500" border="0" align="left" cellspacing="2" cellpadding="2"><tr><td class="nav" valign="top"><!-- top panel --><A HREF="UserManual_102.html"><IMG ALT="Up" ALIGN=BOTTOM BORDER=0 SRC="up.gif"></A>
+    <BR><A HREF="UserManual_102.html">Tutorial</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" valign="top"><A HREF="UserManual_140.html"><IMG ALT="Back" ALIGN=BOTTOM BORDER=0 SRC="back.gif"></A>
+    <BR><A HREF="UserManual_140.html">Using the Output device - outputs.tao</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" valign="top"><A HREF="UserManual_142.html"><IMG ALT="Forward" ALIGN=BOTTOM BORDER=0 SRC="forward.gif"></A>
+    <BR><A HREF="UserManual_142.html">Creating a rectangular sheet</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td></tr><!-- end top panel --><tr><td colspan="3" class="main"><!-- main text --><br><br>
+<H2>Using pitches - pitches.tao</H2>
+This script illustrates the various pitch formats which are supported
+by <B>Tao</B>. These include <EM>oct</EM><A NAME="1">,</A> <EM>cps</EM><A NAME="2">,</A> <EM>Hz</EM><A NAME="3"> and</A>
+<EM>note name</EM><A NAME="4"> formats</A> (see sections <A HREF="UserManual_34.html">*</A>
+and <A HREF="UserManual_52.html">*</A>).
+<P><PRE>
+    Audio rate: 44100;
+        
+    String array1[]=
+        {
+        (200 Hz, 20 secs),
+        (220 Hz, 20 secs),
+        (240 Hz, 20 secs),
+        (260 Hz, 20 secs)
+        };
+        
+    String array2[]=
+        {
+        (8.00 pch, 20 secs),
+        (8.04 pch, 20 secs),
+        (8.06 pch, 20 secs),
+        (8.08 pch, 20 secs)
+        };
+        
+    String array3[]=
+        {
+        (8.0 oct, 20 secs),
+        (8.2 oct, 20 secs),
+        (8.4 oct, 20 secs),
+        (8.6 oct, 20 secs)
+        };
+        
+    Counter n;
+        
+    Init:
+        For n = 0 to 3:
+            array1[n].lockEnds();
+            array2[n].lockEnds();
+            array3[n].lockEnds();
+            ...
+        ...
+        
+    Score 5 secs:
+        Label(array1[0], 1.0, 0.0, 0.0, "LABEL", 0);
+        
+        At start for 0.1 msecs:
+            For n = 0 to 3:
+                array1[n](0.1).applyForce(1.0);
+                array2[n](0.1).applyForce(1.0);
+                array3[n](0.1).applyForce(1.0);
+                ...
+            ...
+        ...
+</PRE>
+<P>
+    <BR></td></tr><!-- end main text --><tr><td class="nav" align="left" valign="top"><!-- bottom matter --><A HREF="UserManual_102.html"><IMG ALT="Up" ALIGN=BOTTOM BORDER=0 SRC="up.gif"></A>
+    <BR><A HREF="UserManual_102.html">Tutorial</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" align="left" valign="top"><A HREF="UserManual_140.html"><IMG ALT="Back" ALIGN=BOTTOM BORDER=0 SRC="back.gif"></A>
+    <BR><A HREF="UserManual_140.html">Using the Output device - outputs.tao</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" align="left" valign="top"><!-- bottom matter --><A HREF="UserManual_142.html"><IMG ALT="Forward" ALIGN=BOTTOM BORDER=0 SRC="forward.gif"></A>
+    <BR><A HREF="UserManual_142.html">Creating a rectangular sheet</A>
+    <IMG width="167" height="1" SRC="trans1x1.gif">
+    </td></tr><!-- end bottom matter -->
+
+    <tr><td colspan="3" class="addr"><!-- bottom panel --><ADDRESS><FONT SIZE=-1>&#169;1999,2000 Mark Pearson
+<A HREF="mailto:m.pearson@ukonline.co.uk">m.pearson@ukonline.co.uk</A> April 30, 2000</ADDRESS><BR></td></tr><!-- end bottom panel --></table></BODY></HTML>

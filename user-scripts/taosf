@@ -1,0 +1,68 @@
+#! /bin/sh
+#
+# Tao - A software package for sound synthesis with physical models
+# Copyright (C) 1993-1999 Mark Pearson
+# 
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+#
+# taosf - normalise the sample data in a Tao output file (<name>.dat) to
+#         fit the maximum sample range and add a WAVE (M$ RIFF) header.
+#         Call the new file <name>.wav.
+
+# Re-written by Niall Moody, 9/3/06.
+
+TAOSF="tao2wav"
+TAOEXT=".wav"
+DATFILE=""
+
+# Check if we should display the help.
+if [ ${1} = "-h" ]; then
+	echo "Usage: taosf [-a|-h] <datfile_minus_.dat>"
+	echo
+	echo "  -a        Output to .aiff.  Otherwise output to .wav."
+	echo "  -h        Display this help."
+	echo
+	echo "e.g. \"taosf -a outputs_out1\""
+	echo "     generates a file outputs_out1.aiff from the outputs_out1.dat file."
+	echo
+	exit
+# Check if we should output an aiff.  Stick with .wav otherwise.
+elif [ ${1} = "-a" ]; then
+	TAOSF="tao2aiff"
+	TAOEXT=".aiff"
+	DATFILE=${2}
+else
+	DATFILE=${1}
+fi
+
+# Generate audio.
+if [ -f ${DATFILE}.dat ]; then
+	${TAOSF} ${DATFILE}.dat ${DATFILE}${TAOEXT}
+else
+	echo "taosf: failed, couldn't find Tao output file ${1}.dat"
+fi
+
+
+
+# if !test -f tao2wav;
+# then
+#    echo 'taosf: failed, couldn't find the tao2wav program';
+# elif !test -f $1.dat;
+# then
+#    echo 'taosf: failed, couldn't find Tao output file ' $1.dat
+# else
+#    tao2wav $1.dat $1.wav
+# fi

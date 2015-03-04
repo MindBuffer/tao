@@ -1,0 +1,1303 @@
+\chapter{\tao's Synthesis Language in Detail}
+\tao's main user interface elements are its \Term{synthesis language}
+and \emph{instrument visualisation window}\hierindex{instrument!visualisation window}.
+The synthesis language provides
+the means for describing new instruments and `playing' them
+and the instrument visualisation window provides graphical animations of
+the instruments showing their behaviour as the acoustic waves propagate
+through them. At present there is no GUI (Graphical User Interface) for
+constructing instruments but this feature is planned for a future release.
+
+This section focusses on the synthesis language in some detail. It begins by 
+describing the main conceptual parts of a \tao\ script and then goes on to
+cover each individual element of the language in more detail.
+
+\section{Overview of a Script}
+A \tao\ script, although contained within one text file, is conceptually
+split into three main sections: the \Term{declarations} section;
+the \Term{init} section; and the \Term{score} section. The
+\hierindex{script!sections}
+\emph{declarations} section contains instructions for creating instruments,
+devices, pitches, arrays, parameters and access points etc. The
+\emph{init} section contains instructions for initialising the instruments,
+devices, parameters and other objects. It may optionally contain
+instructions for applying devices to instruments, coupling instruments
+together, and specifying the initial locations of any access points. Finally
+the \emph{score} section contains instructions for playing the instruments
+and generating output audio files during the \Term{performance}. The term
+performance is used here to refer to the run-time execution of the synthesis
+scenario described in the script.
+
+The score provides a means for the user to apply time-varying excitations
+to the instruments and control any instrument or device attributes via
+the use of parameters. The score consists of nested
+\Term{control structures} which allow events to be scheduled throughout
+the performance. These control structures contain either further nested
+control structures or \Term{statements}. Statements are the mechanism
+by which parameters are assigned values, mathematical expressions are
+evaluated, instrument and device attributes are controlled etc. For a
+more detailed description of the statement types available see
+section \ref{section:statements}. 
+Statements are also used to specify the sound samples which are to
+be written out to an Output device.
+ 
+\section{The Declarations Section}
+This section of the script may contain Instrument, Device, Parameter,
+Access Point and Pitch declarations, each of which is described in
+the following sections. However the very first declaration which
+must appear in a script determines the audio sample rate of the output
+files. This declaration takes the form:
+
+\begin{verbatim}
+    Audio rate: 44100;
+\end{verbatim}
+
+In the present release the sample rate must be set to 44.1kHz as above.
+
+\subsection{Instrument Declarations}
+\label{section:instrument_declarations}
+\hierindex{declaration!instrument}
+\tao\ provides a set of classes for creating pieces of the material described
+in section \ref{section:cellular_material}. Each class deals with a creating
+a piece of material of a particular geometrical shape, so for example the
+user can create strings, circular sheets, rectangular sheets and
+elliptical sheets. The way in which \tao's cellular material is actually
+implementated provides for future support of irregularly shaped
+components but in the present version the user is limited to these
+geometrical primitives.
+
+In practice though this is not a serious limitation since there are 
+many other techniques available for designing interesting instruments.
+These include damping and locking parts of an instrument and constructing
+\Term{compound instruments} by coupling several pieces of material together
+using Connector devices. All of these techniques provide ample
+room for experimentation.
+
+In order to create a \emph{primitive} instrument
+\hierindex{instrument!creating} several pieces of information are required.
+These include the instrument type, the name by which it will be referred
+to in the script, its $x$ and $y$ frequencies, and its decay time.
+
+The general form of an instrument declaration is illustrated by the
+following string declaration:
+
+\begin{verbatim}
+    String string(<pitch>, <decay_time>);
+\end{verbatim}
+
+where \verb|String| is the name of the instrument class; \verb|string|
+is the name of the particular instrument being created;
+\verb|<pitch>| defines (indirectly) how long the string will be
+(the tension in \tao's material cannot be altered so the length of a string
+is related to its pitch or frequency alone and vice versa); and
+\verb|<decay_time>| determines the amplitude decay time of the instrument.
+
+In the next example the placeholders \verb|<pitch>| and \verb|<decay_time>|
+are replaced with typical values which might occur in a script:
+
+\begin{verbatim}
+    String string(C#5+1/2, 4.5 secs);
+\end{verbatim}
+
+In this example the length of the string is set such that its pitch
+is C sharp plus a quarter-tone (1/2 a semitone) in octave 5, and
+its decay time is four and a half seconds. 
+The \verb|<pitch>| argument can be specified in a number of different
+formats, some of which are directly analogous to those provided in
+Csound. The other formats are introduced throughout this section
+by way of example. The format used in the example above is referred to
+as \Term{note name format} format\hierindex{pitch formats!note name}.
+
+The \verb|<decay_time>| argument consists of a numerical constant
+followed by the units of time, i.e. \verb|sec|, \verb|secs|, \verb|min|,
+\verb|mins| or \verb|msecs|, representing seconds, minutes and milliseconds
+respectively.
+
+A second practical example is given below, this time creating a
+rectangular sheet called \verb|rect|:
+
+\begin{verbatim}
+    Rectangle rect(200 Hz, 500 Hz, 60 secs);
+\end{verbatim}
+
+In this example two pitch arguments are specified, and both are given
+in \Term{frequency format}\hierindex{pitch formats!frequency}. The first
+determines the size of the instrument in the $x$ direction and
+the second, the size in the $y$ direction. It may seem slightly
+unintuitive at first to be specifying the size of a rectangular
+sheet in units of Hertz rather than physical dimensions such
+as metres or millimetres, but this practice is adopted
+for a number of good reasons:
+
+\begin{enumerate}
+\item It makes creating precisely pitched instruments a simpler matter;
+\item \tao's material is not based upon any real-world material so
+it would be meaningless to talk about a sheet of cellular material 5m by 3.5m;
+\item The instrument is described in units which are of more perceptual
+relevance to a musician than physical units of size (open to debate).
+\end{enumerate}
+
+Another advantage of specifying dimensions by pitch or frequency is that it
+becomes a simple matter to construct an instrument which has an array of
+similar components but with different pitches for each. For example the
+following code fragment creates a set of rectangular components with uniform
+$y$ dimension but pitches tuned to fractions of an octave for the
+$x$ dimension. This kind of instrument might be the starting point
+for some sort of pitched percussion instrument for example:
+
+\begin{verbatim}
+    Rectangle rect1(8.0 oct, 500 Hz, 60 secs);
+    Rectangle rect2(8.2 oct, 500 Hz, 60 secs);
+    Rectangle rect3(8.4 oct, 500 Hz, 60 secs);
+    Rectangle rect4(8.6 oct, 500 Hz, 60 secs);
+    Rectangle rect5(8.8 oct, 500 Hz, 60 secs);
+    Rectangle rect6(9.0 oct, 500 Hz, 60 secs);
+\end{verbatim}
+
+This example shows yet another form of the pitch argument, i.e. 
+\Term{octave/fraction format}\hierindex{pitch formats!octave/fraction}
+or \Kwd{oct} format for short. In this format the integer part specifies
+the octave and the fractional part after the decimal point specifies a
+fraction of an octave. 
+
+The previous example opens the way for describing another important
+technique often used when creating instruments with arrays of similar components.
+\tao\ provides an \Term{array} facility for grouping
+together such components and giving them a common name. For example
+the following script code has much the same effect as the previous example
+but logically groups the six rectangular components together into an
+array with a single name \verb|rect_array|:
+
+\begin{verbatim}
+Rectangle rect_array[6]=
+    {
+    (8.0 oct, 500 Hz, 60 secs),
+    (8.2 oct, 500 Hz, 60 secs),
+    (8.4 oct, 500 Hz, 60 secs),
+    (8.6 oct, 500 Hz, 60 secs),
+    (8.8 oct, 500 Hz, 60 secs),
+    (9.0 oct, 500 Hz, 60 secs)
+    };
+\end{verbatim}
+
+The individual components can be accessed using syntax which will be very
+familiar to C and C++ programmers:
+
+\begin{verbatim}
+    rect_array[0], rect_array[1] .. rect_array[5]
+\end{verbatim}
+
+The declarations for circular, elliptical and triangular sheets of material
+follow a similar format to the examples presented in this section, with
+elliptical and triangular sheets requiring two pitch values and circular
+sheets requiring only one (determining the diameter).
+
+Examples are given below:
+
+\begin{verbatim}
+    Circle circle(5.03 pch, 20 secs)
+    Ellipse ellipse(6.00 pch, 50 Hz, 1 min + 20 secs)
+    Triangle triangle(100 Hz, 6.5 oct, 600 msecs)
+\end{verbatim}
+
+These declarations introduce the final pitch notation,
+\Term{octave/semitone format}\hierindex{pitch formats!octave/semitone}
+or \Kwd{pch} format for short. In this format the fractional part after
+the decimal point is interpreted as semitones. For example \verb|5.03 pch|
+means the third semitone above C in octave 5. Note that fractions of
+semitones are also possible. For example \verb|5.035 pch| means 3.5
+semitones above C in octave 5.
+
+Note also that the different pitch formats can be used side by side
+in an instrument declaration requiring more than one pitch.
+
+\subsection{Device Declarations}
+\hierindex{declarations!device}\index{device declaration}
+Device declarations are similar to other declarations in that they
+consist of a type name followed by a comma-separated list of either
+individual device names or device array names. For example, all the
+following are valid device declarations:
+
+\begin{verbatim}
+    Bow bow;
+    Hammer hammer;
+    Connector connector;
+    Stop stop;
+    Output output(1);
+
+    Bow bow1, bow2, bowArray[10];
+    Hammer hammerArray1[5], hammerArray2[5];
+    Output out1(stereo), out2(mono), outArray(stereo)[10];
+\end{verbatim}
+
+Note that the syntax used for Output device declarations differs
+from that used for the other devices. This is because an Output declaration
+must specify the number of channels for the single output or array of
+outputs being created. Also note the use of keywords \verb|mono| and
+\verb|stereo| as alternatives to putting the numerical constants
+1 and 2 respectively.
+
+\subsection{Access Point Declarations}
+\hierindex{declaration!access point}\index{access point declaration}
+Some examples of access point declarations are given below:
+
+\begin{verbatim}
+    AccessPoint a1=instr1(0.1,0.5), a2=instr2(centre);
+    AccessPoint a3=instr3(left,bottom), a4;
+\end{verbatim}
+
+If an access point is to be given an initial value then the familiar
+access point notation of the instrument name followed by one or two
+coordinates in parentheses is used. Note that an access point does
+not need to be initialised, although if you try to apply a device via
+an access point before it has been initialised nothing will happen.
+
+\subsection{Pitch Declarations}
+\label{section:pitch_declarations}
+We have already come across the use of \Term{pitch literals} in
+section \ref{section:instrument_declarations} but it is also possible
+to declare pitches as seperate objects in a script. Pitch declarations
+take the following form:
+
+\begin{verbatim}
+    Pitch p1=C#7+1/2, p2=8.3 oct, p3=8.01 pch, p4=50 Hz;
+\end{verbatim}
+
+This example illustrates the four pitch formats supported, i.e.
+\emph{note name}, \emph{octave/fraction}, \emph{octave/semitone} and 
+\emph{frequency}.
+
+\subsection{Parameter Declarations}
+\label{section:parameter_declarations}
+The term \Term{parameter} is a blanket term which is applied to both
+floating point and integer variables. There are four keywords available
+for denoting different types of parameters: \Type{Param}, \Type{Integer},
+\Type{Counter} and \Type{Flag}. The latter three all lead to the creation
+of integer variables and the only reason for having three different keywords
+for the same parameter type is so that the semantic function of a 
+particular integer variable is made more clear in a script.
+
+The following are examples of valid parameter declarations:
+
+\begin{verbatim}
+    Param p1, p2, p3=10.0;
+    Integer i1=10, i2=30;
+    Counter count=0;
+    Flag flag1=false, flag2=true;
+\end{verbatim}
+
+As with instruments and devices it is also possible to create (one-dimensional)
+arrays of parameters in the following ways:
+
+\begin{verbatim}
+    Param array1[10], array2[20], array3[]={0.1,0.2,0.3,0.4,0.5};
+    Integer intArray[5]={1,3,5,7,9};
+    Flag flagArray[]={true, false, true, true, false};
+\end{verbatim}
+
+Note that in the case of an initialised array (one with initial values
+in curly brackets) giving the size of the array is optional. However
+if the size is specified then it must match up with the number of
+intial values given.
+
+\section{The Init Section}
+\label{section:init_section}
+The declaration section of the script allows the user to create the basic
+building blocks for the synthesis but there are often many other tasks
+which must be performed just prior to the `performance' described in the
+score. These include:
+
+\begin{itemize}
+\item locking parts of the instruments;
+\item damping parts of the instruments;
+\item initialising various parameter values;
+\item initialising the devices;
+\item specifying the points at which the various devices will interact
+with the instruments.
+\end{itemize}
+
+This is the purpose of the Init section of a \tao\ script. A typical
+Init section is shown below:
+
+\begin{verbatim}
+    Init:
+        string1.lockEnds();
+        rectangle1.lockCorners();
+        param1=0;
+        paramArray[0]=10;
+        flag1=true;
+        ...
+\end{verbatim}
+
+\section{The Score Section}
+\label{section:score_section}
+\tao's score language provides the means for controlling the instruments
+and devices declared and initialised in the previous two sections of the
+script. Unlike the score language used by Csound \tao's script
+language is not a set of time-stamped numerical data to be fed into the
+inputs of the instruments as the performance progresses. Instead it is
+an algorithmic language which allows user specified pieces of code to be
+executed under certain conditions or at specified times.
+
+The score language is hierarchical in nature and consists of nested
+\Term{control structures} and \Term{statements}. The available
+control structures are described in the next section.
+
+\section{Control Structures}
+\label{section:control_structures}
+\tao's score language provide a set of constructs for scheduling events
+in a performance. These are referred to as \Term{control structures}
+and include the following:
+
+\begin{verbatim}
+    At <t>: <body> ...
+    At <t1> for <t2>: <body> ...
+    From <t1> to <t2>: <body> ...
+    Before <t>: <body> ...
+    After <t>: <body> ...
+    ControlRate <k>: <body> ...
+    Every <t>: <body> ...
+\end{verbatim}
+
+In each case \verb|<body>| is the code which is to be executed at
+the scheduled time. In the case of \CtrlIndex{At} the code is executed once
+at the given time \verb|<t>|. For \CtrlIndex{At..for} and \CtrlIndex{From..to} the
+\verb|<body>| is executed on every tick in the interval defined by
+\verb|<t1>| and \verb|<t2>|.
+
+\CtrlIndex{Before} and \CtrlIndex{After} also define time intervals during which the
+\verb|<body>| is executed on every tick but the behaviour is slightly more
+context dependent as we will see later in this section. For
+\CtrlIndex{ControlRate} the code is executed on every \verb|<k>|'th tick and
+finally, for \CtrlIndex{Every} the code is executed repeatedly once every
+\verb|<t>| seconds (other units can be specified).
+
+In each of the control structures introduced above there is a \Term{head}
+part which determines when the \Term{body} will be executed. For most of
+the control structures the head consists of some sort of test to see what
+the value of the system variable \verb|Time| is compared to the
+given values. This variable keeps track of the amount of sound synthesised
+so far -- i.e. \Term{performance-time} -- not real-time.
+If the particular condition specified is met then the body of the control
+structure is executed.
+
+What follows is a more detailed look at the syntax and behaviour of
+the various control structures.
+
+\subsection{At}
+This control structure takes the following form:
+
+\begin{verbatim}
+    At <t>: <body> ...
+\end{verbatim}
+
+The \verb|<body>| is executed if the value of \verb|Time| is equal to
+the value \verb|<t>|.
+ 
+\subsection{At..for}
+This control structure repeatedly executes the instructions contained
+in the body on every tick from time \verb|<t1>| to \verb|<t1>+<t2>|
+inclusively:
+
+\begin{verbatim}
+    At <t1> for <t2>: <body> ...
+\end{verbatim}
+
+\subsection{From..to}
+This control structure repeatedly executes the body on every tick from
+\verb|<t1>| to \verb|<t2>| inclusively:
+
+\begin{verbatim}
+    From <t1> for <t2>: <body> ...
+\end{verbatim}
+
+\subsection{Every}
+This control structure repeatedly executes the body every \verb|<t>|
+seconds starting at 0.0 seconds:
+
+\begin{verbatim}
+    Every <t>: <body> ...
+\end{verbatim}
+
+\subsection{ControlRate}
+This control structure repeatedly executes the body once every
+\verb|<k>| ticks starting at tick zero:
+
+\begin{verbatim}
+    ControlRate <k>: <body> ...
+\end{verbatim}
+
+\section{Conditional and looping control structures}
+Looping and conditional control structures are also provided in the form
+of \CtrlIndex{For..to}, \CtrlIndex{If}, \CtrlIndex{If..Else},
+\CtrlIndex{If..ElseIf..Else}. These are described in more detail in the
+next section.
+
+\subsection{If, If..Else, If..ElseIf..Else}
+Unlike the control structures introduced above, the next three are not
+concerned with the \Var{Time} variable, but allow the user to specify
+conditional execution by providing Boolean expressions. They do not require
+much explanation really so all that is included here is the syntax:
+
+\begin{verbatim}
+    If <expr>:
+        <body>
+        ...
+\end{verbatim}
+
+\begin{verbatim}
+    If <expr>
+        <body1>
+        ...
+    Else
+        <body2>
+        ...
+\end{verbatim}
+
+\begin{verbatim}
+    If <expr1>
+        <body1>
+        ...
+    ElseIf <expr2>
+        <body2>
+        ...
+    ElseIf <expr3>
+        <body3>
+        ...
+    .
+    .
+    Else
+        <default_body>
+        ...
+\end{verbatim}
+
+Note that the block terminating symbol \verb|...| must appear after
+the end of every \verb|<body>| section. Also note that conditional
+expressions do not need to be surrounded by brackets as they do in C
+and C++.
+
+\subsection{For Loops}
+The \verb|For| control structure provides a simple mechanism for iteration
+with integer variables and takes the form:
+
+\begin{verbatim}
+    For <parameter>=<initial> to <final>:
+        <body>
+        ...
+\end{verbatim}
+
+The \verb|<parameter>| must be an integer parameter, i.e. declared
+as one of the following:
+
+\begin{verbatim}
+    Integer <parameter>;
+    Counter <parameter>;
+    Flag <parameter>;
+\end{verbatim}
+
+There is no difference between these three integer parameter types
+incidentally, they are only included to make it clear to a human
+reader of a \tao\ script whether a particular integer variable is
+a counter a Boolean flag etc. It therefore makes little stylistic sense
+to use a \verb|Flag| as the loop variable in a \Ctrl{For} statement or a
+\Type{Counter} in an \Ctrl{If} statement. 
+
+\section{Statements}
+\label{section:statements}
+Whilst control structures allow various events to be scheduled throughout
+a performance \Term{statements} provide the actual means by which individual
+events are described. Examples events might include striking an instrument,
+assigning a parameter a new value, changing a device's attributes etc. 
+The individual statement types supported are descibed in the following
+sections.
+
+\subsection{Assignment Statement}
+\label{section:assignment_statement}
+Assignment statements are used to assign values to parameters much as
+in any standard programming language such as C or C++. The operators
+used are inherited from these languages (\verb|=, +=, -=, *=, /=|).
+An assignment statement takes the following general form:
+
+\begin{verbatim}
+    <parameter> = <expression>
+    <parameter> += <expression>
+    <parameter> -= <expression>
+    <parameter> *= <expression>
+    <parameter> /= <expression>
+\end{verbatim}
+
+The last four assignment operators alter the parameter's current
+value by adding/subtracting to/from or multiplying/dividing by the value
+of the \verb|<expression>| on the right of the operator and then reassigning
+the parameter with the result of the calculation. For more about expressions
+see section \ref{section:expressions}.
+
+\subsection{Print Statement}
+\label{section:print_statement}
+The \Statement{Print} statement is used to output text and parameter values to
+the shell window from which \tao\ is invoked. This is useful for
+getting ongoing feedback about how a score is proceeding. The following
+script fragment illustrates its use:
+
+\begin{verbatim}
+    .
+    .
+    Parameter p1,p2,p3;
+    Init:
+        p1=10;
+        p2=20;
+        p3=30;
+        ...
+    
+    Score 1 secs:
+        At 0 secs:
+            Print "p1=", p1, "p2=", p2, "p3=", p3, newline;
+            ...
+        Every 0.2 secs:
+            Print "Elapsed Time=", Time, newline;
+            ...
+        ...
+\end{verbatim}
+
+In this example we see four different types of item being `printed'.
+The first is a character string, no surprises there, the second is
+a user defined parameter, the third is a system variable \verb|Time|,
+and the fourth is the special item \verb|newline| which causes printing
+to continue on the next line.
+
+\subsection{For Statement}
+\label{section:for_statement}
+The For statement provides a rudimentary looping and iteration
+facility. It is fairly basic as it only supports integer counting
+from some initial value to some final value in steps of 1. An example
+is given below:
+
+\begin{verbatim}
+    String stringArray[4]=
+        {
+        (50 Hz, 60 secs), 
+        (100 Hz, 60 secs), 
+        (150 Hz, 60 secs), 
+        (200 Hz, 60 secs)
+        };
+     
+    Counter c;
+     Init:
+        For c=0 to 3:
+            stringArray[c].lockEnds();
+            ...
+        ... 
+\end{verbatim}
+
+\subsection{Label Statement}
+\label{section:label_statement}
+The Label statement allows the user to display text captions in the instrument
+visualisation window. These \Term{labels} can be anchored to points on instruments
+so that they move as the instrument moves. This is sometimes useful to clarify
+visually precisely what is going on in the script. Label statements take
+the following generic form:
+
+\begin{verbatim}
+    Label (<instrument>, <x>, <xOffset>, <yOffset>,
+           <caption>, <red>, <green>, <blue>);
+\end{verbatim}
+
+This statement is rather ugly in its present form because of the large
+number of arguments but it does the job on the few occasions the user
+really needs to add to the automatic labeling produced by \tao.
+
+The example below is a Label statement with real arguments:
+
+\begin{verbatim}
+    Label (s[4], 1.0, 0.0, 0.0, "String four", 1.0, 1.0, 1.0);
+\end{verbatim}
+
+\subsection{Method Statement}
+\label{section:method_statement}
+There are a number of object methods for each class which return
+no value but are usually associated with setting the attributes of
+an object such as an instrument or device. These methods are not
+listed here since they are covered in detail in section
+\ref{section:object_method_reference}.
+
+Briefly though examples of the kind of things which we might do with
+object methods include setting the amount of damping for a region of
+an instrument; setting the height from which a hammer should be
+dropped; and setting the velocity and downward force for a bow.
+The example below shows how these tasks would be implemented in
+practice in a script:
+
+\begin{verbatim}
+    Rectangle rect(100 Hz, 200 Hz, 20 secs);
+    Bow bow;
+    Hammer hammer;
+    
+    Init:
+        // Damp the bottom left hand corner of the rectangular
+        // sheet with a value of 0.5
+        rect.setDamping(left, 0.1, bottom, 0.2, 0.5);
+
+        // Set the drop height of the hammer
+        hammer.setHeight(10.0).reset();
+
+        // Set the initial velocity and downward force of the
+        // bow
+        bow.setVelocity(0.0).setForce(1.5);
+        ...
+\end{verbatim}
+
+\subsection{Connection Statement}
+\label{section:connection_statement}
+The connection statement is the means by which the end points of a
+Connector object are specified in a script. Each end of a 
+Connector object can be assigned either an access point or 
+a numerical value representing a fixed \Term{anchor point}. The following
+script fragment illustrates the use of the connection statement in its
+various forms:
+
+\begin{verbatim}
+    String string1(100 Hz, 20 secs);
+    String string2(100 Hz, 20 secs);
+    String string3(100 Hz, 20 secs);
+    
+    Connector conn1, conn2, conn3;
+    
+    Init:
+        string1(0.5) -- conn1 -- string2(0.5);
+        string2(0.1) -- conn2 -- 0.0;
+        string2(right) -- conn3 -- string3(left) strength 0.5;
+        ...
+\end{verbatim}
+
+There are several features about the connection statement to note. Firstly
+it is possible for both ends of a Connector to be assigned
+access points, for one end to be assigned an access point whilst the other 
+is assigned an anchor point. However it is meaningless for both ends of a 
+Connector to be assigned anchor points since this would have
+no effect on any instruments and the Connector would thus be
+rendered useless.
+
+The second thing to note is that regardless of whether access or anchor
+points are used the connection statement has an optional \verb|strength|
+clause which allows the strength of the spring to be set. If the strength
+value is specified in the range [0..1] then the model's behaviour is
+guaranteed to remain stable. However some values higher than 1 may be
+useful at times but can also make the whole instrument model unstable
+to the point where it induces exponentially growing noisy vibrations.
+Unfortunately this is an limitation inherent in the discrete model used
+by \tao.
+
+\subsection{Output Statement}
+\label{section:output_statement}
+The \Term{output statement} is used to feed floating point samples to
+an Output device. The samples can be generated by arbitrary
+mathematical expressions but are usually derived from expressions
+involving access points.
+
+\begin{verbatim}
+    Output out1(stereo), out2(mono);
+    .
+    .
+    Score 10 secs:
+        out1.chL: string1(0.1);
+        out1.chR: string1(0.9);
+    
+        out2.ch1: string1(0.5);
+        ...
+\end{verbatim}
+
+As the previous example shows, the output statement consists of the
+name of an Output object followed by one of the methods \verb|ch1|,
+\verb|ch2|, \verb|chL|, \verb|chR|. This is then followed by
+a colon and then the expression representing the floating point value
+to be written out to the Output's associated file as an audio sample.
+
+Note that when an access point expression appeears in an output
+statement, e.g. \verb|string(0.1)|, it evaluates to a floating point
+value representing the displacement of the instrument along the 
+$z$ axis at that point. It is as if the expression
+\verb|string(0.1).getPosition()| had been typed. This short-hand
+notation makes it easier to read where the output samples are
+coming from. Of course if you want to use the velocity of the
+string at that point you could write instead:
+
+\begin{verbatim}
+    .
+    .
+        out1.chL: string(0.1).getVelocity();
+        out1.chR: string(0.9).getVelocity();
+\end{verbatim}
+
+For a more detailed description of \tao's expression syntax see
+section \ref{section:expressions}.
+
+\subsection{Join Statement}
+\label{section:join_statement}
+The \Term{join statement} provides another means for coupling together
+two components. It only works for rectangular components and does so
+by lining up to adjacent edges and `stitching' them together with new
+springs. After having been joined in this way, two rectangular components
+will behave as a single, continuous piece of material. In figure
+\ref{fig:joining} two rectabgular components are shown being joined 
+together. Two Join statements are shown underneath the instruments.
+Either one of the Join statements could be used in a script to lead to
+the same end result.
+
+\begin{figure}[h]
+  \begin{Label}{fig:joining}
+    \begin{center}
+    \Image{joining}{height=8cm}{gif}
+    \end{center}
+    \caption{Joining two rectangular components together with the
+	Join statement}
+  \end{Label}
+\end{figure}
+
+\subsection{Apply Statement}
+\label{section:apply_statement}
+The \Term{apply statement} provides the means for the user to specify the
+access point via which a device will interact with an instrument. It is
+similar in syntax to the \Term{connection statement} (section
+\ref{section:connection_statement}) in that it makes use of the 
+\verb|--| operator as shown in the next example:
+
+\begin{verbatim}
+    String string(C#5+1/2, 55 secs);
+    Bow bow;
+    Parameter bowPosition=0.5;
+    .
+    .
+    
+    string(bowPosition) -- bow;
+\end{verbatim}
+
+If you wish to disengage the device from the specified access point you
+use the device method \verb|remove()|. So for example:
+
+\begin{verbatim}
+    bow.remove();
+\end{verbatim}
+
+\section{Describing Musical Events}
+Having introduced the various elements which comprise \tao's synthesis
+language we now take a look at how to describe musical \Term{events}
+using the score language provided. The term
+\emph{event} needs some clarification before we start though. In \tao\
+the term is used to signify \emph{anything}
+which occurs during a performance, either at a particular instant in time
+or over some time interval. Events come in all shapes and sizes from
+low-level events such as setting the value of a parameter, to high-level
+events such as playing a bowed note on a stringed instrument. 
+
+Many events, especially the higher level musical events are hierarchical
+in nature. For example in order to describe an event such as bowing a
+note on a string the event will be broken down into sub-events such as
+the following:
+
+\begin{itemize}
+\item
+Apply the bow to the string;
+\item
+Increase the velocity of the bow over some short time interval to
+create an attack, at the same time as controlling the downward
+force of the bow;
+\item
+Hold the velocity steady for some time interval;
+\item
+Decrease the velocity steadily for some time interval;
+\item
+Remove the bow from the instrument.
+\end{itemize}
+
+Such high-level events are referred to as \Term{compound events}.
+All compound events no matter how complex eventually reduce down to
+low-level events, examples of which are given below:
+
+\begin{itemize}
+\item
+Evaluating expressions and assigning values to parameters;
+\item
+Changing the attributes of an instrument;
+\item
+Changing the attributes of a device;
+\item
+Applying a device to an instrument or removing it again;
+\item
+Coupling instruments together;
+\item
+Displaying text output in the shell window to give feedback about how
+a performance is progressing;
+\item
+Specifying output sources;
+\item
+Writing audio samples to output files.
+\end{itemize}
+
+The rest of this section takes a closer look at the various techniques
+which are commonly used to implement compound events. 
+
+\subsection{Nested control structures and the special variables start and end}
+The way in which compound events are describedin a score is by nesting
+control structures representing low-level events within higher level ones.
+The following (trivial) script illustrates this technique, at the same time as
+introducing two special variables called \verb|start| and \verb|end|, which
+play a central role in describing compound events:
+
+\begin{verbatim}
+    Audio rate: 44100;
+    
+    Init:
+        ...
+    
+    Score 2 secs:
+        From 0 secs to 1 secs:
+            At start:
+                Print "For interval 0-1 seconds start=", Time, newline;
+                ...
+    
+            At end:
+                Print "For interval 0-1 seconds end=", Time, newline;
+                ...
+            ...
+    
+        From 1 secs to 2 secs:
+            At start:
+                Print "For interval 1-2 seconds start=", Time, newline;
+                ...
+    
+            At end:
+                Print "For interval 1-2 seconds end=", Time, newline;
+                ...
+            ...
+        ...
+\end{verbatim}
+
+When invoked this script produces the following output:
+
+\begin{verbatim}
+    Sample rate=44100 Hz
+    Score duration=2 seconds
+    For interval 0-1 seconds start=0
+    For interval 0-1 seconds end=1
+    For interval 1-2 seconds start=1
+    For interval 1-2 seconds end=2
+\end{verbatim}
+
+The four \Kwd{Print} statements in this example print out the values of
+the \VarIndex{start} and \VarIndex{end} variables at various points during the
+performance. Note that the values change depending on where the variables
+are actually accessed. This is due to the concept of \Term{scope}. Each
+control structure which defines a time interval during the performance
+-- i.e. each instance of \Ctrl{At..for}, \Ctrl{From..to}, \Ctrl{Before}
+or \Ctrl{After} -- has its own scope. Within that scope the values of
+\Var{start} and \Var{end} are set to refer to the start and end times
+of that particular time interval. This is useful for defining sub-events
+in terms of the higher-level event in which they are enclosed.
+
+Another example is given below to clarify this point:
+
+\begin{verbatim}
+    Audio rate: 44100;
+    
+    Init:
+        ...
+    
+    Score 5 secs:
+        At start:
+            Print "For score, start=", Time, newline;
+            ...
+        At end:
+            Print "For score, end=", Time, newline;
+            ...
+
+        From 1 secs to 4 secs:
+            At start:
+                Print "For interval 1-4 seconds, start=", Time, newline;
+                ...
+            At end:
+                Print "For interval 1-4 seconds, end=", Time, newline;
+                ...
+            ...
+        ...
+\end{verbatim}
+
+In this example the first pair of \Ctrl{At} structures are enclosed within the scope
+of the top-level \Ctrl{Score} structure, whilst the second pair of \Ctrl{At}
+structures are enclosed or nested within the \Ctrl{From..to} structure. As you can
+see from the output from this script, the values of \Var{start} and \Var{end}
+are altered accordingly depending on their scope:
+
+\begin{verbatim}
+    Sample rate=44100 KHz
+    Score duration=5 seconds
+    For score, start=0
+    For interval 1-4 seconds, start=1
+    For interval 1-4 seconds, end=4
+    For score, end=5
+\end{verbatim}
+
+Note also that it doesn't matter in which textual order events are given in
+a score, the only thing which matters is the instant in time, or time interval
+defined by the values in the head of the control structure.
+
+The ability to nest events and define the start and end times of a
+sub-event in relative rather than absolute terms provides a rudimentary
+mechanism for describing compound events \footnote{This scheme is far from
+perfect since there is no \Term{encapsulation} facility as yet.
+By encapsulation we refer to the ability of most general purpose
+programming languages to break a problem down into manageable modules
+(e.g. functions or procedures) which can be named and parameterised.
+This feature would greatly enhance \tao's ability to deal with complex
+musical events. See section \ref{section:script_deficiencies} for a more
+in-depth discussion on this topic.}.   
+
+\subsection{Streams of Events and Iteration}
+Often it is necessary to repeat some simple event iteratively in order to
+form a stream of similar events. One example of this might be repeatedly
+striking an object at short (random) intervals in order to create a
+dense granular texture. This section describes a common technique
+for implementing such streams of events \footnote{Acknowledgements are due
+to Prof. David Worrall of the Australian Centre for the Arts and
+Technology for many fruitful discussions on the subject of events and
+streams. At the time these were aimed at extending David's algorithmic
+composition software \emph{Streamer}, but the discussions were of much
+wider interest as events and streams are so fundamental to music.}.
+
+In order to describe an iterated event we will use the technique of
+nested control structures described in the previous section, but in
+a particular way, which allows an
+event to reschedule itself once its time is up. The following example
+script schedules a series of events to occur at one second intervals.
+Each individual event is trivial in nature, simply printing a message
+to the shell window showing the time at which it occurs (performance-time,
+not real-time).
+ 
+\begin{verbatim}
+    Audio rate: 44100;
+
+    Param eventStart=0.0, eventDur=0.01, interval=1.0;
+
+    Init:
+        ...
+
+    Score 10 secs:
+        At eventStart for eventDur:
+            At start:
+                Print "Time=", Time, newline;
+                ...
+            At end:
+                eventStart += interval;
+                ...
+            ...
+        ...
+\end{verbatim}
+
+The first thing to note about this script is that it contains a
+hierarchy of nested control structures. The outermost \verb|Score|
+control structure contains a single \verb|At..for| structure, which in
+turn contains two further \verb|At| structures. The rest of the script
+is quite straightforward to understand. The parameters \verb|eventStart|
+and \verb|eventDur| are used to define the start time and duration of
+each event and the parameter \verb|interval| is used to define the
+interval between successive events. The key element is the use of the
+\verb|At end:| control structure. Every time the event occurs
+the body of the \verb|At end:| structure is executed just once at the
+very end of the event, and when it is a new start time is calculated
+for the next event.
+
+The script produces the following output:
+
+\begin{verbatim}
+    Sample rate=44100 KHz
+    Score duration=10 seconds
+    Time=0
+    Time=1
+    Time=2
+    Time=3
+    Time=4
+    Time=5
+    Time=6
+    Time=7
+    Time=8
+    Time=9
+    Time=10
+\end{verbatim}
+
+Of course the time interval between events does not have to be fixed.
+The value by which the \verb|eventStart| parameter is incremented
+can be derived from an arbitrary mathematical expression (see
+section \ref{section:expressions} for details of expression syntax).
+Since expressions can include numerical values derived from physical
+attributes read off the various instruments and devices, this technique
+opens the way for quite complex self-evolving events to be described.
+This is one of \tao's strengths: any physical attribute, such as the
+velocity of a point on an instrument or the current height of a hammer
+device can potentially be used as input to an algorithm which is playing
+the very same instruments and devices.
+
+\subsection{Comparison with Csound}
+You may ask why iteration has to be implemented by events rescheduling
+themselves, rather than by being able to pre-compose a series of even
+part of the answer is that it just evolved in this way. One specific
+reason though relates to my own personal interest in describing complex
+musical events which are self-evolving and depend upon lots of factors
+including feedback from the various physical objects in the synthesis,
+i.e. the instruments and devices.
+
+If you want to have stricter control over precomposing events
+then the best approach is to put all the start times, durations etc.
+into arrays and then set up iterated events which step through the
+arrays reading the appropriate values out for each successive event
+in a stream. 
+
+[TO DO: Write more on this subject and provide examples]
+
+\section{Expressions}
+\label{section:expressions}
+This section describes \tao's expression syntax. If you have
+experience of a programming language such as C or C++ then there
+should be no surprises here.
+
+\subsection{Operators}
+\index{operators}
+The following is a list of operators which are understood by \tao:
+
+\begin{itemize}
+\item
+Arithmetic operators:
+\begin{verbatim}
+    +     addition
+    -     subtraction
+    *     multiplication
+    /     division
+    %     modulus
+\end{verbatim}
+\begin{iftex}
+\Operator{\~}
+\Operator{<<}
+\Operator{>>}
+\Operator{\&}
+\Operator{\^}
+\Operator{"|}
+\end{iftex}
+
+\item
+Bitwise operators:
+\begin{verbatim}
+    ~     not
+    <<    shift left
+    >>    shift right
+    &     bitwise AND
+    ^     bitwise XOR
+    |     bitwise OR
+\end{verbatim}
+\begin{iftex}
+\Operator{\~}
+\Operator{<<}
+\Operator{>>}
+\Operator{\&}
+\Operator{\^}
+\Operator{"|}
+\end{iftex}
+
+\item
+Relational operators:
+\begin{verbatim}
+    ==    equal
+    !=    not equal
+    <     less than
+    >     greater than
+    <=    less than or equal to 
+    >=    greater than or equal to
+\end{verbatim}
+\begin{iftex}
+\Operator{==}
+\Operator{!=}
+\Operator{<}
+\Operator{>}
+\Operator{<=}
+\Operator{>=}
+\end{iftex}
+
+\item 
+Assignment operators:
+\begin{verbatim}
+    += -= *= %= <<= >>= &= ^=
+\end{verbatim}
+\begin{iftex}
+\Operator{+=}
+\Operator{-=}
+\Operator{*=}
+\Operator{\%=}
+\Operator{<<=}
+\Operator{>>=}
+\Operator{\&=}
+\Operator{"|=}
+\end{iftex}
+
+\item
+Logical operators:
+\begin{verbatim}
+    and or not
+\end{verbatim}
+\Operator{and}
+\Operator{or}
+\Operator{not}
+
+Note that the \verb|and| operator has higher precedence than the \verb|or|
+operator. This means that the expression \verb|a and b or c and d|
+evaluates to \verb|(a and b) or (c and d)|.
+\end{itemize}
+
+\subsection{Mathematical Functions}
+\label{section:math_functions}
+\index{math functions}
+Mathematical functions available from within \tao's synthesis language
+are inhereted directly from the gnu C++ math library. These include:
+\MathFunction{acos}
+\MathFunction{acosh}
+\MathFunction{asin}
+\MathFunction{atan}
+\MathFunction{atanh}
+\MathFunction{atan2}
+\MathFunction{cbrt}
+\MathFunction{cos}
+\MathFunction{cosh}
+\MathFunction{drem}
+\MathFunction{exp}
+\MathFunction{fabs}
+\MathFunction{ceil}
+\MathFunction{floor}
+\MathFunction{hypot}
+\MathFunction{log}
+\MathFunction{log10}
+\MathFunction{log1p}
+\MathFunction{pow}
+\MathFunction{rint}
+\MathFunction{sin}
+\MathFunction{sinh}
+\MathFunction{sqrt}
+\MathFunction{tan}
+\MathFunction{tanh}
+
+\begin{verbatim}
+    acos(x)     arc cosine.
+    acosh(x)    inverse hyperbolic cosine.
+    asin(x)     arc sine.
+    atan(x)     arc tangent.
+    atanh(x)    inverse hyperbolic tangent.
+    atan2(x,y)  arc tangent of two variables.
+    cbrt(x)     cube root.
+    cos(x)      cosine.
+    cosh(x)     hyperbolic cosine.
+    drem(x,y)   floating point remainder.
+    exp(x)      exponential.
+    fabs(x)     absolute value of floating point number.
+    ceil(x)     smallest integral number not less than x.
+    floor(x)    largest integral number not greater than x.
+    hypot(x,y)  Euclidean distance function.
+    log(x)      natural logarithm.
+    log10(x)    base-10 logarithm.
+    log1p(x)    logarithm of 1+x.
+    pow(x,y)    value of x raised to the power of y.
+    rint(x)     round to closest integer.
+    sin(x)      sine.
+    sinh(x)     hyperbolic sine.
+    sqrt(x)     square root.
+    tan(x)      tangent.
+    tanh(x)     hyperbolic tangent.
+\end{verbatim}
+
+The set of functions which are available is currently governed by what
+\tao's script parser has been told to expect. If \tao\ is ported
+to an OS other than Linux in the future this strategy will have to
+be rethought, since different math libraries often vary in the names
+and availability of functions.
+
+In addition to the standard math library functions two random number
+functions are also provided. These are \verb|randomi(x,y)|
+\MathFunction{randomi},
+which returns a random integer in the range \verb|[x..y]|; and \verb|randomf(x,y)|
+\MathFunction{randomf},
+which returns a random floating point number in the range \verb|[x..y]| inclusive.
+
+\subsection{The time-varying functions \emph{linear} and \emph{expon}}
+\label{section:linear_and_expon}
+Two simple time varying functions are provided for use in a score:
+
+\begin{verbatim}
+    linear(<initial>,<final>)
+    expon(<initial>,<final>)
+\end{verbatim}
+
+The time interval over which they change is determined by the scope
+in which they appear in the score. In other words they take their
+start and end times from the \Var{start} and \Var{end} variables.
+An example of their use is given in the following script:
+
+\begin{verbatim}
+    Audio rate: 44100;
+
+    Init: ...
+
+    Score 1 sec:
+        Every 0.1 secs:
+            Print "At time ", Time,
+		" linear value=", linear(0,1),
+		" expon value=", expon(0.001,1), newline;
+            ...
+        ...
+\end{verbatim}
+
+When invoked this script produces the following output:
+
+\begin{verbatim}
+    At time 0 linear value=0 expon value=0.001
+    At time 0.1 linear value=0.1 expon value=0.00199526
+    At time 0.2 linear value=0.2 expon value=0.00398107
+    At time 0.3 linear value=0.3 expon value=0.00794328
+    At time 0.4 linear value=0.4 expon value=0.0158489
+    At time 0.5 linear value=0.5 expon value=0.0316228
+    At time 0.6 linear value=0.6 expon value=0.0630957
+    At time 0.7 linear value=0.7 expon value=0.125893
+    At time 0.8 linear value=0.8 expon value=0.251189
+    At time 0.9 linear value=0.9 expon value=0.501187
+    At time 1 linear value=1 expon value=1
+\end{verbatim}
+
+It should be noted that in the current version of \tao\ the tools
+provided for generating time varying functions are somewhat lacking when
+compared to Csound and its plethora of function table generators and its
+ability to create multi-segment linear or exponential curves. This
+deficiency will be addressed in a future version, probably with the
+introduction of a completely new set of table-based objects for use within
+a script.
+
+\section{Compiling and Executing a \tao\ Script}
+A \tao\ script is executed using the \Prog{tao} command, which takes
+as its only argument the name of the script with a \verb|.tao|
+suffix. Although from the user's point of view the language seems
+to be interpreted, since this one command interprets \emph{and} executes
+the script, in reality a \tao\ script is compiled into an executable
+file, which is then invoked automatically.  
+
+The executable produced is stored in a file with the same name as the
+original script but with a \verb|.exe| suffix. Once a script has been
+compiled with the \Prog{tao} command, it can be executed several times
+without having to recompiled, provided the script isn't altered in the
+meantime. A \verb|.exe| executable has a number of command line options
+which are described below:
+
+\begin{description}
+\item[\texttt{-g}] Enables the 
+\emph{instrument visualisation window}
+\hierindex{instrument!visualisation window}. if this option is
+omitted the synthesis will proceed without any graphics at all. This is
+useful for background batch processing of \tao\ scripts.
+\end{description}
+
+
+
+
+
+

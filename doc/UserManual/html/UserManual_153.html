@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<!-- HTML file produced from file: UserManual.tex --
+ -- using Hyperlatex v 2.3.1 (c) Otfried Cheong--
+ -- on Emacs 21.1 (patch 4) "Arches" XEmacs Lucid, Sun Apr 30 20:50:12 2000 -->
+<HEAD>
+<TITLE>Tao User Manual -- The User Interface</TITLE>
+
+    <link rel=stylesheet href="../../taomanual.css" type="text/css">
+    
+</HEAD><BODY BACKGROUND="bg.gif">
+
+    <table width="500" border="0" align="left" cellspacing="2" cellpadding="2"><tr><td class="nav" valign="top"><!-- top panel --><A HREF="UserManual_147.html"><IMG ALT="Up" ALIGN=BOTTOM BORDER=0 SRC="up.gif"></A>
+    <BR><A HREF="UserManual_147.html">Closing Comments</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" valign="top"><A HREF="UserManual_152.html"><IMG ALT="Back" ALIGN=BOTTOM BORDER=0 SRC="back.gif"></A>
+    <BR><A HREF="UserManual_152.html">Parallel Processing</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" valign="top"><A HREF="UserManual_154.html"><IMG ALT="Forward" ALIGN=BOTTOM BORDER=0 SRC="forward.gif"></A>
+    <BR><A HREF="UserManual_154.html">Contributing to Tao's development</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td></tr><!-- end top panel --><tr><td colspan="3" class="main"><!-- main text --><br><br>
+<H2>The User Interface</H2>
+As with the parallelisation of <B>Tao</B>'s synthesis engine I did some evaluation
+of the various options available both on the SGI and Linux platforms
+for building a GUI for <B>Tao</B> whilst at ACAT. However at the time there were
+too many other things to be done to improve the basic synthesis engine
+and I never atually implemented anything concrete. Since then
+the main GUI toolkits for Linux (Gtk and Qt) have become more widely
+used and documented and as such are obvious choices. Of course the use
+of Qt would also make it very easy to create a port for other platforms
+such as MS Windows.
+<P>I have had some more general thoughts on the subject of GUIs though and
+having had some brief experience of 3-D animation packages such as Side Effects'
+Houdini and more recently Blender I think that many of the concepts 
+used in their interfaces would be applicable to <B>Tao</B>. To be more specific
+the ability of such packages to control and animate the values of any
+parameters with the use of various spline, bezier and NURBS curves
+is directly applicable. The other obvious area in which there is overlap
+is that <B>Tao</B> is basically a modeling tool and many of the concepts used
+in the user interfaces of animation packages such as object heirarchies;
+different views, layers of objects etc. would also be applicable.
+<P>Both Houdini and Blender allow the evolution of objects to be described
+in a procedural manner through the use of use of scripting. Blender in
+particular uses the Python OO scripting language. <B>Tao</B> could also benefit
+from the dual GUI/scripting approach. 
+<P>To summarise, the following features would be desirable in a new
+interface for <B>Tao</B>:
+<P><UL><LI>a curve editor with editable curves representing arbitrary parameters;
+<LI>a graphical instrument editor with a suitable toolbox;
+<LI>a 3D visualisation window with rotate/zoom/translate capabilities;
+<LI>some kind of data block structure showing hierarchies of components,
+devices and other objects and their relationships;
+<LI>some kind of integrated graphical and text based score system
+where changes in the graphical representation would immediately
+lead to changes in the text version and vice versa.
+</UL>
+<P>
+    <BR></td></tr><!-- end main text --><tr><td class="nav" align="left" valign="top"><!-- bottom matter --><A HREF="UserManual_147.html"><IMG ALT="Up" ALIGN=BOTTOM BORDER=0 SRC="up.gif"></A>
+    <BR><A HREF="UserManual_147.html">Closing Comments</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" align="left" valign="top"><A HREF="UserManual_152.html"><IMG ALT="Back" ALIGN=BOTTOM BORDER=0 SRC="back.gif"></A>
+    <BR><A HREF="UserManual_152.html">Parallel Processing</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" align="left" valign="top"><!-- bottom matter --><A HREF="UserManual_154.html"><IMG ALT="Forward" ALIGN=BOTTOM BORDER=0 SRC="forward.gif"></A>
+    <BR><A HREF="UserManual_154.html">Contributing to Tao's development</A>
+    <IMG width="167" height="1" SRC="trans1x1.gif">
+    </td></tr><!-- end bottom matter -->
+
+    <tr><td colspan="3" class="addr"><!-- bottom panel --><ADDRESS><FONT SIZE=-1>&#169;1999,2000 Mark Pearson
+<A HREF="mailto:m.pearson@ukonline.co.uk">m.pearson@ukonline.co.uk</A> April 30, 2000</ADDRESS><BR></td></tr><!-- end bottom panel --></table></BODY></HTML>

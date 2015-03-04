@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<!-- HTML file produced from file: UserManual.tex --
+ -- using Hyperlatex v 2.3.1 (c) Otfried Cheong--
+ -- on Emacs 21.1 (patch 4) "Arches" XEmacs Lucid, Sun Apr 30 20:49:56 2000 -->
+<HEAD>
+<TITLE>Tao User Manual -- Writing a script</TITLE>
+
+    <link rel=stylesheet href="../../taomanual.css" type="text/css">
+    
+</HEAD><BODY BACKGROUND="bg.gif">
+
+    <table width="500" border="0" align="left" cellspacing="2" cellpadding="2"><tr><td class="nav" valign="top"><!-- top panel --><A HREF="UserManual_35.html"><IMG ALT="Up" ALIGN=BOTTOM BORDER=0 SRC="up.gif"></A>
+    <BR><A HREF="UserManual_35.html">Getting Started</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" valign="top"><A HREF="UserManual_35.html"><IMG ALT="Back" ALIGN=BOTTOM BORDER=0 SRC="back.gif"></A>
+    <BR><A HREF="UserManual_35.html">Getting Started</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" valign="top"><A HREF="UserManual_37.html"><IMG ALT="Forward" ALIGN=BOTTOM BORDER=0 SRC="forward.gif"></A>
+    <BR><A HREF="UserManual_37.html">Executing the script</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td></tr><!-- end top panel --><tr><td colspan="3" class="main"><!-- main text --><br><br>
+<H2>Writing a script</H2>
+First of all open a new text file in your favourite text editor and copy
+the following text into it:
+<P><PRE>
+    Audio rate: 44100;
+
+    String string(200 Hz, 20 secs);
+
+    Output output(stereo);
+
+    Init:
+        string.lockEnds();
+        ...
+
+    Score 20 secs:
+        At 0 secs for 1 msecs:
+            string(0.2).applyForce(1.0);
+            ...
+
+        output.chL: string(0.1);
+        output.chR: string(0.9);
+        ...
+</PRE>
+<P>Now save the file as "new.tao".
+<P>In plain English this script does the following:
+<P><OL><LI>declares the audio sampling rate for any output files to be 44.1 KHz
+<LI>declares a <EM>string</EM> instrument called <CODE>string</CODE>
+<LI>declares a two channel <EM>output</EM> device called <CODE>output</CODE>
+<LI>initialises the string by locking both ends (fixing them at their
+initial position: <I>z=0</I>)
+<LI>states that the <EM>performance</EM> will last for 20 seconds
+<LI>applies a fixed force of magnitude 1.0 to a point on the string
+one fifth of the way along its length (from the left hand side)
+for a short time interval (0 seconds to 0.001 seconds)
+<LI>writes the movements of the string out to a stereo output file
+called "new_output.dat" with the left and right channels following
+the movements of a point one tenth of the way along its length and
+another point nine tenths of the way along the string, respectively.
+</OL>
+<P>In case you are wondering, the name of an output file is formed
+by appending the name of the output device onto the name of the
+script (minus the <CODE>.tao</CODE> extension) and adding a <CODE>.dat</CODE>
+extension, indicating that the file contains raw floating point data,
+i.e. "new_output.dat". These files require further processing before
+they can be played back. See section <A HREF="UserManual_41.html">*</A>.
+<P>
+    <BR></td></tr><!-- end main text --><tr><td class="nav" align="left" valign="top"><!-- bottom matter --><A HREF="UserManual_35.html"><IMG ALT="Up" ALIGN=BOTTOM BORDER=0 SRC="up.gif"></A>
+    <BR><A HREF="UserManual_35.html">Getting Started</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" align="left" valign="top"><A HREF="UserManual_35.html"><IMG ALT="Back" ALIGN=BOTTOM BORDER=0 SRC="back.gif"></A>
+    <BR><A HREF="UserManual_35.html">Getting Started</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" align="left" valign="top"><!-- bottom matter --><A HREF="UserManual_37.html"><IMG ALT="Forward" ALIGN=BOTTOM BORDER=0 SRC="forward.gif"></A>
+    <BR><A HREF="UserManual_37.html">Executing the script</A>
+    <IMG width="167" height="1" SRC="trans1x1.gif">
+    </td></tr><!-- end bottom matter -->
+
+    <tr><td colspan="3" class="addr"><!-- bottom panel --><ADDRESS><FONT SIZE=-1>&#169;1999,2000 Mark Pearson
+<A HREF="mailto:m.pearson@ukonline.co.uk">m.pearson@ukonline.co.uk</A> April 30, 2000</ADDRESS><BR></td></tr><!-- end bottom panel --></table></BODY></HTML>

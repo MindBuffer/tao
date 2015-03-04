@@ -1,0 +1,57 @@
+body
+	{
+	margin-left: 2cm;
+	}
+
+h1,h2,h3,h4
+	{
+	color: #336699;
+	font-family: arial, helvetica, sans-serif;
+	margin-top: 0cm;
+	}
+
+h1	{
+	font-size: 170%;
+	text-align: right;
+	}
+h2	{
+	font-size: 115%;
+	text-align: left;
+	}
+h3	{
+	font-size: 105%;
+	text-align: left;
+	}
+h4	{
+	font-size: 100%;
+	text-align: left;
+	}
+
+pre,code
+	{
+	color: #666666;
+	font-family: "courier new", courier;
+	font-size: 12pt;
+	}
+
+.main
+	{
+	font-family: "times new roman", times;
+	font-size: 14pt;
+	}
+
+td.main
+	{
+	font-family: "times new roman", times;
+	font-size: 14pt;
+	text-align: justify;
+	}
+td.nav
+	{
+	font-family: tahoma, arial, times;
+	font-size: 10pt;
+	background-color: #FFCCCC
+	}
+
+table	{
+	}

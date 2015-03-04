@@ -1,0 +1,71 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<!-- HTML file produced from file: UserManual.tex --
+ -- using Hyperlatex v 2.3.1 (c) Otfried Cheong--
+ -- on Emacs 21.1 (patch 4) "Arches" XEmacs Lucid, Sun Apr 30 20:50:08 2000 -->
+<HEAD>
+<TITLE>Tao User Manual -- Example 2 - accesspoint2.tao</TITLE>
+
+    <link rel=stylesheet href="../../taomanual.css" type="text/css">
+    
+</HEAD><BODY BACKGROUND="bg.gif">
+
+    <table width="500" border="0" align="left" cellspacing="2" cellpadding="2"><tr><td class="nav" valign="top"><!-- top panel --><A HREF="UserManual_123.html"><IMG ALT="Up" ALIGN=BOTTOM BORDER=0 SRC="up.gif"></A>
+    <BR><A HREF="UserManual_123.html">Using access points</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" valign="top"><A HREF="UserManual_124.html"><IMG ALT="Back" ALIGN=BOTTOM BORDER=0 SRC="back.gif"></A>
+    <BR><A HREF="UserManual_124.html">Example 1 - accesspoint1.tao</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" valign="top"><A HREF="UserManual_126.html"><IMG ALT="Forward" ALIGN=BOTTOM BORDER=0 SRC="forward.gif"></A>
+    <BR><A HREF="UserManual_126.html">An instrument with a single string</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td></tr><!-- end top panel --><tr><td colspan="3" class="main"><!-- main text --><br><br>
+<H3>Example 2 - accesspoint2.tao</H3>
+This example illustrates the use of access points<A NAME="1">
+to</A> connect together two components to form a more interesting compound
+instrument. It does so by creating two strings and applying a short
+impulse to one of them. A Connector device is used to connect together
+two access points, one on each string. The access points are not fixed
+but move along their respective strings as the performance progresses. 
+<P><PRE>
+    // accesspoint2.tao
+    //
+    // Create two strings and implement a connection between them using
+    // two moving access points.
+        
+    Audio rate: 44100;
+        
+    String string1(200 Hz, 20 secs);
+    String string2(200 Hz, 20 secs);
+        
+    AccessPoint point1, point2;
+        
+    Connector connector;
+        
+    Init:
+        string1.lockEnds();
+        string2.lockEnds();
+        ...
+        
+    Score 5.0 secs:
+        At 0 secs for 0.1 msecs:
+            string1(0.05).applyForce(1.0);
+            ...
+        
+        ControlRate 100:
+            point1=string1(linear(0,1));
+            point2=string2(linear(1,0));
+            ...
+            
+        point1 -- connector -- point2;
+        ...
+</PRE>
+<P>
+    <BR></td></tr><!-- end main text --><tr><td class="nav" align="left" valign="top"><!-- bottom matter --><A HREF="UserManual_123.html"><IMG ALT="Up" ALIGN=BOTTOM BORDER=0 SRC="up.gif"></A>
+    <BR><A HREF="UserManual_123.html">Using access points</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" align="left" valign="top"><A HREF="UserManual_124.html"><IMG ALT="Back" ALIGN=BOTTOM BORDER=0 SRC="back.gif"></A>
+    <BR><A HREF="UserManual_124.html">Example 1 - accesspoint1.tao</A><BR><IMG width="167" height="1" SRC="trans1x1.gif">
+    </td><td class="nav" align="left" valign="top"><!-- bottom matter --><A HREF="UserManual_126.html"><IMG ALT="Forward" ALIGN=BOTTOM BORDER=0 SRC="forward.gif"></A>
+    <BR><A HREF="UserManual_126.html">An instrument with a single string</A>
+    <IMG width="167" height="1" SRC="trans1x1.gif">
+    </td></tr><!-- end bottom matter -->
+
+    <tr><td colspan="3" class="addr"><!-- bottom panel --><ADDRESS><FONT SIZE=-1>&#169;1999,2000 Mark Pearson
+<A HREF="mailto:m.pearson@ukonline.co.uk">m.pearson@ukonline.co.uk</A> April 30, 2000</ADDRESS><BR></td></tr><!-- end bottom panel --></table></BODY></HTML>

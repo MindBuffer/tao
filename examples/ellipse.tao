@@ -1,0 +1,13 @@
+Audio rate: 44100;
+
+Ellipse ellipse(200 Hz, 400 Hz, 20 secs);
+
+Init:
+    ellipse.lockPerimeter();
+    ...
+
+Score 5 secs:
+    At 0 secs for 0.5 msecs:
+        ellipse(0.15,0.5).applyForce(linear(30,0));
+	...
+    ...    
